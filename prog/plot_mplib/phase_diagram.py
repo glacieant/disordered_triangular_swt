@@ -32,7 +32,7 @@ popt, pcov = curve_fit(sfc_b,strfc[:,0],strfc[:,1],
         sigma=sigma)
 ax.plot(strfc[:,0],sfc_b(strfc[:,0], *popt),'b-')
 ax.text(0.025,0.3,'Long range AFM order',
-        fontsize=12,
+        fontsize=14,
         bbox={'facecolor':'white',
             'alpha':1.0,
             'edgecolor':'none',
@@ -43,17 +43,17 @@ ax.fill_between(np.append(strfc[:,0],0.0),0,
 # local moment data
 
 moment_1 = np.array([[0.105,0.0],[0.095,0.2],[0.09,0.3],
-    [0.08,0.5],[0.085,0.55],[0.1,0.6]])
+    [0.09,0.5],[0.1,0.55]])
 
-moment_2 = np.array([[0.14,0.0],[0.125,0.2],[0.12,0.3],
-    [0.11,0.5],[0.105,0.55],[0.1,0.6]])
+moment_2 = np.array([[0.13,0.0],[0.125,0.2],[0.12,0.3],
+    [0.11,0.5],[0.1,0.55]])
 
 # local moment plot
 
 ax.plot(moment_1[:,0],moment_1[:,1],'ro')
 ax.plot(moment_2[:,0],moment_2[:,1],'ro')
 ax.text(0.0935,0.3,'Non-magnetic \n phase',
-        fontsize=12,
+        fontsize=14,
         bbox={'facecolor':'white',
             'alpha':1.0,
             'edgecolor':'none',
@@ -62,14 +62,14 @@ ax.fill_betweenx(moment_1[:,1],
         moment_1[:,0],
         moment_2[:,0],facecolor='indianred')
 
-ax.text(0.095,0.8,'Disordered paramagnet',
-        fontsize=12,
+ax.text(0.06,0.8,'Disordered paramagnet',
+        fontsize=14,
         bbox={'facecolor':'white',
             'alpha':1.0,
             'edgecolor':'none',
             'pad':5})
 
-plt.xlabel(r'$\alpha$',fontsize=18)
+plt.xlabel(r'$\alpha = J_2/J_1$',fontsize=18)
 plt.ylabel(r'$\Delta$',fontsize=18)
 plt.title(
 'Phase diagram of disordered $J_1-J_2$ triangular lattice'+'\n Heisenberg model',
@@ -85,7 +85,7 @@ ax.set_xticks(x_minor_ticks,minor=True)
 ax.set_yticks(y_major_ticks)
 ax.set_yticks(y_minor_ticks,minor=True)
 
-ax.set_xlim([0.0,0.14])
+ax.set_xlim([0.0,0.13])
 ax.set_ylim([0.0,0.99])
 
 ax.grid(which='minor',alpha=0.4)

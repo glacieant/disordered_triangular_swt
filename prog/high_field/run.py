@@ -6,7 +6,7 @@
 ##################################################
 
 # system size
-LSYS = [36] 
+LSYS = [60] 
 # co-ordination number of the lattice
 ZCO = 12 
 # disorder iteration number 
@@ -14,10 +14,10 @@ ITERDISD = [20]
 # magnitude of the external field
 HFIELD = [0]
 # the disorder amplitude
-DELTA = [0.0,0.99] 
+DELTA = [0.0,0.2,0.55,0.65,0.8,0.9,0.99] 
 # the ratio between nearest and next 
 # nearest couplings
-ALPHA = [0.0,0.1] 
+ALPHA = [0.0,0.025,0.05,0.075,0.1,0.125] 
 # a global tolerance value
 GTOL = 10.0**(-8.0) 
 # the spin magnitude
@@ -27,9 +27,9 @@ MINF = -6.0
 # the maximum frequency
 MAXF = 0.0
 # the frequency grid 
-FGRID = 100
+FGRID = 400
 # width of the delta function
-GWDTH = 0.025
+GWDTH = 0.01
 
 # checking the lengths of simulation arrays #
 

@@ -76,32 +76,27 @@ def main(const):
                 # diagonalising the matrix
                 eigval, eigvec = np.linalg.eigh(ham)
 
-                # fixing the frequency grid width
-                FWDTH = (MAXF-MINF)/(FGRID-1)
-
-                # the integer position of the eigval
-                # array compared to the freq-grid
-                eigpos = np.rint((eigval-MINF)/FWDTH).astype(int)
-              
-                # the loop over eigenvalues
+                # fourier transformed vectors
                 for j in range(0,NSYS):
 
                     # fourier transforming the unitary matrix
-                    evq[j] = np.reshape(eigvec[:,j],(LSYS,LSYS))
-                    evq[j] = np.fft.fft2(evq[j],norm="ortho")
+                    evq[j] = np.fft.fft2(np.reshape(
+                        eigvec[:,j],(LSYS,LSYS)),norm='ortho')
+
+                # loop over eigenvalues
+                for j in range(0,NSYS):
                     
-                    # getting the frequency index
-                    if 0 <= eigpos[j] < FGRID:
+                    # loop over frequencies
+                    for k in range(0,FGRID):
                         
                         # guassian approx. of delta fn.
-                        FREQ = MINF + eigpos[j]*FWDTH
+                        FREQ = MINF + ((MAXF-MINF)*k)/(FGRID-1)
                         DWDTH = np.exp((-(FREQ-eigval[j])**2)/
-                                GWDTH**2)/(GWDTH*
-                                        (2.0*np.pi)**0.5)
-                        strc = S*(DWDTH*np.absolute(evq[j])**2)
+                                GWDTH)/(GWDTH*np.pi)**0.5
+                        strc = S*(DWDTH*evq[j]*evq[j].conj()).real
                         
-                        dynstrc[DNUM,ANUM,eigpos[j]] += strc
-                        dynstrc_var[DNUM,ANUM,eigpos[j]] += strc**2
+                        dynstrc[DNUM,ANUM,k] += strc
+                        dynstrc_var[DNUM,ANUM,k] += strc**2
 
 
 
@@ -114,7 +109,6 @@ def main(const):
                 MINF=MINF,
                 MAXF=MAXF,
                 FGRID=FGRID,
-                FWDTH=FWDTH,
                 eigval=eigval,
                 eigvec=eigvec,
                 dynstrc=dynstrc,
