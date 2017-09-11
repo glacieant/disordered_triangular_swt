@@ -1,0 +1,118 @@
+\documentclass{article}
+\usepackage{amsmath}
+\newcommand{\lagL}{\mathcal{L}}
+\newcommand{\ordO}{\mathcal{O}}
+\newcommand{\actS}{\mathcal{S}}
+\newcommand{\tS}{\tilde{S}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vk}{\vec{k}}
+\newcommand{\vq}{\vec{q}}
+\newcommand{\vQ}{\vec{Q}}
+\newcommand{\vr}{\vec{r}}
+\newcommand{\vA}{\vec{A}}
+\newcommand{\vS}{\vec{S}}
+\newcommand{\vL}{\vec{L}}
+\newcommand{\vN}{\vec{N}}
+\newcommand{\un}{\hat{n}}
+\newcommand{\ue}{\hat{e}}
+\begin{document}
+
+\title{The effect of bond impurity in triangular
+lattice heisenberg anti-ferromagnet}
+\maketitle
+
+\begin{abstract}
+    In this note we explore the fate of the 120 
+    degree long range order in the presence of
+    randomly distributed bond impurities.
+\end{abstract}
+
+\section{Introduction}
+In the context of the classical spiral ground 
+state of the triangular lattice heisenberg anti
+-ferromagnet, the presence of a single bond 
+impurity locally releases the frustration and 
+helps the associated spins to anti-align. In 
+the reference frame of an individual spin this
+amounts to a perturbation in the transverse
+direction of the magnetic order. If we assume 
+a rotated co-ordinate system for each spin such
+that in the absence of any fluctuation, 
+$\langle \tS^z\rangle=S$, the effect of
+a single impurity could be understood as a 
+perturbation to the hamilonian,
+\begin{equation}
+    \begin{aligned}
+        \delta H_i =h_i\sum_{j\epsilon\{i\}}
+        \alpha_j\tS^x_j
+        =h_iS^{\text{imp}}_i
+    \end{aligned}
+\end{equation}
+where the notation is as follows; the bond 
+impurity has been introduced between the coupling
+of the $i$'th spin and one of its neighbour 
+and $j$ is either 0 or 1 depending on whether
+it designates the $i$'th spin or its neighbour. 
+The phase factor $\alpha_j=\pm(-1)^{j}$ ensures 
+the correct symmetry of the perturbation. Because
+of the spiral pattern of the underlying spin
+pattern the neighbouring spins have to rotate 
+in the opposite directions in-order to anti-align.
+The overall $\pm$ of the phase factor is fixed
+with the breaking of the chiral symmetry of the
+$120^\circ$ order. However, this does not have
+any effect on the observables that we are interested
+in.
+
+\section{The response function}
+Within the linear response approximation the transverse
+spin fluctuation of an arbitrary spin $j$ away from the 
+impurity at $i$ would be given by,
+\begin{equation}
+    \begin{aligned}
+        \langle\tS_j^x\rangle &= h_{i}
+        \langle\tS^x_jS_i^{\text{imp}}\rangle
+        =h_i\langle\tS^x_j\sum_{j'\epsilon\{i\}}
+        \alpha_{j'}\tS^x_{j'}\rangle \\
+        &=h_i\sum_{\vk,\vk'}
+        \langle\tS^x_{\vk}
+        \left(\sum_{j'\epsilon{i}}\alpha_{j'}
+        e^{i\vk'\cdot\vr_{j'}}\right)
+        \tS^x_{\vk'}
+        \rangle 
+        e^{i\vk\cdot\vr_j} \\
+        &=h_i\sum_{\vk}\alpha_{\vk}
+        \langle\tS^x_{\vk}\tS^x_{-\vk}\rangle
+        e^{i\vk\cdot(\vr_j-\vr_i)} \\
+        &=h_iG^\perp(\vr_j-\vr_i)
+    \end{aligned}
+\end{equation}
+Where we use the definition, 
+$\alpha_{\vk}=(-1)^0+(-1)^1e^{-i\vk\cdot\vec{\delta}}$,
+with $\vec{\delta}$ being the bond directional vector. 
+The choice of any of the six directional vectors around 
+a particular spin should not affect the overall result.
+In the following we choose the direction 
+$\vec{\delta}=(1,0)$ for our calculation. Following
+Wollny, the momentum space response function at $T=0$
+energy can now simply be written as,
+\begin{equation}
+    \begin{aligned}
+        &G^\perp({\vk}) = \alpha_{\vk}
+        \langle\tS^x_{\vk}\tS^x_{-\vk}\rangle
+        =S\frac{\alpha_{\vk}}{\gamma_{\vk}-1} \\
+        &\text{ with,} \\
+        &\alpha_{\vk} = 1-e^{-ik_x} \\
+        &\gamma_{\vk} = 
+        \frac{1}{3}\left(\cos k_x
+        +2\cos(k_x/2)\cos(\sqrt{3}k_y/2)\right)
+    \end{aligned}
+\end{equation}
+The principle contributions for the response function 
+in the zero energy limit will come from the goldstone
+moders around the ordering wave vectors for triangular
+lattice, $\vQ=(0,0) \text{ and } \pm(4\pi/3,0)$. 
+We expand around these points, $\vk=\vq+\vQ$ with a
+polar parametrization $\vq=(q\cos\phi,q\sin\phi)$ and
+find,
+\end{document}
