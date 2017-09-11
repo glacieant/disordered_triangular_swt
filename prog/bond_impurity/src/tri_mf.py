@@ -23,20 +23,20 @@ def main(const):
 
     LSYS = const.LSYS # system length
     NSYS = LSYS*LSYS # system size
-    MDIM = NSYS*2 # dimension of mean-field matrix
+    #MDIM = NSYS*2 # dimension of mean-field matrix
     ZCO = const.ZCO # the count of nearest and next nearest neighbours
     ITERDISD = const.ITERDISD # disorder iteration number
     ANGVAR = const.ANGVAR # fluctuation of inital angle
-    BONDVAR = const.BONDVAR # fluctuation of initial bonds
+    #BONDVAR = const.BONDVAR # fluctuation of initial bonds
     BOOTNUM = const.BOOTNUM # bootstrap sample number
-    SIMSZE = const.SIMSZE # simulation iteration number
+    #SIMSZE = const.SIMSZE # simulation iteration number
     DELTA = const.DELTA # magntitude of disorder
     ALPHA = const.ALPHA # magnititude of J'/J
-    MFTOL = const.MFTOL # tolerance for the mean-field calculation
+    #MFTOL = const.MFTOL # tolerance for the mean-field calculation
     GTOL = const.GTOL # a global tolerance for the code
-    TEMP = const.TEMP # the temperature for modulating the fermi function
-    XPAR = const.XPAR # the fudge parameter for decoupling
-    UPAR = const.UPAR # the update ration for iterations
+    #TEMP = const.TEMP # the temperature for modulating the fermi function
+    #XPAR = const.XPAR # the fudge parameter for decoupling
+    #UPAR = const.UPAR # the update ration for iterations
     CLNUM = const.CLNUM # the maximum number of iteration for the classical routine
     DNMR = const.DNMR # denominator for batch execution
 
@@ -49,44 +49,66 @@ def main(const):
     # initiating empty parameter arrays of fixed shape
 
     # bond params
-    bond = np.zeros((2,NSYS,NSYS),dtype=np.complex128)
-    chi = np.zeros((NSYS,NSYS),dtype=np.complex128)
+    #bond = np.zeros((2,NSYS,NSYS),dtype=np.complex128)
+    #chi = np.zeros((NSYS,NSYS),dtype=np.complex128)
     
     # field params
     M = np.zeros((2,NSYS,3),dtype=np.float64)
-    B = np.zeros((NSYS,3),dtype=np.float64)
+    M_PURE = np.zeros((2,NSYS,3),dtype=np.float64)
+    #B = np.zeros((NSYS,3),dtype=np.float64)
 
     # occupancy and chemical potential
-    fnum = np.zeros(NSYS,dtype=np.float64)
-    lmult = np.zeros(NSYS,dtype=np.float64)
+    #fnum = np.zeros(NSYS,dtype=np.float64)
+    #lmult = np.zeros(NSYS,dtype=np.float64)
 
     # the hamiltonian matrix and coupling
     J = np.zeros((NSYS,NSYS),dtype=np.float64)
-    ham = np.zeros((MDIM,MDIM),dtype=np.complex128)
+    #ham = np.zeros((MDIM,MDIM),dtype=np.complex128)
 
     # iteration loop for disorder
     for i in range(0,ITERDISD):
 
         # fixing the coupling matrix
         tool.init_cpl(NSYS,nbr,
-                ZCO,XPAR,
-                DELTA,ALPHA,J)
+                ZCO,DELTA,ALPHA,J)
 
         # looping over bootstrapped initialisations
         for g in range(0,BOOTNUM): 
 
             # initiating parameters
             tool.init_param(NSYS,nbr,
-                    ZCO,XPAR,
+                    ZCO,
+                    #XPAR,
                     DELTA,ALPHA,
-                    ANGVAR,BONDVAR,
-                    J,bond,chi,
-                    M,B,fnum,lmult)
+                    ANGVAR,
+                    #BONDVAR,
+                    #J,
+                    #bond,chi,
+                    M
+                    #,B
+                    #,fnum,lmult
+                    )
             
+            tool.init_param(NSYS,nbr,
+                    ZCO,
+                    DELTA,ALPHA,
+                    ANGVAR,M_PURE)
 
             # classical algorithm to get the magnetic
             # ground state
-            # algo.classic_zmc(CLNUM,NSYS,nbr,J,M,GTOL)
+            algo.classic_zmc(CLNUM,NSYS,nbr,J,M_PURE,GTOL)
+            
+            #introducing impurity
+            impsite = (NSYS+1)/2-1
+            for p in [3]:
+                J[impsite][nbr[impsite][p]] = 0.0
+                J[nbr[impsite][p]][impsite] = 0.0
+
+            # classical algorithm to get the magnetic
+            # ground state
+            algo.classic_zmc(CLNUM,NSYS,nbr,J,M,GTOL)
+
+            """
 
             # rubbish tolerance
             TOL = 100.0
@@ -129,6 +151,7 @@ def main(const):
                 else:
                     break
 
+            """
 
 
             ## output data ##
@@ -141,13 +164,15 @@ def main(const):
                     "_DISD_"+str(i)+
                     "_BOOT_"+str(g)+
                     ".npz",
-                    T=TEMP,
+                    #T=TEMP,
                     J=J,
-                    inum=j,
-                    err=TOL,
-                    ensys=en_mf,
-                    vsys=v_mf,
-                    bond=bond[1],
+                    #inum=j,
+                    #err=TOL,
+                    #ensys=en_mf,
+                    #vsys=v_mf,
+                    #bond=bond[1],
                     spin=M[1],
-                    lmult=lmult)
+                    spin0=M_PURE[1]
+                    #,lmult=lmult
+                    )
 
