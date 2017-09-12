@@ -1,10 +1,12 @@
 \documentclass{article}
 \usepackage{amsmath}
+\usepackage{cancel}
 \newcommand{\lagL}{\mathcal{L}}
 \newcommand{\ordO}{\mathcal{O}}
 \newcommand{\actS}{\mathcal{S}}
 \newcommand{\tS}{\tilde{S}}
 \newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
 \newcommand{\vk}{\vec{k}}
 \newcommand{\vq}{\vec{q}}
 \newcommand{\vQ}{\vec{Q}}
@@ -84,7 +86,7 @@ impurity at $i$ would be given by,
         &=h_i\sum_{\vk}\alpha_{\vk}
         \langle\tS^x_{\vk}\tS^x_{-\vk}\rangle
         e^{i\vk\cdot(\vr_j-\vr_i)} \\
-        &=h_iG^\perp(\vr_j-\vr_i)
+        &=h_iG_\perp(\vr_j-\vr_i)
     \end{aligned}
 \end{equation}
 Where we use the definition, 
@@ -98,7 +100,7 @@ Wollny, the momentum space response function at $T=0$
 energy can now simply be written as,
 \begin{equation}
     \begin{aligned}
-        &G^\perp({\vk}) = \alpha_{\vk}
+        &G_\perp({\vk}) = \alpha_{\vk}
         \langle\tS^x_{\vk}\tS^x_{-\vk}\rangle
         =S\frac{\alpha_{\vk}}{\gamma_{\vk}-1} \\
         &\text{ with,} \\
@@ -114,5 +116,130 @@ moders around the ordering wave vectors for triangular
 lattice, $\vQ=(0,0) \text{ and } \pm(4\pi/3,0)$. 
 We expand around these points, $\vk=\vq+\vQ$ with a
 polar parametrization $\vq=(q\cos\phi,q\sin\phi)$ and
-find,
+find that to leading order,
+\begin{equation}
+    \begin{aligned}
+        G_\perp(\vq) &= -\frac{4 i\cos\phi}{q}
+        +\ordO(q^0)
+    \end{aligned}
+\end{equation}
+In the continuum language the response function in real 
+space therefore is,
+\begin{equation}
+    \begin{aligned}
+        G_\perp(\vr) &=
+        \frac{1}{2\pi}
+        \int^\Lambda_0 qdq
+        \int^{2\pi}_{0} d\phi
+        \left(-\frac{4i\cos\phi}{q}\right)
+        e^{iqr\cos(\theta-\phi)} \\
+        &= \frac{-4i}{2\pi}
+        \int^{2\pi}_0 d\phi\cos\phi
+        \left[\frac{e^{iqr\cos(\theta-\phi)}}
+            {ir\cos(\theta-\phi)}
+        \right]^\Lambda_0 \\
+        &=\frac{-2}{\pi r}
+        \int^{2\pi}_{0}d\phi\cos\phi
+        \left(\frac{e^{i\Lambda\cos(\theta-\phi)}
+            -1}
+        {\cos(\theta-\phi)}\right) \\
+        &=\frac{-2}{\pi r}
+        \int^{2\pi}_{0}d\zeta\cos(\theta-\zeta)
+        \left(\frac{e^{i\Lambda\cos\zeta}
+            -1}
+        {\cos\zeta}\right) \\
+        &=\frac{-2\cos\theta}{\pi r}
+        \int^{2\pi}_{0}d\zeta
+        \left(e^{i\Lambda r\cos\zeta}-1\right)
+        +\frac{-2\sin\theta}{\pi r}
+        \cancel{\int^{2\pi}_{0}d\zeta\sin\zeta
+            \left(\frac{e^{i\Lambda\cos\zeta}
+                -1}
+        {\cos\zeta}\right)} \\
+        &= \frac{4\cos\theta}{r}
+        \left[1-J_0\left(\Lambda r\right)\right]
+    \end{aligned}
+\end{equation}
+Where $J_0(x)$ is the bessel function of first kind with 
+order zero.
+
+\section{Randomly distributed impurities and breakdown of
+the $120^\circ$ order}
+
+The transverse fluctuation of the local magnetic moment 
+$m_\perp(i)=\langle S^x_i\rangle$ due to the presence of a 
+single bond impurity has been shown to be finite. It is 
+straightforward to extend this picture for an arbitrary
+distribution of these bond impurities as long as the 
+correlation between the impurity strengths is known. 
+In the continuum  description, $m_\perp(\vr) = \int 
+d^2r' h(\vr')G_\perp(\vr-\vr')$. Now, we calculate the sample
+averaged $\langle\langle .. \rangle\rangle$, squared 
+transverse fluctuation,
+\begin{equation}
+    \begin{aligned}
+        \langle\langle m^2_\perp(0)
+        \rangle\rangle
+        &=\int d^2r\langle\langle h(\vr)^2
+        \rangle\rangle
+        \left[G_\perp(\vr)\right]^2 \\
+        &=h_0^2\int^{L}_{1} rdr
+        \int^{2\pi}_0d\theta
+        \left(\frac{16\cos\theta^2
+            [1-J_0(\Lambda r)]^2}
+        {r^2}\right) \\
+        &\simeq 16h_0^2\pi\log L
+    \end{aligned}
+\end{equation}
+Which diverges in the thermodynamic limit for an uniform 
+impurity ditribution with a finite mean square moment, 
+$h_0^2$. This implies that in a thermodynamically 
+large sample of triangular lattice with heisenberg 
+interaction, any amount of uniformly distributed bond 
+impurities would destroy the local magnetic order parameter 
+by introducing divergent transverse fluctuation.
+
+In light of the Imry-Ma argument, the correlation fucntion 
+of the trasverse magnetization is also an interesting
+quantity to look as it can signal the breakdown of the 
+long range magnetic order.
+\begin{equation}
+    \begin{aligned}
+        C_\perp(\vr)&=\langle\langle
+        m_\perp(0)m_\perp(\vr)\rangle\rangle \\
+        &=\int d^2x\int d^2y
+        \langle\langle h(\vx)h(\vy)
+        \rangle\rangle
+        G_\perp(\vx)G_\perp(\vr-\vy)
+    \end{aligned}
+\end{equation}
+If the bond impurities are distributed randomly then we 
+shall have, $\langle\langle h(\vx)h(\vy) \rangle\rangle
+=h_0^2\delta^2(\vx-\vy)$. Hence,
+\begin{equation}
+    \begin{aligned}
+        C_\perp(r) - C_\perp(0) &=h_0^2\int d^2x
+        G_\perp(\vx)G_\perp(r\ue_z-\vx) 
+        -h_0^2\int d^2xG_\perp(\vx)^2\\
+        &= h_0^2\int^L_1 xdx\int^{2\pi}_0 d\chi
+        \Big(\frac{4\cos\chi[1-J_0(\Lambda x)]}
+        {x}\frac{4(x\cos\chi-r)[1-J_0(\Lambda|\vr-\vx|)]}
+        {r^2+x^2-2rx\cos\chi} \\
+        & \qquad -\frac{16\cos\chi^2}{x^2}
+        [1-J_0(\Lambda x)^2]
+        \Big) \\
+        &\simeq 16h_0^2\int^L_1 xdx
+        \int^{2\pi}_0d\chi
+        \left(
+            \frac{\cos\chi(x\cos\chi-r)}
+            {x(r^2+x^2-2rx\cos\chi)}
+            -\frac{\cos\chi^2}{x^2}
+        \right) \\
+        &\simeq16h^2_0\left(-\pi\log L 
+        -\frac{\pi L^2}{2r^2}\right) \\
+        &=-\frac{8\pi h_0^2L^2}{r^2}-C_\perp(0)
+    \end{aligned}
+\end{equation}
+So, the correlation function has a power lay decay, 
+$C_\perp(r)\sim1/r^2$.
 \end{document}
