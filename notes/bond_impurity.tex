@@ -130,7 +130,7 @@ space therefore is,
     \begin{aligned}
         G_\perp(\vr) &=
         \frac{1}{2\pi}
-        \int^\Lambda_0 qdq
+        \int^1_0 qdq
         \int^{2\pi}_{0} d\phi
         \left(-\frac{4i\cos\phi}{q}\right)
         e^{iqr\cos(\theta-\phi)} \\
@@ -138,27 +138,27 @@ space therefore is,
         \int^{2\pi}_0 d\phi\cos\phi
         \left[\frac{e^{iqr\cos(\theta-\phi)}}
             {ir\cos(\theta-\phi)}
-        \right]^\Lambda_0 \\
+        \right]^1_0 \\
         &=\frac{-2}{\pi r}
         \int^{2\pi}_{0}d\phi\cos\phi
-        \left(\frac{e^{i\Lambda\cos(\theta-\phi)}
+        \left(\frac{e^{ir\cos(\theta-\phi)}
             -1}
         {\cos(\theta-\phi)}\right) \\
         &=\frac{-2}{\pi r}
         \int^{2\pi}_{0}d\zeta\cos(\theta-\zeta)
-        \left(\frac{e^{i\Lambda\cos\zeta}
+        \left(\frac{e^{ir\cos\zeta}
             -1}
         {\cos\zeta}\right) \\
         &=\frac{-2\cos\theta}{\pi r}
         \int^{2\pi}_{0}d\zeta
-        \left(e^{i\Lambda r\cos\zeta}-1\right)
+        \left(e^{i r\cos\zeta}-1\right)
         +\frac{-2\sin\theta}{\pi r}
         \cancel{\int^{2\pi}_{0}d\zeta\sin\zeta
-            \left(\frac{e^{i\Lambda\cos\zeta}
+            \left(\frac{e^{i1\cos\zeta}
                 -1}
         {\cos\zeta}\right)} \\
         &= \frac{4\cos\theta}{r}
-        \left[1-J_0\left(\Lambda r\right)\right]
+        \left[1-J_0\left(r\right)\right]
     \end{aligned}
 \end{equation}
 Where $J_0(x)$ is the bessel function of first kind with 
@@ -174,9 +174,9 @@ straightforward to extend this picture for an arbitrary
 distribution of these bond impurities as long as the 
 correlation between the impurity strengths is known. 
 In the continuum  description, $m_\perp(\vr) = \int 
-d^2r' h(\vr')G_\perp(\vr-\vr')$. Now, we calculate the sample
-averaged $\langle\langle .. \rangle\rangle$, squared 
-transverse fluctuation,
+d^2r' h(\vr')G_\perp(\vr-\vr')$. Now, we calculate the 
+sample averaged $\langle\langle .. \rangle\rangle$, 
+squared transverse fluctuation,
 \begin{equation}
     \begin{aligned}
         \langle\langle m^2_\perp(0)
@@ -187,7 +187,7 @@ transverse fluctuation,
         &=h_0^2\int^{L}_{1} rdr
         \int^{2\pi}_0d\theta
         \left(\frac{16\cos\theta^2
-            [1-J_0(\Lambda r)]^2}
+            [1-J_0(r)]^2}
         {r^2}\right) \\
         &\simeq 16h_0^2\pi\log L
     \end{aligned}
@@ -219,28 +219,21 @@ shall have, $\langle\langle h(\vx)h(\vy) \rangle\rangle
 =h_0^2\delta^2(\vx-\vy)$. Hence,
 \begin{equation}
     \begin{aligned}
-        C_\perp(r) - C_\perp(0) &=h_0^2\int d^2x
-        G_\perp(\vx)G_\perp(r\ue_z-\vx) 
-        -h_0^2\int d^2xG_\perp(\vx)^2\\
+        C_\perp(r) &=h_0^2\int d^2x
+        G_\perp(\vx)G_\perp(r\ue_z-\vx) \\ 
         &= h_0^2\int^L_1 xdx\int^{2\pi}_0 d\chi
-        \Big(\frac{4\cos\chi[1-J_0(\Lambda x)]}
-        {x}\frac{4(x\cos\chi-r)[1-J_0(\Lambda|\vr-\vx|)]}
-        {r^2+x^2-2rx\cos\chi} \\
-        & \qquad -\frac{16\cos\chi^2}{x^2}
-        [1-J_0(\Lambda x)^2]
-        \Big) \\
+        \left(\frac{4\cos\chi[1-J_0(x)]}
+        {x}\frac{4(x\cos\chi-r)[1-J_0(|\vr-\vx|)]}
+    {r^2+x^2-2rx\cos\chi}\right) \\
         &\simeq 16h_0^2\int^L_1 xdx
         \int^{2\pi}_0d\chi
         \left(
             \frac{\cos\chi(x\cos\chi-r)}
             {x(r^2+x^2-2rx\cos\chi)}
-            -\frac{\cos\chi^2}{x^2}
         \right) \\
-        &\simeq16h^2_0\left(-\pi\log L 
-        -\frac{\pi L^2}{2r^2}\right) \\
-        &=-\frac{8\pi h_0^2L^2}{r^2}-C_\perp(0)
+        &\simeq16\pi h^2_0\left(\frac{L}{r}\right)
     \end{aligned}
 \end{equation}
-So, the correlation function has a power lay decay, 
-$C_\perp(r)\sim1/r^2$.
+So, the transverse correlation function has a power lay 
+decay, $C_\perp(r)\sim1/r$.
 \end{document}
