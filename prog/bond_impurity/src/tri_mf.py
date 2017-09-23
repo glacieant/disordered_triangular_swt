@@ -101,12 +101,17 @@ def main(const):
             #introducing impurity
             impsite = (NSYS+1)/2-1
             for p in [3]:
-                J[impsite][nbr[impsite][p]] = 0.0
-                J[nbr[impsite][p]][impsite] = 0.0
+                J[impsite][nbr[impsite][p]] = 0.9
+                J[nbr[impsite][p]][impsite] = 0.9
 
             # classical algorithm to get the magnetic
             # ground state
             algo.classic_zmc(CLNUM,NSYS,nbr,J,M,GTOL)
+
+            # calculating angle distortion
+
+            theta = np.arccos(np.einsum('ij,ij->i',M_PURE[1],M[1]))
+
 
             """
 
@@ -171,6 +176,7 @@ def main(const):
                     #ensys=en_mf,
                     #vsys=v_mf,
                     #bond=bond[1],
+                    theta=theta,
                     spin=M[1],
                     spin0=M_PURE[1]
                     #,lmult=lmult

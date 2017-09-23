@@ -6,15 +6,15 @@
 ##################################################
 
 # system size
-LSYS = [27] 
+LSYS = [117] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
 ITERDISD = [1]
 # initial angle fluctuation
-ANGVAR = [0.5]
+ANGVAR = [0.0]
 # initial bond fluctuation
-BONDVAR = [0.5]
+BONDVAR = [0.0]
 # number of bootstrapping
 BOOTNUM = [1]
 # maximum number of iteration for 

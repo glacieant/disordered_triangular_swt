@@ -15,6 +15,8 @@ import matplotlib.cm as cm
 import matplotlib.patches as mpatches
 from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
+from scipy.optimize import curve_fit
+
 
 ## The tex style commands
 #plt.rc('text',usetex=True)
@@ -79,47 +81,24 @@ for fname in glob.iglob('*.npz'):
 
     FNDATA = np.load(fname)
 
-    TOL = FNDATA['err'][()]
+    #TOL = FNDATA['err'][()]
 
-    if TOL < 101:
+    #if TOL < 101:
 
-        n_sfc[INDX] += 1
+    n_sfc[INDX] += 1
 
-        T = FNDATA['T'][()]
-        ensys = FNDATA['ensys']
-        lmult = FNDATA['lmult']
-        vsys = FNDATA['vsys']
+    theta = FNDATA['theta']
+    sfc[INDX] += theta
 
-        N = L**2
+# fit function
+def power(x,a,b):
 
-        en[INDX] += 0.5*(np.sum(fermi(ensys,T)*ensys)
-                -np.sum(lmult))/N
-       
-        # reshaping the eigenvectors 
-        farray = fermi(ensys,T)
-        hsys = vsys[:,np.where(farray>zero)]
-        [NVEC,d,NEN] = np.array(hsys.shape)
-        if NVEC != 2*N:
-            print "eigenvector size wrong!"
-            quit()
-        vsys = np.reshape(hsys,(2*N,NEN))
-        U = np.zeros((2,NEN,L,L),dtype=np.complex64)
-        U[0] = np.reshape(np.einsum('ij->ji',vsys[:N,:]),(NEN,L,L))
-        U[1] = np.reshape(np.einsum('ij->ji',vsys[N:,:]),(NEN,L,L))
-        UDAGU = np.einsum('amij,bnij->mnabij',U.conj(),U)
-        GAMMA = np.fft.fft2(UDAGU.real,norm='ortho')
-        GAMMA += 1.0j*np.fft.fft2(UDAGU.imag,norm='ortho')
-        
-        SFC = 2*np.einsum("mmabij,nnabij->ij",GAMMA,GAMMA.conj())
-        SFC -= 2*np.einsum("mnabij,mnabij->ij",GAMMA,GAMMA.conj())
-        SFC -= np.einsum("mmaaij,nnbbij->ij",GAMMA,GAMMA.conj())
-        SFC += np.einsum("mnaaij,mnbbij->ij",GAMMA,GAMMA.conj())
-        sfc[INDX] += SFC.real/4.0
+    return a*x**(-b)
 
+def invd(x,a):
 
-# reciprocal lattice vectors
-b1 = np.array([2.0*np.pi,-2.0*np.pi/3.0**0.5])
-b2 = np.array([0.0,4.0*np.pi/3.0**0.5])
+    return a/x
+
 
 for i in range(0,HSHNUM):
 
@@ -135,34 +114,38 @@ for i in range(0,HSHNUM):
         N = L**2
 
         sfc[i] *= (1.0/(n_sfc[i]*N))
-        en[i] *= (1.0/n_sfc[i])
+        
+        indx = (N+1)/2
+        inde = indx+(L+1)/2-1
+        l = np.arange(1,(L+1)/2-1)
+    
+        ax.plot(l,sfc[i][indx+1:inde],'ro')
+        
+        #fitting data
+        #popt, pcov = curve_fit(power,l,
+        #        sfc[i][indx+1:inde],
+        #        p0=[sfc[i][indx+1]/l[0],1.05])
+        popt, pcov = curve_fit(invd,l,
+                sfc[i][indx+1:inde],
+                p0=[sfc[i][indx+1]/l[0]])
 
-        # setting up the clipping of the density plot
-        MAXCLIP = np.amax(sfc[i])
-        MINCLIP = 0.0
-        # safely bottoming out for log scale
-        #sfc[i] += MINCLIP/(10.0**20)
-
-        cax = ax.imshow(sfc[i],
-                norm=Normalize(vmin=MINCLIP,vmax=MAXCLIP,clip=False),
-                interpolation='nearest',
-                extent=(0.0,1.0,0.0,1.0),
-                cmap=cm.jet,aspect='auto')
-        cbar = fig.colorbar(cax,shrink=0.5,format='%.0e')
-
-        plt.suptitle(r"Static Structure Factor, $\chi (q)/L^{2}$", 
+        #n = popt[0]
+        n = 1
+        #plotting the fit
+        ax.plot(l,invd(l, *popt),'r-',
+                label=r'Power law fit, $\theta\sim1/r^n$, with'
+                +' $n$ = '
+                +str("%.4f" % n))
+        plt.legend(loc='best')
+        plt.suptitle(r"$\theta$(r) vs $r$", 
                 x=0.5, fontsize=16)
         plt.title(r"$\Delta$ = "+STR_DELTA+" , "
                 +r"$\alpha$ = "+STR_ALPHA+" , "
                 +"|E|/$L^{2}$ = "+str("%f" % en[i]),
                 x=0.6,fontsize=12)
-        smax = np.amax(sfc[i])
-        plt.figtext(.8,.85,
-                r'$\chi^{\mathrm{max}}/L^{2}$ = '+str("%.2e" % smax),
-                fontsize=12)
-        plt.xlabel('L = '+STR_L,fontsize=16)
+        plt.xlabel('r = '+STR_L,fontsize=16)
         fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)
-        fig.savefig("../plot/stsc_"+
+        fig.savefig("../plot/tht_"+
                 STR_L+
                 STR_DELTA+
                 STR_ALPHA+
@@ -172,12 +155,12 @@ for i in range(0,HSHNUM):
         plt.close('all')
 
 for L in zip(*hshchar)[0]:
-    subprocess.call('pdftk ../plot/stsc_'+
+    subprocess.call('pdftk ../plot/tht_'+
             L+
             '* '+
-            'cat output ../plot/STRFC_L_'+
+            'cat output ../plot/THT_L_'+
             L+
             '.pdf',shell=True)
 
 # removing split files
-subprocess.call('rm ../plot/stsc_*',shell=True)
+subprocess.call('rm ../plot/tht_*',shell=True)
