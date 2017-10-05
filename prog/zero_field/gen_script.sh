@@ -1,4 +1,5 @@
 #!/bin/bash -e
+export LC_ALL=en_US.UTF8
 
 ##################################################
 #  Input script file - All formats of inputs     # 

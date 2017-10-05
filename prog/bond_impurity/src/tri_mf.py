@@ -101,8 +101,8 @@ def main(const):
             #introducing impurity
             impsite = (NSYS+1)/2-1
             for p in [3]:
-                J[impsite][nbr[impsite][p]] = 0.9
-                J[nbr[impsite][p]][impsite] = 0.9
+                J[impsite][nbr[impsite][p]] = 0.0
+                J[nbr[impsite][p]][impsite] = 0.0
 
             # classical algorithm to get the magnetic
             # ground state

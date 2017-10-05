@@ -145,7 +145,7 @@ do
 
 				bground=( $(jobs -p) );
 
-				if (( ${#bground[@]} == CORES )); then
+				if (( ${#bground[@]} >= CORES )); then
 					wait -n
 				fi
 

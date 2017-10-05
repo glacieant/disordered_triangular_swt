@@ -15,6 +15,7 @@ import matplotlib.cm as cm
 import matplotlib.patches as mpatches
 from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
+from matplotlib.ticker import FormatStrFormatter
 from scipy.optimize import curve_fit
 
 
@@ -93,12 +94,15 @@ for fname in glob.iglob('*.npz'):
 # fit function
 def power(x,a,b):
 
-    return a*x**(-b)
+    return a - b*x
 
 def invd(x,a):
 
     return a/x
 
+def expf(x,a,b):
+
+    return a*np.exp(-b*x)
 
 for i in range(0,HSHNUM):
 
@@ -117,33 +121,44 @@ for i in range(0,HSHNUM):
         
         indx = (N+1)/2
         inde = indx+(L+1)/2-1
-        l = np.arange(1,(L+1)/2-1)
+        l = np.array(range(0,(L+1)/2-1),
+                dtype=np.float64)
+        l += 0.5
     
-        ax.plot(l,sfc[i][indx+1:inde],'ro')
+        ax.plot(l,sfc[i][indx:inde],'ro'
+                #,basex=10,basey=10
+                )
         
         #fitting data
-        #popt, pcov = curve_fit(power,l,
-        #        sfc[i][indx+1:inde],
-        #        p0=[sfc[i][indx+1]/l[0],1.05])
+        #popt, pcov = curve_fit(expf,l,
+        #        sfc[i][indx:inde],
+        #        p0=[sfc[i][indx]*np.exp(l[0]),1.05])
+        
         popt, pcov = curve_fit(invd,l,
-                sfc[i][indx+1:inde],
-                p0=[sfc[i][indx+1]/l[0]])
+                sfc[i][indx:inde],
+                p0=[sfc[i][indx]*l[0]])
 
-        #n = popt[0]
-        n = 1
         #plotting the fit
-        ax.plot(l,invd(l, *popt),'r-',
-                label=r'Power law fit, $\theta\sim1/r^n$, with'
-                +' $n$ = '
-                +str("%.4f" % n))
+        lp = np.linspace(0.5,(L+1.0)/2.0-1.0,num=200)
+        ax.plot(lp,invd(lp, *popt),
+                'r-',
+                label=r'Power law fit, $\delta\theta\sim1/r$'
+                #label=r'Exponential fit fit, $\delta\theta\sim e^{-r}$'
+                #,basex=10,basey=10
+                #+' $n$ = '
+                #+str("%.4f" % n)
+                )
+        ax.yaxis.set_major_formatter(FormatStrFormatter('%.2e'))
         plt.legend(loc='best')
-        plt.suptitle(r"$\theta$(r) vs $r$", 
+        plt.suptitle(r"$\delta\theta$(r) vs $r$", 
                 x=0.5, fontsize=16)
+        """
         plt.title(r"$\Delta$ = "+STR_DELTA+" , "
                 +r"$\alpha$ = "+STR_ALPHA+" , "
                 +"|E|/$L^{2}$ = "+str("%f" % en[i]),
                 x=0.6,fontsize=12)
-        plt.xlabel('r = '+STR_L,fontsize=16)
+        """
+        plt.xlabel('$r$',fontsize=16)
         fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)
         fig.savefig("../plot/tht_"+
                 STR_L+

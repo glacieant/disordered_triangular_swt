@@ -6,17 +6,17 @@
 ##################################################
 
 # system size
-LSYS = [117] 
+LSYS = [51] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [1]
+ITERDISD = [10]
 # initial angle fluctuation
-ANGVAR = [0.0]
+ANGVAR = [0.5]
 # initial bond fluctuation
 BONDVAR = [0.0]
 # number of bootstrapping
-BOOTNUM = [1]
+BOOTNUM = [5]
 # maximum number of iteration for 
 # the mean-field simulation
 SIMSZE = [10] 
