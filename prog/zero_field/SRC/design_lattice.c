@@ -45,34 +45,33 @@ void create_trilattice(int N_lattpoint, lattpoint *lsite) {
 			lsite[i].neighbour[0]=i-1+L;
 		}
 		if (floor((1.0*i+1.0)/L)==floor((1.0*i)/L)) {
-			lsite[i].neighbour[1]=i+1;
+			lsite[i].neighbour[3]=i+1;
 		}
 		else if (floor((1.0*i+1.0)/L)!=floor((1.0*i)/L)) {
-			lsite[i].neighbour[1]=i+1-L;
+			lsite[i].neighbour[3]=i+1-L;
 		}
 
 		if ((i+L)>=N_lattpoint) {
 			NUM=i+L-L*L;		
-
 			lsite[i].neighbour[2]=NUM;
 			if (floor((1.0*NUM-1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].neighbour[3]=NUM-1;
+				lsite[i].neighbour[1]=NUM-1;
 			}
 			else if (floor((1.0*NUM-1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].neighbour[3]=NUM-1+L;
+				lsite[i].neighbour[1]=NUM-1+L;
 			}
 	
 			if (floor((1.0*NUM+1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[0]=NUM+1;
+				lsite[i].nn_nbr[2]=NUM+1;
 			}
 			else if (floor((1.0*NUM+1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[0]=NUM+1-L;
+				lsite[i].nn_nbr[2]=NUM+1-L;
 			}
 			if (floor((1.0*NUM-2.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[1]=NUM-2;
+				lsite[i].nn_nbr[0]=NUM-2;
 			}
 			else if (floor((1.0*NUM-2.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[1]=NUM-2+L;
+				lsite[i].nn_nbr[0]=NUM-2+L;
 			}
 
 		}
@@ -80,71 +79,71 @@ void create_trilattice(int N_lattpoint, lattpoint *lsite) {
 			NUM=i+L;		
 			lsite[i].neighbour[2]=NUM;
 			if (floor((1.0*NUM-1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].neighbour[3]=NUM-1;
+				lsite[i].neighbour[1]=NUM-1;
 			}
 			else if (floor((1.0*NUM-1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].neighbour[3]=NUM-1+L;
+				lsite[i].neighbour[1]=NUM-1+L;
 			}
 
 			if (floor((1.0*NUM+1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[0]=NUM+1;
+				lsite[i].nn_nbr[2]=NUM+1;
 			}
 			else if (floor((1.0*NUM+1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[0]=NUM+1-L;
+				lsite[i].nn_nbr[2]=NUM+1-L;
 			}
 			if (floor((1.0*NUM-2.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[1]=NUM-2;
+				lsite[i].nn_nbr[0]=NUM-2;
 			}
 			else if (floor((1.0*NUM-2.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[1]=NUM-2+L;
+				lsite[i].nn_nbr[0]=NUM-2+L;
 			}
 
 		}
 		if ((i-L)<0) {
 			NUM=i-L+L*L;		
-			lsite[i].neighbour[4]=NUM;
+			lsite[i].neighbour[5]=NUM;
 			if (floor((1.0*NUM+1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].neighbour[5]=NUM+1;
+				lsite[i].neighbour[4]=NUM+1;
 			}
 			else if (floor((1.0*NUM+1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].neighbour[5]=NUM+1-L;
+				lsite[i].neighbour[4]=NUM+1-L;
 			}	
 
 			if (floor((1.0*NUM+2.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[2]=NUM+2;
+				lsite[i].nn_nbr[3]=NUM+2;
 			}
 			else if (floor((1.0*NUM+2.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[2]=NUM+2-L;
+				lsite[i].nn_nbr[3]=NUM+2-L;
 			}	
 			if (floor((1.0*NUM-1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[3]=NUM-1;
+				lsite[i].nn_nbr[5]=NUM-1;
 			}
 			else if (floor((1.0*NUM-1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[3]=NUM-1+L;
+				lsite[i].nn_nbr[5]=NUM-1+L;
 			}	
 
 		}
 		else if ((i-L)>=0) {
 			NUM=i-L;		
-			lsite[i].neighbour[4]=NUM;
+			lsite[i].neighbour[5]=NUM;
 			if (floor((1.0*NUM+1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].neighbour[5]=NUM+1;
+				lsite[i].neighbour[4]=NUM+1;
 			}
 			else if (floor((1.0*NUM+1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].neighbour[5]=NUM+1-L;
+				lsite[i].neighbour[4]=NUM+1-L;
 			}
 
 			if (floor((1.0*NUM+2.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[2]=NUM+2;
+				lsite[i].nn_nbr[3]=NUM+2;
 			}
 			else if (floor((1.0*NUM+2.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[2]=NUM+2-L;
+				lsite[i].nn_nbr[3]=NUM+2-L;
 			}	
 			if (floor((1.0*NUM-1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[3]=NUM-1;
+				lsite[i].nn_nbr[5]=NUM-1;
 			}
 			else if (floor((1.0*NUM-1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[3]=NUM-1+L;
+				lsite[i].nn_nbr[5]=NUM-1+L;
 			}	
 
 		}
@@ -152,37 +151,37 @@ void create_trilattice(int N_lattpoint, lattpoint *lsite) {
 		if ((i+2*L)>=N_lattpoint) {
 			NUM=i+2*L-L*L;		
 			if (floor((1.0*NUM-1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[4]=NUM-1;
+				lsite[i].nn_nbr[1]=NUM-1;
 			}
 			else if (floor((1.0*NUM-3.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[4]=NUM-1+L;
+				lsite[i].nn_nbr[1]=NUM-1+L;
 			}	
 		}
 		else if ((i+2*L)<N_lattpoint) {
 			NUM=i+2*L;		
 			if (floor((1.0*NUM-1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[4]=NUM-1;
+				lsite[i].nn_nbr[1]=NUM-1;
 			}
 			else if (floor((1.0*NUM-3.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[4]=NUM-1+L;
+				lsite[i].nn_nbr[1]=NUM-1+L;
 			}	
 		}
 		if ((i-2*L)<0) {
 			NUM=i-2*L+L*L;		
 			if (floor((1.0*NUM+1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[5]=NUM+1;
+				lsite[i].nn_nbr[4]=NUM+1;
 			}
 			else if (floor((1.0*NUM+1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[5]=NUM+1-L;
+				lsite[i].nn_nbr[4]=NUM+1-L;
 			}	
 		}
 		else if ((i-2*L)>=0) {
 			NUM=i-2*L;		
 			if (floor((1.0*NUM+1.0)/L)==floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[5]=NUM+1;
+				lsite[i].nn_nbr[4]=NUM+1;
 			}
 			else if (floor((1.0*NUM+1.0)/L)!=floor((1.0*NUM)/L)) {
-				lsite[i].nn_nbr[5]=NUM+1-L;
+				lsite[i].nn_nbr[4]=NUM+1-L;
 			}	
 		}
 

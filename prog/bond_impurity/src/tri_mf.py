@@ -103,9 +103,10 @@ def main(const):
             for p in [3]:
                 J[impsite][nbr[impsite][p]] = 0.0
                 J[nbr[impsite][p]][impsite] = 0.0
-
+            
             # classical algorithm to get the magnetic
-            # ground state
+            # ground state of impurity system
+
             algo.classic_zmc(CLNUM,NSYS,nbr,J,M,GTOL)
 
             # calculating angle distortion

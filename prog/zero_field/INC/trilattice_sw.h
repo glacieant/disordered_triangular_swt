@@ -24,7 +24,7 @@
 
 //Defining the maximum number of step for the classical algorithm
 
-#define CITER 1e+7
+#define CITER 1e+6
 
 //Defining minimum frequency for BZ
 

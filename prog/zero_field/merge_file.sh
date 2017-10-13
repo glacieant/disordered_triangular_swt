@@ -2,31 +2,31 @@
 cd DATA;
 LCALC=1;
 SCALC=0;
-#if (( ${LCALC} != 0 )); then
-#	> LISTDATA.dat;
-#	> EIGENDATA.dat;
-#	> IPRDATA.dat;
-#	> ANGLEDATA.dat;
-#else
-#	if [ -e LISTDATA.dat ]; then
-#		rm LISTDATA.dat;
-#	fi
-#	if [ -e EIGENDATA.dat ]; then
-#		rm EIGENDATA.dat;
-#	fi
-#	if [ -e IPRDATA.dat ]; then
-#		rm IPRDATA.dat;
-#	fi
-#	if [ -e ANGLEDATA.dat ]; then
-#		rm ANGLEDATA.dat;
-#	fi
-#
-#fi
-#if (( ${SCALC} == 1 || ${SCALC} == 2 )); then
-#	> GRIDDATA.dat;
-#elif [ -e GRIDDATA.dat ]; then
-#	rm GRIDDATA.dat;
-#fi
+if (( ${LCALC} != 0 )); then
+	> LISTDATA.dat;
+	> EIGENDATA.dat;
+	> IPRDATA.dat;
+	> ANGLEDATA.dat;
+else
+	if [ -e LISTDATA.dat ]; then
+		rm LISTDATA.dat;
+	fi
+	if [ -e EIGENDATA.dat ]; then
+		rm EIGENDATA.dat;
+	fi
+	if [ -e IPRDATA.dat ]; then
+		rm IPRDATA.dat;
+	fi
+	if [ -e ANGLEDATA.dat ]; then
+		rm ANGLEDATA.dat;
+	fi
+
+fi
+if (( ${SCALC} == 1 || ${SCALC} == 2 )); then
+	> GRIDDATA.dat;
+elif [ -e GRIDDATA.dat ]; then
+	rm GRIDDATA.dat;
+fi
 if (( ${LCALC} != 0 )); then
 	cat *DATA_L-* >> LISTDATA.dat;
 	cat *EIGEN_L-* >> EIGENDATA.dat;

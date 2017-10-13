@@ -75,11 +75,10 @@ def init_param(NSYS,nbr,
                 bond[1,j,i] = bond[1,i,j].conj()
                 chi[i,j] = 0.5*(1.0-XPAR)*J[i,j]*bond[1,i,j]
                 chi[j,i] = chi[i,j].conj()
+
+    M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
+
     """
-
-    #M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
-
-    
     # setting up the spin and field matrices
     ROT = np.array([[np.cos(2.0*np.pi/3.0),-np.sin(2.0*np.pi/3.0),0.0],
         [np.sin(2.0*np.pi/3.0),np.cos(2.0*np.pi/3.0),0.0],
@@ -99,7 +98,7 @@ def init_param(NSYS,nbr,
                 [np.sin(phi),np.cos(phi),0.0],
                 [0.0,0.0,1.0]],
                 M[0,i])
-        elif i%LSYS!=0:
+        elif i!=0 and i%LSYS!=0:
             M[0,i] = np.einsum('ab,b->a',ROT,M[0,i-1])
             if ANGVAR != 0.0:
                 phi = np.random_intel.uniform(-ANGVAR,ANGVAR)
@@ -120,7 +119,7 @@ def init_param(NSYS,nbr,
                 [0.0,0.0,1.0]],
                 M[0,i])
 
-    """
+    """ 
     for i in range(0,NSYS):
         
         for j in nbr[i]:

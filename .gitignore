@@ -1,4 +1,5 @@
 *.npz
 *out*
+*DATA*
 *.aux
 *.log

@@ -26,7 +26,6 @@ void gen_couplings(int N_lattpoint,lattpoint *lsite,double ALPHA,double *randlis
 				J[lsite[i].nn_nbr[k]][i]=J[i][lsite[i].nn_nbr[k]];
 				j++;
 			}
-
 		}
 
 	}
@@ -80,20 +79,22 @@ void randgen_ang(int N_lattpoint,int NMX,int par,
 	// Generating the random angle array to be assigned to the solid angles
 
 	for (i=0;i<N_lattpoint;i++) {
+        
+        /*
 
 		if (i==0) {
 			fleet=0.0;
 			philist[i]=fleet-ANGDISPAR+ANGDISPAR*genrand64_real1();
-			thetalist[i]=pi/2.0-ANGDISPAR+ANGDISPAR*genrand64_real1();
+			thetalist[i]=pi/2.0;//-ANGDISPAR+ANGDISPAR*genrand64_real1();
 		}
 
 		else if (i!=0 && i%NL==0) {
 			fleet=philist[i-1];
 			philist[i]=fleet-ANGDISPAR+ANGDISPAR*genrand64_real1();
-			thetalist[i]=pi/2.0-ANGDISPAR+ANGDISPAR*genrand64_real1();
+			thetalist[i]=pi/2.0;//-ANGDISPAR+ANGDISPAR*genrand64_real1();
 		}
 
-		else if (i%NL!=0) {
+		else if (i!=0 && i%NL!=0) {
 			fleet=philist[i-1]+2.0*pi/3.0;
 			if (fleet>=2.0*pi) {
 				fleet=fleet-2.0*pi;
@@ -102,8 +103,13 @@ void randgen_ang(int N_lattpoint,int NMX,int par,
 				fleet=fleet+2.0*pi;
 			}
 			philist[i]=fleet-ANGDISPAR+ANGDISPAR*genrand64_real1();
-			thetalist[i]=pi/2.0-ANGDISPAR+ANGDISPAR*genrand64_real1();
+			thetalist[i]=pi/2.0;//-ANGDISPAR+ANGDISPAR*genrand64_real1();
 		}
+
+        */
+
+        philist[i] = -ANGDISPAR+ANGDISPAR*genrand64_real1();
+        thetalist[i] = -ANGDISPAR+ANGDISPAR*genrand64_real1();
 
 	}
 

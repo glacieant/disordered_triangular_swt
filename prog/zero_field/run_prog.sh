@@ -1,13 +1,13 @@
 #!/bin/bash -e
 STRSW=0;
 LSTSW=1;
-iter_CL=1e+7;
-LARRAY=(6);
-iter_DSARRAY=(1);
-PAR_XARRAY=(8);
+iter_CL=1e+6;
+LARRAY=(12 18 24 30 36 42 48 54 60);
+iter_DSARRAY=(100 100 100 50 30 20 15 10 5);
+PAR_XARRAY=(8 8 8 8 8 8 8 8 8);
 ANGDWIDTH=0.5;
 INUM=0;
-BOGTOLARRAY=(0.05);
+BOGTOLARRAY=(0.05 0.025 0.025 0.025 0.025 0.025 0.025 0.025 0.025);
 GTOL=1.0e-8;
 VCUTARRAY=(0 1);
 HCUTARRAY=(1 2);
@@ -28,7 +28,7 @@ IPRMIN=0.0;
 IPRMAX=4.00;
 IPRGRID=200;
 GWDTH=0.025;
-CORES=1;
+CORES=10;
 EXEC=trilat.x;
 
 ALENG=${#LARRAY[@]};
@@ -117,9 +117,9 @@ for (( iL=0; iL <${ALENG}; iL++ ));
 do
 	for (( xL=0; xL <${XLENG}; xL++ ));
 	do
-		for DIS_WDTH in 0.99;
+		for DIS_WDTH in 0.0 0.1 0.2 0.4;
 		do
-			for JP_WDTH in 0.0;
+			for JP_WDTH in 0.0 0.025 0.05 0.075;
 			do
 
 				L=${LARRAY[iL]};
@@ -145,7 +145,7 @@ do
 
 				bground=( $(jobs -p) );
 
-				if (( ${#bground[@]} == CORES )); then
+				if (( ${#bground[@]} >= CORES )); then
 					wait -n
 				fi
 

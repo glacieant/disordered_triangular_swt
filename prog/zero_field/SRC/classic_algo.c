@@ -44,15 +44,6 @@ void classic_algo(int diter,int PARX,lattpoint *lsite,
 	spinvect=(vect *)malloc(N_lattpoint*sizeof(vect));
 	spinvectpr=(vect *)malloc(N_lattpoint*sizeof(vect));
 
-	// Array of spins to be flipped
-
-	int *FSPIN;
-	FSPIN=(int *)malloc(N_lattpoint*sizeof(int));
-
-	for (i=0;i<N_lattpoint;i++) {
-		FSPIN[i]=i;
-	}
-
 	// Defining tolerances
 
 	double hyper_norm; // This is just a non-zero garbage value
@@ -78,8 +69,7 @@ void classic_algo(int diter,int PARX,lattpoint *lsite,
 	for (i=0;i<iter_NUMG;i++) {
 		hyper_norm=0.0;
 		NRM=0.0;	
-		for (l=0;l<N_lattpoint;l++) {
-			j=FSPIN[l];
+		for (j=0;j<N_lattpoint;j++) {
 			localvect=nullvect;
 			for (k=0;k<ZCO;k++) {
 				localvect=vectsum(localvect,vectmult(J[j][lsite[j].neighbour[k]],
@@ -90,7 +80,6 @@ void classic_algo(int diter,int PARX,lattpoint *lsite,
 			}
 			spinvect[j]=vectmult(-1.0,unitvect(localvect));
 			NRMTEMP=vectnorm(vectsum(vectmult(-1.0,spinvectpr[j]),spinvect[j]));
-			NRMTEMP=sqrt(NRMTEMP);
 			if (NRMTEMP > NRM) {
 				NRM=NRMTEMP;
 			}
@@ -98,13 +87,11 @@ void classic_algo(int diter,int PARX,lattpoint *lsite,
 			spinvectpr[j]=spinvect[j];
 		}
 		hyper_norm=sqrt(hyper_norm);
-		shuffle(diter,PARX,i,FSPIN,N_lattpoint);
 		if (hyper_norm <= tot_tol && NRM <= tot_tol) {
 			break;
 		}
 	}
-
-    printf("%d\n",i);
+    
 
 	// Getting the theta's and phi's back;
 
@@ -159,7 +146,6 @@ void classic_algo(int diter,int PARX,lattpoint *lsite,
 
 	}	
 
-	free(FSPIN);
 	free(spinvect);
 	free(spinvectpr);
 

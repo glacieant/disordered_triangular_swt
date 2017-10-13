@@ -456,7 +456,7 @@ int main(int argc,char *argv[]) {
 			//Generating the random angle array to be assigned to the solid angles
 
 			randgen_ang(N_lattpoint,NMX,(i+diter*PAR_X),
-					((i%4)==0) ? 0.0: ANGDISPAR,
+					ANGDISPAR,
 					thetalist[i],philist[i]);
 
 
@@ -520,6 +520,7 @@ int main(int argc,char *argv[]) {
 		mf_angles(N_lattpoint,lsite,J,alpha,beta,BTOL,dthph);
 
 		//Calculating the list variables
+        
 
 		if (LSTSWITCH !=0) {
 
@@ -617,12 +618,13 @@ int main(int argc,char *argv[]) {
 
 		}
 
+
 	}
 
 	gettimeofday(&end,NULL);
 	secs_used =(end.tv_sec-begin.tv_sec);
 	micros_used =((secs_used*1000000)+end.tv_usec)-begin.tv_usec;
-	printf("%d iterations for L = %d done in %lf seconds\n",iter_DISD,L,(double)micros_used/pow(10.0,6.0));
+    printf("%d iterations for L = %d done in %lf seconds\n",iter_DISD,L,(double)micros_used/pow(10.0,6.0));
 
 	int LAT_SMPLE=N_lattpoint*iter_DISD;
 	int TRI_SMPLE=(L-1)*(L-1)*iter_DISD;
@@ -669,7 +671,6 @@ int main(int argc,char *argv[]) {
 				iter_DISD //34	
 				);
 
-
 		for (i=0;i<IPRGRID;i++) {
 
 			fprintf(iprlist,"%d\t%lf\t%lf\t%lf\t%lf\t%lf\t%d\n",
@@ -713,6 +714,7 @@ int main(int argc,char *argv[]) {
 
 		}
 
+
 	}
 
 	if (LSTSWITCH != 0) {
@@ -741,6 +743,7 @@ int main(int argc,char *argv[]) {
 
 	if (STRSWITCH != 0) {
 
+
 		print_strfact(outgrid,STRSWITCH,
 				WMIN, WMAX,
 				DELTA,ALPHA,
@@ -751,6 +754,7 @@ int main(int argc,char *argv[]) {
 				XMRANGE,YMRANGE,dx,dy,
 				RANGEMIN,RANGEMAX,drmx,
 				iter_DISD); 
+
 
 	}
 

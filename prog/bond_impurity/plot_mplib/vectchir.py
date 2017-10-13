@@ -80,45 +80,46 @@ for fname in glob.iglob('*.npz'):
 
     FNDATA = np.load(fname)
 
-    TOL = FNDATA['err'][()]
+    #TOL = FNDATA['err'][()]
 
-    if TOL < 101:
+    #if TOL < 101:
 
-        n_vchir[INDX] += 1
+    n_vchir[INDX] += 1
 
-        T = FNDATA['T'][()]
-        ensys = FNDATA['ensys']
-        lmult = FNDATA['lmult']
-        spin = FNDATA['spin']
+    #T = FNDATA['T'][()]
+    #ensys = FNDATA['ensys']
+    #lmult = FNDATA['lmult']
+    spin = FNDATA['spin']
 
-        N = L**2
+    N = L**2
 
-        # creating elementary triangle indices
-        TNUM = int((L-1)**2)
-        eltri = np.zeros((TNUM,3),dtype=np.int32)
+    # creating elementary triangle indices
+    TNUM = int((L-1)**2)
+    eltri = np.zeros((TNUM,3),dtype=np.int32)
 
-        for i in range(0,TNUM):
-            j = i + i/(L-1)
-            eltri[i,0] = j
-            eltri[i,1] = j+1
-            eltri[i,2] = j+L
+    for i in range(0,TNUM):
+        j = i + i/(L-1)
+        eltri[i,0] = j
+        eltri[i,1] = j+1
+        eltri[i,2] = j+L
 
-        en[INDX] += 0.5*(np.sum(fermi(ensys,T)*ensys)
-                -np.sum(lmult))/N
+    #en[INDX] += 0.5*(np.sum(fermi(ensys,T)*ensys)
+    #        -np.sum(lmult))/N
 
-        # calculating vector chirality
-        
-        vec = np.array([0.0,0.0,0.0])
-        scal = 0.0
-        for i in range(0,TNUM):
-            vec += np.cross(spin[eltri[i,0],:],spin[eltri[i,1],:])
-            vec += np.cross(spin[eltri[i,1],:],spin[eltri[i,2],:])
-            vec += np.cross(spin[eltri[i,2],:],spin[eltri[i,0],:])
-            scal += np.absolute(np.dot(spin[eltri[i,0],:],
-                    np.cross(spin[eltri[i,1],:],
-                        spin[eltri[i,2],:])))
-        schir[INDX] += (1.0/TNUM)*scal
-        vchir[INDX] += (1.0/(TNUM*3*0.5*3.0**0.5))*np.linalg.norm(vec)
+    # calculating vector chirality
+    
+    vec = np.array([0.0,0.0,0.0])
+    scal = 0.0
+    for i in range(0,TNUM):
+        tvec = np.cross(spin[eltri[i,0],:],spin[eltri[i,1],:])
+        tvec += np.cross(spin[eltri[i,1],:],spin[eltri[i,2],:])
+        tvec += np.cross(spin[eltri[i,2],:],spin[eltri[i,0],:])
+        vec += tvec/np.linalg.norm(tvec)
+        scal += np.absolute(np.dot(spin[eltri[i,0],:],
+                np.cross(spin[eltri[i,1],:],
+                    spin[eltri[i,2],:])))
+    schir[INDX] += (1.0/TNUM)*scal
+    vchir[INDX] += (1.0/TNUM)*np.linalg.norm(vec)
 
 
 for i in range(0,HSHNUM):
