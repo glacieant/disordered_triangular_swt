@@ -112,7 +112,7 @@ int main(int argc,char *argv[]) {
 
 	//The output file buffer for singular output
 	char ofname[200];
-	snprintf(ofname,200*sizeof(char),"../DATA/DATA_L-%d_ORD-%d.dat"
+	snprintf(ofname,200*sizeof(char),"../DATA/RAW/DATA_L-%d_ORD-%d.dat"
 			,L,NMX);
 
 	FILE *outf;
@@ -120,7 +120,7 @@ int main(int argc,char *argv[]) {
 
 	//The output file buffer for the grid output
 	char gridfname[200];
-	snprintf(gridfname,200*sizeof(char),"../DATA/GRID_L-%d_ORD-%d.dat"
+	snprintf(gridfname,200*sizeof(char),"../DATA/RAW/GRID_L-%d_ORD-%d.dat"
 			,L,NMX);
 
 	FILE *outgrid;
@@ -129,7 +129,7 @@ int main(int argc,char *argv[]) {
 
 	//The output file buffer for the eigenfunctions output
 	char eigenfname[200];
-	snprintf(eigenfname,200*sizeof(char),"../DATA/EIGEN_L-%d_ORD-%d.dat"
+	snprintf(eigenfname,200*sizeof(char),"../DATA/RAW/EIGEN_L-%d_ORD-%d.dat"
 			,L,NMX);
 
 	FILE *eigengrid;
@@ -137,7 +137,7 @@ int main(int argc,char *argv[]) {
 
 	//The output file buffer for the IPR output
 	char iprfname[200];
-	snprintf(iprfname,200*sizeof(char),"../DATA/IPR_L-%d_ORD-%d.dat"
+	snprintf(iprfname,200*sizeof(char),"../DATA/RAW/IPR_L-%d_ORD-%d.dat"
 			,L,NMX);
 
 	FILE *iprlist;
@@ -145,7 +145,7 @@ int main(int argc,char *argv[]) {
 
 	//The output file buffer for the bond angle output
 	char anglefname[200];
-	snprintf(anglefname,200*sizeof(char),"../DATA/ANGLE_L-%d_ORD-%d.dat"
+	snprintf(anglefname,200*sizeof(char),"../DATA/RAW/ANGLE_L-%d_ORD-%d.dat"
 			,L,NMX);
 
 	FILE *anglelist;
@@ -437,6 +437,7 @@ int main(int argc,char *argv[]) {
 
 	}
 
+
 	for (diter=0;diter<iter_DISD;diter++) {
 
 		// Generating random couplings to assign to bonds
@@ -500,7 +501,7 @@ int main(int argc,char *argv[]) {
 			}
 
 		}
-
+        
 		copylattice(N_lattpoint,lsite_tmp[j],lsite);
 
 		// Generating the spin-wave hamiltonian matrix
@@ -520,7 +521,6 @@ int main(int argc,char *argv[]) {
 		mf_angles(N_lattpoint,lsite,J,alpha,beta,BTOL,dthph);
 
 		//Calculating the list variables
-        
 
 		if (LSTSWITCH !=0) {
 
@@ -617,7 +617,6 @@ int main(int argc,char *argv[]) {
 					RANGEMIN,RANGEMAX,drmx);
 
 		}
-
 
 	}
 

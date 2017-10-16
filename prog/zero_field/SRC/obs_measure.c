@@ -67,7 +67,7 @@ void cl_ground_en(int N_lattpoint,lattpoint *lsite,double **J,
 			H0+=0.5*S*S*Fzz(i,j,J,lsite);
 
 			j=lsite[i].nn_nbr[k];
-			H0+=0.5*S*(S+1)*Fzz(i,j,J,lsite);
+			H0+=0.5*S*S*Fzz(i,j,J,lsite);
 
 		}
 

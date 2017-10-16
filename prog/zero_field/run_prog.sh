@@ -2,12 +2,12 @@
 STRSW=0;
 LSTSW=1;
 iter_CL=1e+6;
-LARRAY=(12 18 24 30 36 42 48 54 60);
-iter_DSARRAY=(100 100 100 50 30 20 15 10 5);
-PAR_XARRAY=(8 8 8 8 8 8 8 8 8);
+LARRAY=(12);
+iter_DSARRAY=(30);
+PAR_XARRAY=(8);
 ANGDWIDTH=0.5;
 INUM=0;
-BOGTOLARRAY=(0.05 0.025 0.025 0.025 0.025 0.025 0.025 0.025 0.025);
+BOGTOLARRAY=(0.05);
 GTOL=1.0e-8;
 VCUTARRAY=(0 1);
 HCUTARRAY=(1 2);
@@ -117,9 +117,9 @@ for (( iL=0; iL <${ALENG}; iL++ ));
 do
 	for (( xL=0; xL <${XLENG}; xL++ ));
 	do
-		for DIS_WDTH in 0.0 0.1 0.2 0.4;
+		for DIS_WDTH in 0.0;
 		do
-			for JP_WDTH in 0.0 0.025 0.05 0.075;
+			for JP_WDTH in 0.075;
 			do
 
 				L=${LARRAY[iL]};
@@ -159,5 +159,5 @@ done || exit 1
 
 wait
 
-#rm *.x;
+rm *.x;
 cd ..;

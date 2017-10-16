@@ -10,20 +10,20 @@ export LC_ALL=en_US.UTF8
 ##################################################
 
 # Specifying the lattice lengths for the calculation
-L="12 18 24 30 36 42 48 54 60";
+L="12";
 # Specifying the maximum number of iterations for the classical
 # algorithm
 iter_CL="1e+6";
 # The number of disorder iterations for the specific lattice length, L
 # following the same syntax of L
-iter_DS="100 100 100 50 30 20 15 10 5";
+iter_DS="30";
 # Number of bootstrapped runs for the specific lattice length, L
 # with the same syntax as L
-PAR_X="8 8 8 8 8 8 8 8 8";
+PAR_X="8";
 # The width of the randomness, DELTA of the couplings J(1+DELTA)
-DIS_WDTH="0.0 0.1 0.2 0.4";
+DIS_WDTH="0.0";
 # The ratio of the couplings J_prime/J for the nnn
-JP_WDTH="0.0 0.025 0.05 0.075";
+JP_WDTH="0.075";
 # The width of the angular fulctuation from 120 deg state
 # in the unit of pi
 ANGDWIDTH="0.5";
@@ -78,7 +78,7 @@ YMOMNUM="100";
 #The width of the pole of the greens function
 GWDTH="0.025";
 #Tolerance for bogoliubov subroutine for respective L
-BOGTOL="0.05 0.025 0.025 0.025 0.025 0.025 0.025 0.025 0.025";
+BOGTOL="0.05";
 #The global tolerance
 GTOL="1.0e-8";
 #The wavefunction to visualise
@@ -93,6 +93,7 @@ EXEC="trilat.x";
 #### Creatingthe directory to write data into ########
 
 mkdir -p DATA;
+mkdir -p DATA/RAW;
 mkdir -p SRC;
 mkdir -p INC;
 mkdir -p BIN;
