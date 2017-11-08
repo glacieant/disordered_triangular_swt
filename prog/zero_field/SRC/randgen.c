@@ -80,8 +80,6 @@ void randgen_ang(int N_lattpoint,int NMX,int par,
 
 	for (i=0;i<N_lattpoint;i++) {
         
-        /*
-
 		if (i==0) {
 			fleet=0.0;
 			philist[i]=fleet-ANGDISPAR+ANGDISPAR*genrand64_real1();
@@ -105,11 +103,6 @@ void randgen_ang(int N_lattpoint,int NMX,int par,
 			philist[i]=fleet-ANGDISPAR+ANGDISPAR*genrand64_real1();
 			thetalist[i]=pi/2.0;//-ANGDISPAR+ANGDISPAR*genrand64_real1();
 		}
-
-        */
-
-        philist[i] = -ANGDISPAR+ANGDISPAR*genrand64_real1();
-        thetalist[i] = -ANGDISPAR+ANGDISPAR*genrand64_real1();
 
 	}
 

@@ -6,22 +6,15 @@
 ##################################################
 
 # system size
-LSYS = [15] 
+LSYS = [21] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
 ITERDISD = [1]
 # initial angle fluctuation
 ANGVAR = [1.0]
-# initial bond fluctuation
-BONDVAR = [0.0]
 # number of bootstrapping
-BOOTNUM = [5]
-# maximum number of iteration for 
-# the mean-field simulation
-SIMSZE = [10] 
-# tolerance for the mean-field routine
-MFTOL = [10.0**(-5)]
+BOOTNUM = [20]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
@@ -29,22 +22,13 @@ DELTA = [0.0]
 # the ratio between nearest and next 
 # nearest couplings
 ALPHA = [0.0] 
-# tempering the fermi function
-TEMP = [0.01] 
-# the fudge parameter
-XPAR = [0.5] 
-# update ratio for magnetisation and bonds
-UPAR = [[0.3,0.7],[0.3,0.7]]
 # maximum iteration for classical algorithm
-CLNUM = 10**8
+CLNUM = 10**6
 
 # checking the lengths of simulation arrays #
 
 if len(LSYS) == len(ITERDISD) \
-        == len(ANGVAR) == len(BONDVAR) \
-        == len(BOOTNUM) == len(SIMSZE) \
-        == len(MFTOL) == len(TEMP) \
-        == len(XPAR):
+        == len(ANGVAR) == len(BOOTNUM):
             pass
 else:
     print "System size/simulation array length wrong"
@@ -61,7 +45,7 @@ import collections
 if not os.path.exists("src"):
     print "Executables could not be found"
     quit()
-if not os.path.exists("src/tri_mf.py"):
+if not os.path.exists("src/tri_imp.py"):
     print "Main executables could not be found"
     quit()
 if not os.path.exists("out"):
@@ -75,16 +59,15 @@ os.putenv("MKL_DYNAMIC","FALSE")
 
 # Importing the main script
 
-import src.tri_mf as tmf
+import src.tri_imp as tmi
 
 # fixing the simulation parameter tuple #
 
 ivar = collections.namedtuple('ivar',
         'LSYS ZCO ITERDISD \
-                ANGVAR BONDVAR BOOTNUM \
-                SIMSZE MFTOL GTOL \
-                DELTA ALPHA TEMP \
-                XPAR UPAR CLNUM DNMR')
+                ANGVAR BOOTNUM \
+                GTOL DELTA ALPHA \
+                CLNUM DNMR')
 
 isize = len(LSYS)
 dsize = len(DELTA)
@@ -102,18 +85,12 @@ for i in range(0,isize):
                     ZCO = ZCO,
                     ITERDISD = ITERDISD[i],
                     ANGVAR = ANGVAR[i],
-                    BONDVAR = BONDVAR[i],
                     BOOTNUM = BOOTNUM[i],
-                    SIMSZE = SIMSZE[i],
-                    MFTOL = MFTOL[i],
                     GTOL = GTOL,
                     DELTA = DELTA[j],
                     ALPHA = ALPHA[k],
-                    TEMP = TEMP[i],
-                    XPAR = XPAR[i],
-                    UPAR = UPAR,
                     CLNUM = CLNUM,
                     DNMR = DNMR)
 
-            tmf.main(const)
+            tmi.main(const)
             DNMR += 1

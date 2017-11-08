@@ -1518,7 +1518,7 @@ static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
-static const char __pyx_k_home2_santanu_Documents_realspa[] = "/home2/santanu/Documents/realspace_triangular_mf/prog/cy_src/algo.pyx";
+static const char __pyx_k_home2_santanu_Documents_disorde[] = "/home2/santanu/Documents/disordered_triangular_swt/prog/bond_impurity/cy_src/algo.pyx";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
 static const char __pyx_k_Can_only_create_a_buffer_that_is[] = "Can only create a buffer that is contiguous in memory.";
 static const char __pyx_k_Empty_shape_tuple_for_cython_arr[] = "Empty shape tuple for cython.array";
@@ -1577,7 +1577,7 @@ static PyObject *__pyx_n_s_format;
 static PyObject *__pyx_n_s_fortran;
 static PyObject *__pyx_n_u_fortran;
 static PyObject *__pyx_kp_s_got_differing_extents_in_dimensi;
-static PyObject *__pyx_kp_s_home2_santanu_Documents_realspa;
+static PyObject *__pyx_kp_s_home2_santanu_Documents_disorde;
 static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_id;
 static PyObject *__pyx_n_s_import;
@@ -2030,7 +2030,7 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
  *                 LOCVEC1 += J[j,k]*M[1,k,1]
  *                 LOCVEC2 += J[j,k]*M[1,k,2]             # <<<<<<<<<<<<<<
  * 
- *             VNORM = (LOCVEC0**2+LOCVEC1**2+LOCVEC2**2)**0.5
+ *             VNORM = (LOCVEC0**2
  */
         __pyx_t_18 = __pyx_v_j;
         __pyx_t_19 = __pyx_v_k;
@@ -2040,18 +2040,18 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
         __pyx_v_LOCVEC2 = (__pyx_v_LOCVEC2 + ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_J.data + __pyx_t_18 * __pyx_v_J.strides[0]) ) + __pyx_t_19 * __pyx_v_J.strides[1]) ))) * (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_20 * __pyx_v_M.strides[0]) ) + __pyx_t_21 * __pyx_v_M.strides[1]) ) + __pyx_t_22 * __pyx_v_M.strides[2]) )))));
       }
 
-      /* "algo.pyx":35
- *                 LOCVEC2 += J[j,k]*M[1,k,2]
- * 
- *             VNORM = (LOCVEC0**2+LOCVEC1**2+LOCVEC2**2)**0.5             # <<<<<<<<<<<<<<
+      /* "algo.pyx":38
+ *                     +LOCVEC1**2
+ *                     +LOCVEC2**2
+ *                     )**0.5             # <<<<<<<<<<<<<<
  *             if VNORM >= 10.0**(-6.0):
  *                 M[1,j,0] = -LOCVEC0/VNORM
  */
       __pyx_v_VNORM = pow(((pow(__pyx_v_LOCVEC0, 2.0) + pow(__pyx_v_LOCVEC1, 2.0)) + pow(__pyx_v_LOCVEC2, 2.0)), 0.5);
 
-      /* "algo.pyx":36
- * 
- *             VNORM = (LOCVEC0**2+LOCVEC1**2+LOCVEC2**2)**0.5
+      /* "algo.pyx":39
+ *                     +LOCVEC2**2
+ *                     )**0.5
  *             if VNORM >= 10.0**(-6.0):             # <<<<<<<<<<<<<<
  *                 M[1,j,0] = -LOCVEC0/VNORM
  *                 M[1,j,1] = -LOCVEC1/VNORM
@@ -2059,8 +2059,8 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
       __pyx_t_23 = ((__pyx_v_VNORM >= pow(10.0, -6.0)) != 0);
       if (__pyx_t_23) {
 
-        /* "algo.pyx":37
- *             VNORM = (LOCVEC0**2+LOCVEC1**2+LOCVEC2**2)**0.5
+        /* "algo.pyx":40
+ *                     )**0.5
  *             if VNORM >= 10.0**(-6.0):
  *                 M[1,j,0] = -LOCVEC0/VNORM             # <<<<<<<<<<<<<<
  *                 M[1,j,1] = -LOCVEC1/VNORM
@@ -2071,7 +2071,7 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
         __pyx_t_26 = 0;
         *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_24 * __pyx_v_M.strides[0]) ) + __pyx_t_25 * __pyx_v_M.strides[1]) ) + __pyx_t_26 * __pyx_v_M.strides[2]) )) = ((-__pyx_v_LOCVEC0) / __pyx_v_VNORM);
 
-        /* "algo.pyx":38
+        /* "algo.pyx":41
  *             if VNORM >= 10.0**(-6.0):
  *                 M[1,j,0] = -LOCVEC0/VNORM
  *                 M[1,j,1] = -LOCVEC1/VNORM             # <<<<<<<<<<<<<<
@@ -2083,7 +2083,7 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
         __pyx_t_29 = 1;
         *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_27 * __pyx_v_M.strides[0]) ) + __pyx_t_28 * __pyx_v_M.strides[1]) ) + __pyx_t_29 * __pyx_v_M.strides[2]) )) = ((-__pyx_v_LOCVEC1) / __pyx_v_VNORM);
 
-        /* "algo.pyx":39
+        /* "algo.pyx":42
  *                 M[1,j,0] = -LOCVEC0/VNORM
  *                 M[1,j,1] = -LOCVEC1/VNORM
  *                 M[1,j,2] = -LOCVEC2/VNORM             # <<<<<<<<<<<<<<
@@ -2095,9 +2095,9 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
         __pyx_t_32 = 2;
         *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_30 * __pyx_v_M.strides[0]) ) + __pyx_t_31 * __pyx_v_M.strides[1]) ) + __pyx_t_32 * __pyx_v_M.strides[2]) )) = ((-__pyx_v_LOCVEC2) / __pyx_v_VNORM);
 
-        /* "algo.pyx":36
- * 
- *             VNORM = (LOCVEC0**2+LOCVEC1**2+LOCVEC2**2)**0.5
+        /* "algo.pyx":39
+ *                     +LOCVEC2**2
+ *                     )**0.5
  *             if VNORM >= 10.0**(-6.0):             # <<<<<<<<<<<<<<
  *                 M[1,j,0] = -LOCVEC0/VNORM
  *                 M[1,j,1] = -LOCVEC1/VNORM
@@ -2105,7 +2105,7 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
         goto __pyx_L9;
       }
 
-      /* "algo.pyx":42
+      /* "algo.pyx":45
  * 
  *             else:
  *                 M[1,j,0] = 1.0             # <<<<<<<<<<<<<<
@@ -2118,7 +2118,7 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
         __pyx_t_35 = 0;
         *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_33 * __pyx_v_M.strides[0]) ) + __pyx_t_34 * __pyx_v_M.strides[1]) ) + __pyx_t_35 * __pyx_v_M.strides[2]) )) = 1.0;
 
-        /* "algo.pyx":43
+        /* "algo.pyx":46
  *             else:
  *                 M[1,j,0] = 1.0
  *                 M[1,j,1] = 0.0             # <<<<<<<<<<<<<<
@@ -2130,12 +2130,12 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
         __pyx_t_38 = 1;
         *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_36 * __pyx_v_M.strides[0]) ) + __pyx_t_37 * __pyx_v_M.strides[1]) ) + __pyx_t_38 * __pyx_v_M.strides[2]) )) = 0.0;
 
-        /* "algo.pyx":44
+        /* "algo.pyx":47
  *                 M[1,j,0] = 1.0
  *                 M[1,j,1] = 0.0
  *                 M[1,j,2] = 0.0             # <<<<<<<<<<<<<<
  * 
- *             ITERTOL = ((M[1,j,0]-M[0,j,0])**2+
+ *             ITERTOL = ((M[1,j,0]-M[0,j,0])**2
  */
         __pyx_t_39 = 1;
         __pyx_t_40 = __pyx_v_j;
@@ -2144,12 +2144,12 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
       }
       __pyx_L9:;
 
-      /* "algo.pyx":46
+      /* "algo.pyx":49
  *                 M[1,j,2] = 0.0
  * 
- *             ITERTOL = ((M[1,j,0]-M[0,j,0])**2+             # <<<<<<<<<<<<<<
- *                     (M[1,j,1]-M[0,j,1])**2+
- *                     (M[1,j,2]-M[0,j,2])**2)**0.5
+ *             ITERTOL = ((M[1,j,0]-M[0,j,0])**2             # <<<<<<<<<<<<<<
+ *                     +(M[1,j,1]-M[0,j,1])**2
+ *                     +(M[1,j,2]-M[0,j,2])**2
  */
       __pyx_t_42 = 1;
       __pyx_t_43 = __pyx_v_j;
@@ -2158,12 +2158,12 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
       __pyx_t_46 = __pyx_v_j;
       __pyx_t_47 = 0;
 
-      /* "algo.pyx":47
+      /* "algo.pyx":50
  * 
- *             ITERTOL = ((M[1,j,0]-M[0,j,0])**2+
- *                     (M[1,j,1]-M[0,j,1])**2+             # <<<<<<<<<<<<<<
- *                     (M[1,j,2]-M[0,j,2])**2)**0.5
- * 
+ *             ITERTOL = ((M[1,j,0]-M[0,j,0])**2
+ *                     +(M[1,j,1]-M[0,j,1])**2             # <<<<<<<<<<<<<<
+ *                     +(M[1,j,2]-M[0,j,2])**2
+ *                     )**0.5
  */
       __pyx_t_48 = 1;
       __pyx_t_49 = __pyx_v_j;
@@ -2172,12 +2172,12 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
       __pyx_t_52 = __pyx_v_j;
       __pyx_t_53 = 1;
 
-      /* "algo.pyx":48
- *             ITERTOL = ((M[1,j,0]-M[0,j,0])**2+
- *                     (M[1,j,1]-M[0,j,1])**2+
- *                     (M[1,j,2]-M[0,j,2])**2)**0.5             # <<<<<<<<<<<<<<
+      /* "algo.pyx":51
+ *             ITERTOL = ((M[1,j,0]-M[0,j,0])**2
+ *                     +(M[1,j,1]-M[0,j,1])**2
+ *                     +(M[1,j,2]-M[0,j,2])**2             # <<<<<<<<<<<<<<
+ *                     )**0.5
  * 
- *             if ITERTOL>TMPTOL:
  */
       __pyx_t_54 = 1;
       __pyx_t_55 = __pyx_v_j;
@@ -2186,17 +2186,17 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
       __pyx_t_58 = __pyx_v_j;
       __pyx_t_59 = 2;
 
-      /* "algo.pyx":47
+      /* "algo.pyx":52
+ *                     +(M[1,j,1]-M[0,j,1])**2
+ *                     +(M[1,j,2]-M[0,j,2])**2
+ *                     )**0.5             # <<<<<<<<<<<<<<
  * 
- *             ITERTOL = ((M[1,j,0]-M[0,j,0])**2+
- *                     (M[1,j,1]-M[0,j,1])**2+             # <<<<<<<<<<<<<<
- *                     (M[1,j,2]-M[0,j,2])**2)**0.5
- * 
+ *             if ITERTOL>TMPTOL:
  */
       __pyx_v_ITERTOL = pow(((pow(((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_42 * __pyx_v_M.strides[0]) ) + __pyx_t_43 * __pyx_v_M.strides[1]) ) + __pyx_t_44 * __pyx_v_M.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_45 * __pyx_v_M.strides[0]) ) + __pyx_t_46 * __pyx_v_M.strides[1]) ) + __pyx_t_47 * __pyx_v_M.strides[2]) )))), 2.0) + pow(((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_48 * __pyx_v_M.strides[0]) ) + __pyx_t_49 * __pyx_v_M.strides[1]) ) + __pyx_t_50 * __pyx_v_M.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_51 * __pyx_v_M.strides[0]) ) + __pyx_t_52 * __pyx_v_M.strides[1]) ) + __pyx_t_53 * __pyx_v_M.strides[2]) )))), 2.0)) + pow(((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_54 * __pyx_v_M.strides[0]) ) + __pyx_t_55 * __pyx_v_M.strides[1]) ) + __pyx_t_56 * __pyx_v_M.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_57 * __pyx_v_M.strides[0]) ) + __pyx_t_58 * __pyx_v_M.strides[1]) ) + __pyx_t_59 * __pyx_v_M.strides[2]) )))), 2.0)), 0.5);
 
-      /* "algo.pyx":50
- *                     (M[1,j,2]-M[0,j,2])**2)**0.5
+      /* "algo.pyx":54
+ *                     )**0.5
  * 
  *             if ITERTOL>TMPTOL:             # <<<<<<<<<<<<<<
  *                 TMPTOL = ITERTOL
@@ -2205,7 +2205,7 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
       __pyx_t_23 = ((__pyx_v_ITERTOL > __pyx_v_TMPTOL) != 0);
       if (__pyx_t_23) {
 
-        /* "algo.pyx":51
+        /* "algo.pyx":55
  * 
  *             if ITERTOL>TMPTOL:
  *                 TMPTOL = ITERTOL             # <<<<<<<<<<<<<<
@@ -2214,8 +2214,8 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
  */
         __pyx_v_TMPTOL = __pyx_v_ITERTOL;
 
-        /* "algo.pyx":50
- *                     (M[1,j,2]-M[0,j,2])**2)**0.5
+        /* "algo.pyx":54
+ *                     )**0.5
  * 
  *             if ITERTOL>TMPTOL:             # <<<<<<<<<<<<<<
  *                 TMPTOL = ITERTOL
@@ -2223,7 +2223,7 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
  */
       }
 
-      /* "algo.pyx":52
+      /* "algo.pyx":56
  *             if ITERTOL>TMPTOL:
  *                 TMPTOL = ITERTOL
  *             SQTOL += ITERTOL**2             # <<<<<<<<<<<<<<
@@ -2232,7 +2232,7 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
  */
       __pyx_v_SQTOL = (__pyx_v_SQTOL + pow(__pyx_v_ITERTOL, 2.0));
 
-      /* "algo.pyx":53
+      /* "algo.pyx":57
  *                 TMPTOL = ITERTOL
  *             SQTOL += ITERTOL**2
  *             M[0,j,0] = M[1,j,0]             # <<<<<<<<<<<<<<
@@ -2247,7 +2247,7 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
       __pyx_t_65 = 0;
       *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_63 * __pyx_v_M.strides[0]) ) + __pyx_t_64 * __pyx_v_M.strides[1]) ) + __pyx_t_65 * __pyx_v_M.strides[2]) )) = (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_60 * __pyx_v_M.strides[0]) ) + __pyx_t_61 * __pyx_v_M.strides[1]) ) + __pyx_t_62 * __pyx_v_M.strides[2]) )));
 
-      /* "algo.pyx":54
+      /* "algo.pyx":58
  *             SQTOL += ITERTOL**2
  *             M[0,j,0] = M[1,j,0]
  *             M[0,j,1] = M[1,j,1]             # <<<<<<<<<<<<<<
@@ -2262,12 +2262,12 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
       __pyx_t_71 = 1;
       *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_69 * __pyx_v_M.strides[0]) ) + __pyx_t_70 * __pyx_v_M.strides[1]) ) + __pyx_t_71 * __pyx_v_M.strides[2]) )) = (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_66 * __pyx_v_M.strides[0]) ) + __pyx_t_67 * __pyx_v_M.strides[1]) ) + __pyx_t_68 * __pyx_v_M.strides[2]) )));
 
-      /* "algo.pyx":55
+      /* "algo.pyx":59
  *             M[0,j,0] = M[1,j,0]
  *             M[0,j,1] = M[1,j,1]
  *             M[0,j,2] = M[1,j,2]             # <<<<<<<<<<<<<<
  * 
- *         SQTOL = SQTOL**0.5
+ *         SQTOL = (SQTOL**0.5/(NSYS**0.5))
  */
       __pyx_t_72 = 1;
       __pyx_t_73 = __pyx_v_j;
@@ -2278,17 +2278,17 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
       *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_75 * __pyx_v_M.strides[0]) ) + __pyx_t_76 * __pyx_v_M.strides[1]) ) + __pyx_t_77 * __pyx_v_M.strides[2]) )) = (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_M.data + __pyx_t_72 * __pyx_v_M.strides[0]) ) + __pyx_t_73 * __pyx_v_M.strides[1]) ) + __pyx_t_74 * __pyx_v_M.strides[2]) )));
     }
 
-    /* "algo.pyx":57
+    /* "algo.pyx":61
  *             M[0,j,2] = M[1,j,2]
  * 
- *         SQTOL = SQTOL**0.5             # <<<<<<<<<<<<<<
+ *         SQTOL = (SQTOL**0.5/(NSYS**0.5))             # <<<<<<<<<<<<<<
  * 
  *         if SQTOL <= TOL and TMPTOL <= TOL:
  */
-    __pyx_v_SQTOL = pow(__pyx_v_SQTOL, 0.5);
+    __pyx_v_SQTOL = (pow(__pyx_v_SQTOL, 0.5) / pow(((double)__pyx_v_NSYS), 0.5));
 
-    /* "algo.pyx":59
- *         SQTOL = SQTOL**0.5
+    /* "algo.pyx":63
+ *         SQTOL = (SQTOL**0.5/(NSYS**0.5))
  * 
  *         if SQTOL <= TOL and TMPTOL <= TOL:             # <<<<<<<<<<<<<<
  *             break
@@ -2305,16 +2305,17 @@ static PyObject *__pyx_pf_4algo_classic_zmc(CYTHON_UNUSED PyObject *__pyx_self, 
     __pyx_L12_bool_binop_done:;
     if (__pyx_t_23) {
 
-      /* "algo.pyx":60
+      /* "algo.pyx":64
  * 
  *         if SQTOL <= TOL and TMPTOL <= TOL:
  *             break             # <<<<<<<<<<<<<<
  * 
+ * 
  */
       goto __pyx_L4_break;
 
-      /* "algo.pyx":59
- *         SQTOL = SQTOL**0.5
+      /* "algo.pyx":63
+ *         SQTOL = (SQTOL**0.5/(NSYS**0.5))
  * 
  *         if SQTOL <= TOL and TMPTOL <= TOL:             # <<<<<<<<<<<<<<
  *             break
@@ -14966,7 +14967,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 0, 1, 1},
   {&__pyx_n_u_fortran, __pyx_k_fortran, sizeof(__pyx_k_fortran), 0, 1, 0, 1},
   {&__pyx_kp_s_got_differing_extents_in_dimensi, __pyx_k_got_differing_extents_in_dimensi, sizeof(__pyx_k_got_differing_extents_in_dimensi), 0, 0, 1, 0},
-  {&__pyx_kp_s_home2_santanu_Documents_realspa, __pyx_k_home2_santanu_Documents_realspa, sizeof(__pyx_k_home2_santanu_Documents_realspa), 0, 0, 1, 0},
+  {&__pyx_kp_s_home2_santanu_Documents_disorde, __pyx_k_home2_santanu_Documents_disorde, sizeof(__pyx_k_home2_santanu_Documents_disorde), 0, 0, 1, 0},
   {&__pyx_n_s_i, __pyx_k_i, sizeof(__pyx_k_i), 0, 0, 1, 1},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -15176,7 +15177,7 @@ static int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__15 = PyTuple_Pack(18, __pyx_n_s_CLNUM, __pyx_n_s_NSYS, __pyx_n_s_nbr, __pyx_n_s_J, __pyx_n_s_M, __pyx_n_s_TOL, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_p, __pyx_n_s_MAX_ITER, __pyx_n_s_SQTOL, __pyx_n_s_TMPTOL, __pyx_n_s_ITERTOL, __pyx_n_s_VNORM, __pyx_n_s_LOCVEC0, __pyx_n_s_LOCVEC1, __pyx_n_s_LOCVEC2); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
-  __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(6, 0, 18, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home2_santanu_Documents_realspa, __pyx_n_s_classic_zmc, 8, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_codeobj_ = (PyObject*)__Pyx_PyCode_New(6, 0, 18, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home2_santanu_Documents_disorde, __pyx_n_s_classic_zmc, 8, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj_)) __PYX_ERR(0, 8, __pyx_L1_error)
 
   /* "View.MemoryView":282
  *         return self.name

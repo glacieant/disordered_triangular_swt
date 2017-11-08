@@ -25,13 +25,6 @@ from matplotlib import rcParams
 rcParams['font.serif'] = ['Times New Roman']
 rcParams['font.family'] = 'serif'
 
-"""
-# the finite temperature fermi function
-def fermi(E,T):
-    
-    return 1.0/(np.exp(E/T)+1.0)
-"""
-
 ## picturing the output data
 
 # file name pattern
@@ -94,20 +87,10 @@ for fname in glob.iglob('*.npz'):
 
     FNDATA = np.load(fname)
 
-    #TOL = FNDATA['err'][()]
-
-    #if TOL < 101:
-        
     IDISD = int(match.group(4))
     BTNUM = int(match.group(5))
    
-    #T = FNDATA['T'][()]
     J = FNDATA['J']
-    #inum = FNDATA['inum']
-    #err=FNDATA['err']
-    #ensys = FNDATA['ensys']
-    #lmult = FNDATA['lmult']
-    #bond = np.absolute(FNDATA['bond'])
     spin = FNDATA['spin']
     spin0 = FNDATA['spin0']
 
@@ -143,7 +126,7 @@ for fname in glob.iglob('*.npz'):
 
     U = 0.5*np.einsum('ij,j->i',spin,e1).reshape((L,L)).transpose()
     V = 0.5*np.einsum('ij,j->i',spin,e2).reshape((L,L)).transpose()
-    
+
     e1 = spin0[0]
     if np.linalg.norm(e1) > 10.0**(-5):
         e1 = e1/np.linalg.norm(e1)
@@ -155,103 +138,17 @@ for fname in glob.iglob('*.npz'):
 
     U0 = 0.5*np.einsum('ij,j->i',spin0,e1).reshape((L,L)).transpose()
     V0 = 0.5*np.einsum('ij,j->i',spin0,e2).reshape((L,L)).transpose()
-    
+
     VMIN = 0.0
     VMAX = 2.0
     VGRID = 20
     
-    #BMIN = np.amin(bond)
-    #BMAX = np.amax(bond)
     JMIN = np.amin(J)
     JMAX = np.amax(J)
 
-    #BWDTH = (BMAX-BMIN)/VGRID
     JWDTH = (JMAX-JMIN)/VGRID
 
     JLW = np.zeros((N,N))
-    #BLW = np.zeros((N,N))
-
-    """
-    if (BMAX > 10.0**(-4)):
-
-        for i in range(0,N):
-
-            for j in nbr[i]:
-
-                JLW[i,j] = (VMIN + 
-                        (np.floor((J[i,j]-JMIN)/JWDTH)
-                            /VGRID)*(VMAX-VMIN)
-                        )
-                BLW[i,j] = (VMIN + 
-                        (np.floor((bond[i,j]-BMIN)/BWDTH)
-                            /VGRID)*(VMAX-VMIN)
-                        )
-            
-
-        for i in range(0,N):
-
-            for p in range(1,4):
-
-                j = nbr[i,p]
-                q = p -1
-
-                cor_x = [X[i%L,i/L],X[i%L,i/L]+avec[q,0]]
-                cor_y = [Y[i%L,i/L],Y[i%L,i/L]+avec[q,1]]
-
-                # plotting the lattice
-                line = plt.Line2D(cor_x,cor_y,
-                        color='gray',
-                        alpha=0.25,
-                        ls='solid',
-                        lw=0.3)
-                ax.add_line(line)
-
-                # plotting the couplings
-                line = plt.Line2D(cor_x,cor_y,
-                        color='red',
-                        alpha=0.5,
-                        ls='solid',
-                        lw=JLW[i,j])
-                ax.add_line(line)
-                
-                # plotting the bonds
-                line = plt.Line2D(cor_x,cor_y,
-                        color='blue',
-                        alpha=0.5,
-                        ls='dashed',
-                        dashes=(1.0,1.0),
-                        lw=BLW[i,j])
-                ax.add_line(line)
-                
-            
-            # plotting additonal bonds
-            for p in range(0,3):
-
-                j = nbr[i,6+p]
-                q = p +3
-
-                cor_x = [X[i%L,i/L],X[i%L,i/L]+avec[q,0]]
-                cor_y = [Y[i%L,i/L],Y[i%L,i/L]+avec[q,1]]
-
-                # plotting the couplings
-                line = plt.Line2D(cor_x,cor_y,
-                        color='red',
-                        alpha=0.5,
-                        ls='solid',
-                        lw=JLW[i,j])
-                ax.add_line(line)
-
-                line = plt.Line2D(cor_x,cor_y,
-                        color='blue',
-                        alpha=0.5,
-                        ls='dashed',
-                        dashes=(1.0,1.0),
-                        lw=BLW[i,j])
-                ax.add_line(line)
-
-    else:
-
-    """
     
     for i in range(0,N):
 
@@ -305,13 +202,23 @@ for fname in glob.iglob('*.npz'):
                     lw=JLW[i,j])
             ax.add_line(line)
 
+    # energy etimate
+    ENX = 0.0
+    for i in range(0,N):
+        for k in range(0,6):
+            j = nbr[i,k]
+            ENX += J[i,j]*np.dot(spin[i],spin[j])
+
+    ENX = ENX/N
+
+    ax.text(-1.25*a,(3.5*L/4.5)*a,
+            r'$E/N$ = '+str("%.4f" % ENX)
+            ,
+            fontsize=12)
 
     # labeling scale of coupling and bonds
     ax.text(-1.25*a,(3.0*L/4.5)*a,
-            #r'$b_{\mathrm{max}}$ = '+str("%.4f" % BMAX)
-            #+'\n'+
             r'$J_{\mathrm{max}}$ = '+str("%.4f" % JMAX)
-            #+'\n'+r'$S_{\mathrm{max}}$ = '+str("%.4f" % SMAX)
             ,
             fontsize=12)
 
@@ -322,42 +229,36 @@ for fname in glob.iglob('*.npz'):
             scale=1,
             scale_units='xy',
             )
-    
+    """
     Q0=ax.quiver(X,Y,U0,V0,
             color='blue',pivot='mid',
             angles='xy',
             scale=1,
             scale_units='xy',
             )
-       
+    """
     plt.axis([X.min()-2.0*a,X.max()+2.0*a,
         Y.min()-2.0*a,Y.max()+2.0*a])
 
     # adding label patch
     patch = [mpatches.Patch(color='red',alpha=0.5)]
-            #,mpatches.Patch(color='blue',alpha=1.0)]
     label = [r'Coupling, $J$']
-            #,r'Bond parameter, $b$']
 
     legend=ax.legend(patch,label,
             loc='lower right',shadow=True)
 
-    #EN = 0.5*(np.sum(fermi(ensys,T)*ensys)
-    #        -np.sum(lmult))/N
 
+    plt.suptitle(r"Spin Configuration", 
+            x=0.5, y=0.99, fontsize=16)
+    plt.title(r'Anomalous dipole density',x=0.485,fontsize=12)
+
+    """
     plt.suptitle("Spin Configuration" 
-            #& Bond Configuration"
             , x=0.5, y=0.99, fontsize=16)
     plt.title(r"$\Delta$ = "+STR_DELTA+" , "
             +r"$\alpha$ = "+STR_ALPHA+" , "
-            #+"E/$L^{2}$ = "+str("%.5f" % EN)+" , "
             +"Sample. = "+str(IDISD)+" , "
             +"Init. config. = "+str(BTNUM),x=0.485,fontsize=12)
-    """
-    plt.xlabel(r'Iteration count = '+
-            str("%d" % inum)+
-            r', Error = '+
-            str("%.4e" % err))
     """
     fig.tight_layout(pad=1.6,h_pad=1.6,w_pad=1.6)
     fig.savefig("../plot/esbc_"+

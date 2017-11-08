@@ -30,25 +30,25 @@ def classic_zmc(long CLNUM,long NSYS,long[:,:] nbr,double[:,:] J,
                 k = nbr[j,p]
                 LOCVEC0 += J[j,k]*M[1,k,0]
                 LOCVEC1 += J[j,k]*M[1,k,1]
-                LOCVEC2 += J[j,k]*M[1,k,2]
+                #LOCVEC2 += J[j,k]*M[1,k,2]
 
             VNORM = (LOCVEC0**2
                     +LOCVEC1**2
-                    +LOCVEC2**2
+                    #+LOCVEC2**2
                     )**0.5
             if VNORM >= 10.0**(-6.0):
                 M[1,j,0] = -LOCVEC0/VNORM
                 M[1,j,1] = -LOCVEC1/VNORM
-                M[1,j,2] = -LOCVEC2/VNORM
+                #M[1,j,2] = -LOCVEC2/VNORM
             
             else:
                 M[1,j,0] = 1.0
                 M[1,j,1] = 0.0
-                M[1,j,2] = 0.0
+                #M[1,j,2] = 0.0
 
             ITERTOL = ((M[1,j,0]-M[0,j,0])**2
                     +(M[1,j,1]-M[0,j,1])**2
-                    +(M[1,j,2]-M[0,j,2])**2
+                    #+(M[1,j,2]-M[0,j,2])**2
                     )**0.5
 
             if ITERTOL>TMPTOL:
@@ -56,7 +56,7 @@ def classic_zmc(long CLNUM,long NSYS,long[:,:] nbr,double[:,:] J,
             SQTOL += ITERTOL**2
             M[0,j,0] = M[1,j,0]
             M[0,j,1] = M[1,j,1]
-            M[0,j,2] = M[1,j,2]
+            #M[0,j,2] = M[1,j,2]
 
         SQTOL = (SQTOL**0.5/(NSYS**0.5))
 
