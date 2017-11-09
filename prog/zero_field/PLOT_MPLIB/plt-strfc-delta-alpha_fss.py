@@ -15,7 +15,7 @@ plt.rc('font', family='serif')
 
 ############## the dataset range ################
 
-CLR=['red','black','blue','brown','yellow','darkorange','pink','sandybrown']
+CLR=['red','black','blue','brown','grey','sandybrown','pink','cyan']
 
 IPX = 0
 
@@ -23,6 +23,8 @@ IPX = 0
 
 #loading data
 l, delta, alpx, strfc, strfc_var, sample_size  = np.loadtxt('DATA/LISTDATA.dat', usecols=(0,1,26,24,25,33), unpack=True)
+
+strfccl, strfccl_var  = np.loadtxt('DATA/LISTDATA.dat', usecols=(31,32), unpack=True)
 
 ##### Getting the standard error #####
 
@@ -67,36 +69,56 @@ for d in range(0,DSET):
         line[0].set_linewidth(2)
         line[0].set_color(CLR[i])
 
+    for i in range(0,NSET):
+
+        M=i+d*NSET
+        N=NSET*DSET
+        xpc=l[M::N]
+        ypc=strfccl[M::N]
+        yerrorbarpc=strfccl_var[M::N]
+        #Plotting with predefined labels
+        line=ax.errorbar(xpc, ypc, yerr=yerrorbarpc, xerr=None,
+                ecolor=CLR[i], elinewidth=2, marker='.', ms=10)
+
+        #Setting the line width and style
+        line[0].set_linestyle('dashed')
+        line[0].set_linewidth(2)
+        line[0].set_color(CLR[i])
+
+
     #Setting up the legend and its position
     patch = []
     label = []
     for i in range(0,NSET):
-            draw = mpatches.Patch(color=CLR[i])
-            patch.append(draw)
-            char = r'$\alpha$='+ str("%.3f" % ALPX[i])
-            label.append(char)
+        draw = mpatches.Patch(color=CLR[i])
+        patch.append(draw)
+        char = r'$\alpha $='+ str("%.3f" % ALPX[i])
+        label.append(char)
 
     legend=ax.legend(patch,label,
-                    loc='best',shadow=True,
-                    borderpad=0.5, labelspacing=0.5,
-                    handlelength=1.0,handletextpad=0.0,
-                    columnspacing=0.5,ncol=2)
+            loc='best',shadow=True,
+            borderpad=0.5, labelspacing=0.5,
+            handlelength=1.0,handletextpad=0.0,
+            columnspacing=0.5,ncol=2)
     #The frame is matplotlib.patches.Rectangel instance surrounding the legend
-    frame =legend.get_frame()
+    frame = legend.get_frame()
     frame.set_facecolor('0.90')
-    #Setting the frame fontzise and line width
+    # Setting the frame fontzise and line width
     for i in legend.get_texts():
-            i.set_fontsize(6)
+        i.set_fontsize(6)
     for i in legend.get_patches():
-            i.set_width(10.0)
-            i.set_height(5.0)
+        i.set_width(10.0)
+        i.set_height(5.0)
+    cpatch=plt.Line2D((0,1),(0,0),color='k',ls='dashed',lw=2)
+    clabel='Classical'
     qpatch=plt.Line2D((0,1),(0,0),color='k',ls='solid',lw=2)
     qlabel='Quantum'
-    fig.legend([qpatch],[qlabel],ncol=2,bbox_to_anchor=(0.5,0.9),
-            loc='upper center',fontsize=12)
+    fig.legend([cpatch,qpatch],[clabel,qlabel],ncol=2,
+            loc='lower center',fontsize=12)
     plt.xlabel(('$L'+'^{-'+str(eta)+'}$'),fontsize=18, labelpad=10)
     
-    plt.title(r'Structure factor $\chi(Q)/L^2$ at $(4\pi/3,0)$, $\Delta=$'+str("%.3f" % DELTA[d]),fontsize=15, y=1.15)
+    plt.suptitle(r'Structure factor $\chi(Q)/L^2$ at $(4\pi/3,0)$',fontsize=15, y=1.15)
+    plt.title(r'$\Delta=$'+str("%.3f" % DELTA[d]),fontsize=12)
 
     #Setting up the tick lines and label formatting
     xmin=0.0
