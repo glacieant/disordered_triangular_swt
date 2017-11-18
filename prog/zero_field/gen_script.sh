@@ -10,16 +10,16 @@ export LC_ALL=en_US.UTF8
 ##################################################
 
 # Specifying the lattice lengths for the calculation
-L="12 18 24 30 36 42 48 54 60";
+L="60 66";
 # Specifying the maximum number of iterations for the classical
 # algorithm
 iter_CL="1e+5";
 # The number of disorder iterations for the specific lattice length, L
 # following the same syntax of L
-iter_DS="100 100 100 50 30 20 15 10 5";
+iter_DS="20 15";
 # Number of parallel runs for the specific lattice length, L
 # with the same syntax as L
-PAR_X="8 8 8 8 8 8 8 8 8";
+PAR_X="8 8";
 # The width of the randomness, DELTA of the couplings J(1+DELTA)
 DIS_WDTH="0.0 0.2 0.4 0.6 0.8 0.99";
 # The ratio of the couplings J_prime/J for the nnn
@@ -78,7 +78,7 @@ YMOMNUM="100";
 #The width of the pole of the greens function
 GWDTH="0.025";
 #Tolerance for bogoliubov subroutine for respective L
-BOGTOL="0.05 0.025 0.025 0.025 0.025 0.025 0.025 0.025 0.025";
+BOGTOL="0.025 0.025";
 #The global tolerance
 GTOL="1.0e-8";
 #The wavefunction to visualise

@@ -124,7 +124,7 @@ for d in range(0,DSET):
     xmin=0.0
     xmax=np.amax(l)*1.1
     ymin=0.0
-    ymax=0.15
+    ymax=0.6
     tickfreq=4
     xtickspace=(xmax-xmin)/tickfreq
     ytickspace=(ymax-ymin)/(tickfreq*4)
