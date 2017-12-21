@@ -28,7 +28,7 @@ strfccl, strfccl_var  = np.loadtxt('DATA/LISTDATA.dat', usecols=(31,32), unpack=
 
 ##### Getting the standard error #####
 
-strfc_var=strfc_var*(sample_size**(-0.5))
+strfc_var=(strfc_var/sample_size)**(0.5)
 
 ALPX=np.unique(alpx)
 NSET=len(ALPX)

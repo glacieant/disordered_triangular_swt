@@ -4,7 +4,8 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-os.chdir("../sharp_wall/out/data")
+folder = "sharp_wall"
+os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
 import re
@@ -135,7 +136,7 @@ for i in range(0,HSHNUM):
                 norm=Normalize(vmin=MINCLIP,vmax=MAXCLIP,clip=False),
                 interpolation='nearest',
                 extent=(0.0,1.0,0.0,1.0),
-                cmap=cm.viridis,aspect='auto')
+                cmap=cm.Accent,aspect='auto')
         cbar = fig.colorbar(cax,shrink=0.5,format='%.0e')
         plt.suptitle(r"Q Profile, $\cos^{-1}(1/6\sum_{\hat{r}}\vec{S}_i\cdot\vec{S}_{i+\hat{r}})$", 
                 x=0.5,y=1.0, fontsize=16)

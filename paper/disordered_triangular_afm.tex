@@ -1,0 +1,112 @@
+\documentclass[aps,prb,twocolumn,showpacs]{revtex4-1}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\usepackage{times}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{setspace}
+\usepackage{epstopdf}
+\usepackage{bm}% bold math
+
+%--------------------------------------%
+\newcommand{\rcol}{\textcolor{red}}
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+\newcommand{\bal}{\begin{aligned}}
+\newcommand{\eal}{\end{aligned}}
+\newcommand{\bra}{\langle}
+\newcommand{\ket}{\rangle}
+\newcommand{\vS}{\vec{S}}
+\newcommand{\vh}{\vec{h}}
+\newcommand{\vQ}{\vec{Q}}
+
+
+
+%--------------------------------------%
+
+\begin{document}
+
+\title{Disordered $J-J'$ Heisenberg Antiferromagnet on a Triangular Lattice}
+\author{Santanu Dey and Matthias Vojta}
+\affiliation{Institut f\"{u}r Theoretische Physik,
+Technische Universit\"{a}t Dresden, 01062 Dresden}
+
+\pacs{}
+\date{\today}
+
+\begin{abstract}
+
+    The effect of quenched bond disorder in the triangular lattice 
+    Heisenberg antiferromagnet has attracted a lot of attention lately.
+    Recent experiments on crystals which are believed to realize this model
+    typically suggest emergence of a glassy phase when the exchange 
+    interactions between the spin degrees of freedom are sufficiently 
+    disordered. It is also understood that in the presence of bond disorder
+    the $120^{\circ}$ non-collinear chiral order is destroyed in d = 2 lower 
+    critical dimension, although, with a correlation length that scales 
+    exponentially with the inverse power of the width of the bond disorder. 
+    This rules out the possiblity to characterize the system without carefuly 
+    eliminating the finite size effects. To this end we resort to two 
+    different microscopic modelling of the disordered $J_1-J_2$ Heisenberg 
+    hamiltonian, improving on the system size limitations of prior 
+    calculations and also mapping out the entire phase diagram of the 
+    model which corroborates to the signatures observed in experiments.
+
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+The heisenberg antiferromagnet in a triangular lattice has long been a 
+model of interest as it realizes the simplest case of geometric frustration
+in a spin model. The quantum mechanical next nearest neighbour $J_1-J_2$ 
+Heisenberg hamiltonian in thought to produce an interesting phase diagram
+with a $Z_2$ spin liquid phase interpersed between the non-collinear $120^{\circ}$
+spiral and a stripy magnetic order.
+
+\section{The disordered $J-J'$ Heisenberg Hamiltonian on a triangular lattice}
+
+The disordered $J-J'$ antiferromagnetic Heisenberg model in the presence of an
+external field can simply be expressed in terms of the bilinears of spin 
+operators,
+\beq
+    \bal
+    H &= \sum_{\bra i,j \ket} J_{i,j}\vS_i\cdot\vS_j 
+    + \sum_{\bra\bra i,j \ket\ket}\alpha J'_{i,j}\vS_i\cdot\vS_j
+    + \sum_i\vh_i\cdot\vS_i 
+    \eal
+\eeq
+where the symbols $\bra i,j\ket$ and $\bra\bra i,j\ket\ket$ represents sum over
+nearest and next to nearest neighbours in the triangular lattice. In a clean
+system all the couplings will be fixed to a scale and in the absence of the external 
+field $\vh$, $\alpha$ becomes the sole tunable parameter that determines the relative 
+strength of the next to nearest neighbour (NNN) couplings over the nearest neighbour 
+(NN) couplings. However, in a disordered lattice the couplings will be random and this
+can be simulated by having $J$ and $J'$ drawn from a random distribution $P(J,\Delta)$ 
+with $\Delta$ characterizing the width of the disorder distribution. $\Delta$ is also 
+called the disorder strength as the wider the distribution gets the less likely it 
+becomes to find a neighbourhood of uniform couplings in the lattice. The parameter 
+$\alpha$ now underscores the relative strength between the average NNN couplings and 
+the average NN couplings.
+
+The clean zero field limit ($\Delta=0,\vh=0 $) has been studied extensively using 
+various microscopic and field theoretic methods. Classically, it can be shown that 
+the ground state of the hamiltonian in this limit goes through a phase transition 
+from the $120^{\circ}$ non-collinear magnetic order with an ordering wave vector 
+$\vQ=(2\pi/3,0)$ to a collinear stripe order with \rcol{$\vQ=(x,x)$}. 
+
+\section{Spinwave excitations with finite disorder}
+
+\subsection{Zero magnetic field}
+
+\subsection{Large magnetic field}
+
+\section{Mean-field theory in real space}
+
+\section{Results}
+
+\section{Conclusions}
+\end{document}

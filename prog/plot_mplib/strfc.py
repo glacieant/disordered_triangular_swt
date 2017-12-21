@@ -4,7 +4,7 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-os.chdir("../sharp_wall/out/data")
+os.chdir("../uniform_anisotropic/out/data")
 import sys
 import subprocess
 import re
@@ -126,7 +126,7 @@ for i in range(0,HSHNUM):
        
         # shearing the date into the BZ
         btx = 1000
-        dtx = btx/2
+        dtx = btx
         bfx = np.zeros((2*btx,2*btx),dtype=np.float64)
         dfx = np.zeros((2*dtx,2*dtx),dtype=np.float64)
         
@@ -134,17 +134,29 @@ for i in range(0,HSHNUM):
             for n in range(-btx,btx):
                 G1 = (1.0*m/btx)
                 G2 = (1.0*n/btx)
-                p = int(2*L*G1)
-                q = int(2*L*(G1+G2*3.0**0.5)/2)
-                if p >= 0 and p < L and q >= 0 and q < L:
-                    bfx[n+btx,m+btx] = sfc[i][p,q]
-                
+                p = int(L*G1)
+                q = int(L*(G1+G2*3.0**0.5)/2)
+                if p >= 0 and p < L:
+                    if q >= 0 and q < L:
+                        bfx[n+btx,m+btx] = sfc[i][p,q]
+                    elif q < 0 and q >= -L:
+                        bfx[n+btx,m+btx] = sfc[i][p,q+L]
+                elif p < 0 and p >= -L:
+                    if q >= 0 and q < L:
+                        bfx[n+btx,m+btx] = sfc[i][p+L,q]
+                    elif q < 0 and q >= -L:
+                        bfx[n+btx,m+btx] = sfc[i][p+L,q+L]
+
+
+                """
                 if p >= L and p < 2*L and q >= L and q < 2*L:
                     bfx[n+btx,m+btx] = sfc[i][p-L,q-L]
                 if p >= 0 and p < L and q >= L and q < 2*L:
                     bfx[n+btx,m+btx] = sfc[i][p,q-L]
                 if p >= L and p < 2*L and q >= 0 and q < L:
                     bfx[n+btx,m+btx] = sfc[i][p-L,q]
+                """
+        """
                 
         #post processing to fill out the brillouin zone
         for x in range(-dtx,dtx):
@@ -183,8 +195,8 @@ for i in range(0,HSHNUM):
                     else:
                         # copying original
                         dfx[y+dtx,x+dtx] = bfx[y+btx,x+btx]
-        
-        cax = ax.imshow(dfx,
+        """
+        cax = ax.imshow(bfx,
                 origin='lower',
                 #norm=Normalize(vmin=MINCLIP,vmax=MAXCLIP,clip=False),
                 norm=LogNorm(vmin=MINCLIP,vmax=MAXCLIP,clip=False),

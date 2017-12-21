@@ -39,42 +39,29 @@ def main(const):
     
     # field params
     M = np.zeros((2,NSYS,3),dtype=np.float64)
-    M_PURE = np.zeros((2,NSYS,3),dtype=np.float64)
+    M0 = np.zeros((2,NSYS,3),dtype=np.float64)
 
     # the hamiltonian matrix and coupling
     J = np.zeros((NSYS,NSYS),dtype=np.float64)
+    
+    # relative angle between pure and impure system
+    theta = np.zeros((NSYS,NSYS),dtype=np.float64)
 
     # iteration loop for disorder
     for i in range(0,ITERDISD):
 
         # fixing the coupling matrix
         tool.init_cpl(NSYS,nbr,
-                ZCO,DELTA,ALPHA,J)
-
+                    ZCO,DELTA,ALPHA,J)
+        
         # looping over bootstrapped initialisations
         for g in range(0,BOOTNUM): 
-
             # initiating parameters
             tool.init_param(NSYS,nbr,
                     ZCO,
                     DELTA,ALPHA,
                     ANGVAR,M)
             
-            tool.init_param(NSYS,nbr,
-                    ZCO,
-                    DELTA,0.0,
-                    ANGVAR,M_PURE)
-
-            # classical algorithm to get the magnetic
-            # ground state
-            # algo.classic_zmc(CLNUM,NSYS,nbr,J,M_PURE,GTOL)
-            
-            #introducing single impurity
-            impsite = (NSYS+1)/2-1
-            for p in [3]:
-                J[impsite][nbr[impsite][p]] = 0.0
-                J[nbr[impsite][p]][impsite] = 0.0
-
             # classical algorithm to get the magnetic
             # ground state of impurity system
 
@@ -91,7 +78,8 @@ def main(const):
                     "_BOOT_"+str(g)+
                     ".npz",
                     J=J,
+                    theta=theta,
+                    spin0=M0[1],
                     spin=M[1],
-                    spin0=M_PURE[1]
                     )
 

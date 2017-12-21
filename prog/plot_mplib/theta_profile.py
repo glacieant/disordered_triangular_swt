@@ -4,7 +4,9 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-os.chdir("../out/data")
+#folder = raw_input("Name of the target folder? ")
+folder = "single_impurity"
+os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
 import re
@@ -13,6 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.patches as mpatches
+import matplotlib.figure as figure
 from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
 from matplotlib.ticker import FormatStrFormatter
@@ -20,13 +23,13 @@ from scipy.optimize import curve_fit
 
 
 ## The tex style commands
-#plt.rc('text',usetex=True)
-#plt.rc('font',family='serif')
+plt.rc('text',usetex=True)
+plt.rc('font',family='serif')
 
 # the font styleset
-from matplotlib import rcParams
-rcParams['font.serif'] = ['Times New Roman']
-rcParams['font.family'] = 'serif'
+#from matplotlib import rcParams
+#rcParams['font.serif'] = ['Times New Roman']
+#rcParams['font.family'] = 'serif'
 
 # setting MKL configuration to allways optimise 
 os.putenv("MKL_DYNAMIC","FALSE")
@@ -91,10 +94,14 @@ for fname in glob.iglob('*.npz'):
     spin = FNDATA['spin']
     spin0 = FNDATA['spin0']
 
-    """
+    
     # defining the plane for the spins
 
-    e1 = spin[0]
+    
+    N = L**2
+    indx = N - 1
+    
+    e1 = spin[indx]
     if np.linalg.norm(e1) > 10.0**(-5):
         e1 = e1/np.linalg.norm(e1)
         e2 = np.cross(e1,np.cross(e1,spin[1]))
@@ -106,7 +113,7 @@ for fname in glob.iglob('*.npz'):
     U = np.einsum('ij,j->i',spin,e1)
     V = np.einsum('ij,j->i',spin,e2)
 
-    e1 = spin0[0]
+    e1 = spin0[indx]
     if np.linalg.norm(e1) > 10.0**(-5):
         e1 = e1/np.linalg.norm(e1)
         e2 = np.cross(e1,np.cross(e1,spin0[1]))
@@ -121,8 +128,9 @@ for fname in glob.iglob('*.npz'):
     theta = np.arccos(U*U0 + V*V0)
     signm = np.sign(np.arcsin(U0*V - U*V0))
     theta *= signm
-    """
-
+    
+    """    
+    
     # rotating spins to preferred direction
     ROT = np.zeros((3,3),dtype=np.float64)
     for i in range(0,3):
@@ -130,9 +138,13 @@ for fname in glob.iglob('*.npz'):
             ROT[i,j] = spin0[0,i]*spin[0,j]
 
     r_spin = np.einsum("ij,kj->ki",ROT,spin)
+    theta = np.arccos(np.einsum('ij,ij->i',r_spin,spin0))
+    #theta *= np.sign(np.cross(r_spin,spin0)[:,2])
+    #theta = FNDATA['theta']
+    
     theta = np.arccos(np.einsum('ij,ij->i',spin,spin0))
     theta *= np.sign(np.cross(spin,spin0)[:,2])
-    #theta = FNDATA['theta']
+    """
     sfc[INDX] += theta
 
 # fit function
@@ -152,8 +164,7 @@ for i in range(0,HSHNUM):
 
     if n_sfc[i] > 0:
 
-        fig, ax = plt.subplots()
-
+        #fig, ax = plt.subplots()
 
         STR_L = hshchar[i][0]
         STR_DELTA = hshchar[i][1]
@@ -162,62 +173,66 @@ for i in range(0,HSHNUM):
         N = L**2
         
         sfc[i] *= 1.0/n_sfc[i]
-
-        NX = (N-1)/2
-        X = NX%L
-        Y = NX/L
-        print X, Y, sfc[i][NX]
-        X += 10
-        NX = Y*L + X
-        print X, Y, sfc[i][NX]
-        Y -= 10
-        NX = Y*L + X
-        print X, Y, sfc[i][NX]
-
+        """
         cax = ax.imshow(np.reshape(sfc[i],(L,L)),
                 origin='lower',
                 norm=Normalize(vmin=-0.4,vmax=0.4,clip=False),
-                interpolation='nearest',
+                interpolation='none',
                 cmap=cm.viridis,
                 aspect='auto')
         cbar = fig.colorbar(cax, shrink=0.5)
         plt.suptitle(r'Numerical Simulation',x=0.5,fontsize=16)
         ax.set_aspect('equal')
         fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)
-        fig.savefig("../plot/tht_"+
+        fig.savefig("../plot/dnsty_"+
                 STR_L+
                 STR_DELTA+
                 STR_ALPHA+
                 ".pdf"
                 )
- 
-
+        
+        plt.close('all')
         """
-
-
+        #fig, ax = plt.subplots()
+        w,h = figure.figaspect(1.0)
+        fig = plt.figure(figsize=(w,h))
+        ax = fig.add_axes([0,0,1,1])
+        
         indx = (N+1)/2
         inde = indx+(L+1)/2-1
         l = np.array(range(0,(L+1)/2-1),
                 dtype=np.float64)
         l += 0.5
+
+        dtheta = np.abs(sfc[i][indx:inde])/np.abs(sfc[i][indx])
+
+        #print len(l)
+        #print len(dtheta)
     
-        ax.loglog(l,sfc[i][indx:inde],'ro'
-                ,basex=10,basey=10
+        ax.loglog(l,dtheta,'bx',
+                ms=10,
+                mew=2,
+                basex=10,basey=10
                 )
         
         #fitting data
         #popt, pcov = curve_fit(expf,l,
         #        sfc[i][indx:inde],
         #        p0=[sfc[i][indx]*np.exp(l[0]),1.05])
-        
+       
+        #print l[1:20]
+        #print dtheta[1:20]
         popt, pcov = curve_fit(invd,l,
-                sfc[i][indx:inde],
-                p0=[sfc[i][indx]*l[0]])
+                dtheta,
+                p0=100)
+
+        #print popt
 
         #plotting the fit
-        lp = np.linspace(0.5,(L+1.0)/2.0-1.0,num=200)
+        lp = np.linspace(0.5,(L+1.0)/2.0-1.0+0.5,num=200)
         ax.loglog(lp,invd(lp, *popt),
-                'r-',
+                'r--',
+                lw=2,
                 label=r'Power law fit, $\delta\theta\sim1/r$',
                 #label=r'Exponential fit fit, $\delta\theta\sim e^{-r}$'
                 basex=10,basey=10
@@ -225,22 +240,38 @@ for i in range(0,HSHNUM):
                 #+str("%.4f" % n)
                 )
         ax.yaxis.set_major_formatter(FormatStrFormatter('%.2e'))
-        plt.legend(loc='best')
-        plt.suptitle(r"$\delta\theta$(r) vs $r$", 
-                x=0.5, fontsize=16)
-        plt.xlabel('$r$',fontsize=16)
-        fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)
+        #plt.legend(loc='best')
+        #plt.suptitle(r"$\delta\theta$(r) vs $r$", 
+        #        x=0.5, fontsize=16)
+        #plt.xlim([0.5,50])
+        plt.ylim([10.0**(-2),2])
+        plt.ylabel(r'$\delta\theta(r)/\delta\theta_{\textrm{max}}$',fontsize=20)
+        plt.xlabel(r'$r$',fontsize=20)
+        plt.tick_params(which='both',width=2,labelsize=16)
+        plt.tick_params(which='major',length=8)
+        plt.tick_params(which='minor',length=4)
+        #fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)
         fig.savefig("../plot/tht_"+
                 STR_L+
                 STR_DELTA+
                 STR_ALPHA+
-                ".pdf"
+                ".pdf",
+                bbox_inches='tight'
                 )
         
-        """
+        
         plt.close('all')
 
 for L in zip(*hshchar)[0]:
+    """
+    subprocess.call('pdftk ../plot/dnsty_'+
+            L+
+            '* '+
+            'cat output ../plot/THDSTY_L_'+
+            L+
+            '.pdf',shell=True)
+    """
+    
     subprocess.call('pdftk ../plot/tht_'+
             L+
             '* '+
@@ -250,3 +281,4 @@ for L in zip(*hshchar)[0]:
 
 # removing split files
 subprocess.call('rm ../plot/tht_*',shell=True)
+#subprocess.call('rm ../plot/dnsty_*',shell=True)
