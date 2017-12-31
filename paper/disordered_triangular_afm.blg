@@ -1,0 +1,68 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: disordered_triangular_afm.aux
+The style file: apsrev4-1.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: disordered_triangular_afmNotes.bib
+Database file #2: disordered_triangular_afm.bib
+control{REVTEX41Control}, control.key{N/A}, control.author{N/A}, control.editor{N/A}, control.title{N/A}, control.pages{N/A}, control.year{N/A}, control.eprint{N/A}, 
+control{apsrev41Control}, control.key{N/A}, control.author{08}, control.editor{1}, control.title{}, control.pages{0}, control.year{1}, control.eprint{N/A}, 
+Warning--jnrlst (dependency: not reversed) set 1
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+merlin.mbs apsrev4-1.bst 2010-07-25 4.21a (PWD, AO, DPC) hacked
+Control: key (0) 
+Control: author (8) initials jnrlst
+Control: editor formatted (1) identically to author
+Control: production of article title (-1) disabled
+Control: page (0) single
+Control: year (1) truncated
+Control: production of eprint (0) enabled
+Warning--empty year in Dey-Vojta-disordered-non-collinear-2018
+You've used 18 entries,
+            5847 wiz_defined-function locations,
+            1751 strings with 18884 characters,
+and the built_in function-call counts, 15647 in all, are:
+= -- 1028
+> -- 351
+< -- 129
++ -- 119
+- -- 95
+* -- 2311
+:= -- 1557
+add.period$ -- 16
+call.type$ -- 18
+change.case$ -- 64
+chr.to.int$ -- 26
+cite$ -- 19
+duplicate$ -- 1489
+empty$ -- 1121
+format.name$ -- 210
+if$ -- 3060
+int.to.chr$ -- 1
+int.to.str$ -- 25
+missing$ -- 208
+newline$ -- 100
+num.names$ -- 48
+pop$ -- 650
+preamble$ -- 1
+purify$ -- 79
+quote$ -- 0
+skip$ -- 597
+stack$ -- 0
+substring$ -- 443
+swap$ -- 1372
+text.length$ -- 38
+text.prefix$ -- 0
+top$ -- 10
+type$ -- 226
+warning$ -- 2
+while$ -- 56
+width$ -- 0
+write$ -- 178
+(There were 2 warnings)

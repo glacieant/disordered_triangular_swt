@@ -21,6 +21,7 @@
 \newcommand{\vS}{\vec{S}}
 \newcommand{\vh}{\vec{h}}
 \newcommand{\vQ}{\vec{Q}}
+\newcommand{\Ord}{\mathcal{O}}
 
 
 
@@ -41,10 +42,10 @@ Technische Universit\"{a}t Dresden, 01062 Dresden}
     The effect of quenched bond disorder in the triangular lattice 
     Heisenberg antiferromagnet has attracted a lot of attention lately.
     Recent experiments on crystals which are believed to realize this model
-    typically suggest emergence of a glassy phase when the exchange 
+    have suggested emergence of a glassy phase when the exchange 
     interactions between the spin degrees of freedom are sufficiently 
     disordered. It is also understood that in the presence of bond disorder
-    the $120^{\circ}$ non-collinear chiral order is destroyed in d = 2 lower 
+    the $120^{\circ}$ non-collinear chiral order is destroyed at d = 2 lower 
     critical dimension, although, with a correlation length that scales 
     exponentially with the inverse power of the width of the bond disorder. 
     This rules out the possiblity to characterize the system without carefuly 
@@ -60,53 +61,213 @@ Technische Universit\"{a}t Dresden, 01062 Dresden}
 
 \section{Introduction}
 
-The heisenberg antiferromagnet in a triangular lattice has long been a 
-model of interest as it realizes the simplest case of geometric frustration
-in a spin model. The quantum mechanical next nearest neighbour $J_1-J_2$ 
-Heisenberg hamiltonian in thought to produce an interesting phase diagram
-with a $Z_2$ spin liquid phase interpersed between the non-collinear $120^{\circ}$
-spiral and a stripy magnetic order.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 
+irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
+deserunt mollit anim id est laborum.
 
 \section{The disordered $J-J'$ Heisenberg Hamiltonian on a triangular lattice}
 
-The disordered $J-J'$ antiferromagnetic Heisenberg model in the presence of an
-external field can simply be expressed in terms of the bilinears of spin 
-operators,
-\beq
+In a disordered triangular lattice the $J-J'$ antiferromagnetic Heisenberg model
+has the familiar form,
+\beq\label{eq:main_ham}
     \bal
-    H &= \sum_{\bra i,j \ket} J_{i,j}\vS_i\cdot\vS_j 
-    + \sum_{\bra\bra i,j \ket\ket}\alpha J'_{i,j}\vS_i\cdot\vS_j
-    + \sum_i\vh_i\cdot\vS_i 
+        H &= \sum_{\bra i,j \ket} J_{i,j}\vS_i\cdot\vS_j 
+        + \sum_{\bra\bra i,j \ket\ket}\alpha J'_{i,j}\vS_i\cdot\vS_j    
     \eal
 \eeq
-where the symbols $\bra i,j\ket$ and $\bra\bra i,j\ket\ket$ represents sum over
-nearest and next to nearest neighbours in the triangular lattice. In a clean
-system all the couplings will be fixed to a scale and in the absence of the external 
-field $\vh$, $\alpha$ becomes the sole tunable parameter that determines the relative 
-strength of the next to nearest neighbour (NNN) couplings over the nearest neighbour 
-(NN) couplings. However, in a disordered lattice the couplings will be random and this
-can be simulated by having $J$ and $J'$ drawn from a random distribution $P(J,\Delta)$ 
-with $\Delta$ characterizing the width of the disorder distribution. $\Delta$ is also 
-called the disorder strength as the wider the distribution gets the less likely it 
-becomes to find a neighbourhood of uniform couplings in the lattice. The parameter 
-$\alpha$ now underscores the relative strength between the average NNN couplings and 
-the average NN couplings.
+with the symbols $\bra i,j\ket$ and $\bra\bra i,j\ket\ket$ representing sum over
+nearest and next to nearest neighbours. This is a SU(2) symmetric hamiltonian
+but the discrete translational symmetry of the lattice is lost as the couplings
+$J_{i,j}$ and $J'_{i,j}$ are all uncorrelated random variables 
+drawn from a random distribution $P(J,\Delta)$ with $\Delta$, the standard deviation 
+characterizing the strength of the disorder. $\Delta$ is an implicit parameter for 
+the disordered hamiltonian. In a clean system, however, all the couplings are fixed 
+to a scale and in the absence of any external magnetic field, $\alpha$ becomes the 
+sole adjustable parameter that determines the relative strength of the next to nearest 
+neighbour (NNN) couplings over the nearest neighbour (NN) couplings. In the following 
+we shall consider both $\alpha$ and $\Delta$ as parameters of the model and explore 
+the consequent phase diagram.
 
-The clean zero field limit ($\Delta=0,\vh=0 $) has been studied extensively using 
-various microscopic and field theoretic methods. Classically, it can be shown that 
-the ground state of the hamiltonian in this limit goes through a phase transition 
-from the $120^{\circ}$ non-collinear magnetic order with an ordering wave vector 
-$\vQ=(2\pi/3,0)$ to a collinear stripe order with \rcol{$\vQ=(x,x)$}. 
+For $\alpha=0$ the ground state of the homogeneous triangular lattice Heisenberg 
+antiferromagnet has a non-collinear order characterized by the $120^{\circ}$ spiral
+spin orientation with an ordering wave vector $\vQ=(2\pi/3,0)$. This is a well known
+and well studied example of the classical N\'eel order surviving the effects of 
+quantum fluctuations\cite{Jolicoeur-NN-triangular-1989,*Huse-NN-triangular-1988,
+*Nishimori-NN-triangular-1985}. By tuning up $\alpha$ one can see that the classical 
+ground state of this model goes through a phase transition from the three sublattice 
+$120^\circ$ state to a degenerate continuum of four sublattice stripy states at 
+$\alpha=1/8$\cite{Jolicoeur-NNN-triangular-1990,Kaneko-NNN-triangular-2014}. Quantum 
+effects become crucial near the phase transition point and it is believed that 
+spin liquid like states emerge interposed between the non-collinear $120^\circ$ and 
+the \rcol{collinear} stripe phase
+\cite{Hu-NNN-triangular-2015,Kaneko-NNN-triangular-2014}.
+
+The introduction of bond disorder makes this model particularly interesting as the
+non-uniformity in the coupling profile tries to compete with and unwind the effects 
+of the underlying geometric frustration of the lattice and thereby makes further 
+diversification of the phase map plausible. It is known that in a non-collinear 
+antiferromagnet, long range N\'eel order is destroyed by random inhomogeneity in the 
+exchange interactions below or at the critical dimension $d=2$
+\cite{Dey-Vojta-disordered-non-collinear-2018}. Our planar
+$J-J'$ heisenberg antiferromagnet on a triangular lattice for $\alpha < 1/8$ is 
+precisely an example of such a system placed at the critical dimension. With the 
+tentative absence of long range antiferromagnetic order in the presence of quenched 
+bond disorder\cite{Watanabe-disordered-triangular-2014,
+Dey-Vojta-disordered-non-collinear-2018}, the weakly frustrated 
+triangular lattice antiferromagnet is amenable to a spin-glass transition
+\cite{Andreanov-Chalker-frust.-dis.-magnet-2010}. In the analysis that follows, we 
+show that quantum fluctuations disorders the system even further to restrict the 
+surviving short range correlations of the neighbouring spins
+on the lattice. The fact that quantum effects also become very important in tandem 
+with disorder makes way for a possible departure from the classical degrees of 
+freedom when the effects of quantum and quenched disorder is particularly strong. 
+Our scheme, split between two complimentary approaches, one considering spin-wave 
+fluctuations on top of the classical ground state of the disordred lattice and another 
+being a slave-fermion mean field approximation capturing excitations which are 
+inherently quantum in nature, explores the microscopic description of the ground state 
+of this model from the onset of the breakdown of the long range antiferromagnetic order 
+to the limits of very strong disorder.
 
 \section{Spinwave excitations with finite disorder}
 
-\subsection{Zero magnetic field}
+The spin-wave theory (SWT) for a disordered Heisenberg hamiltonian, not unlike its 
+homogeneous counterpart, entails an expansion in terms of quantum excitation modes 
+around the magnetically ordered classical ground state\cite{Wessel-quasicrystal-2005,
+Andrade-disordered-spin-glass-2012}. The starting point for such an expansion is the
+representation of the SU(2) symmetric spin operators at each lattice site with 
+slave bosons (e.g. Holstein-Primakoff or Schwinger bosons) where the quantization axes 
+are chosen to align with the orientation of each individual spin, as dictated by the 
+classical lowest energy configuration\cite{Anderson-SWT-52,*Kubo-SWT-52}. Although the 
+transformations themselves are exact, they retain the highly interacting characterstic
+of the heisenberg model. The spin-wave approximation, i.e. the assumption that the 
+quanutm corrections due to these bosons are weaker compared to the corresponding 
+classical expectation values is an additonal input which allows a controlled expansion 
+of the hamiltonian in terms of these bosonic modes. The chief distinction in the 
+disordered case is that the loss of the lattice translational symmetry prevents any 
+description in terms of lattice momentums, which are no longer good quantum numbers
+and instead a real space formulation is necessitated.
 
-\subsection{Large magnetic field}
+The situation is further complicated by the non-triviality of the energy landscape of 
+the disordered classical hamiltonian. In our treatment we follow a simple local 
+energy minimzation scheme iteratively to reach the ground state configuration. The 
+scheme involves a starting point of randomized initial spin configurations and afterwards
+performing local energy minimization at each site to antialign the spins with respect to
+the net local field coupled with it untill a threshold of accuracy is achieved
+\cite{Walker-spin-glass-iterative-1977,Henley-spin-glass-interative-1984}. Although this
+method is inherently local in nature, after a sufficient 
+amount of sampling dispenses with the outliers the typical solutions do get very close to 
+the true ground states in terms of the relevant small wavelength features
+\cite{Henley-spin-glass-interative-1984,Sklan-spin-glass-iterative-2013}.
+
+The classical ground state obtained through the iterative algorithm may be interpreted
+as a configuration of rotation matrices $R_i$ describing the passive rotations of individual
+spins with respect to the laboratory frame, $\vS_i=R_i\cdot\vS'_i$. This picture is useful 
+for performing the spin-wave expansion around the quantization axis $S^{'z}_i$ attached to the 
+body frame of the spins. The rotation matrices themselves can be expressed with pairs of 
+Euler angles $\theta_i,\phi_i$ describing the rigid body rotation of the body axis. 
+\beq\label{eq:rot_mat}
+    \bal
+        R_i &= 
+        \begin{pmatrix}
+            \cos\theta_i\cos\phi_i & -\sin\phi_i & \sin\theta_i\cos\phi_i \\
+            \cos\theta_i\sin\phi_i & \cos\phi_i & \sin\theta_i\sin\phi_i \\
+            -\sin\theta_i & 0 & \cos\theta_i
+        \end{pmatrix}
+    \eal
+\eeq
+For notational simplicity the hamiltonian in Eq. (\ref{eq:main_ham}) can be recast in the 
+form $H = 1/2\sum_{i,j}J_{i,j}\vS_i\cdot\vS_j$, where both the parameters $\alpha$ and $\Delta$ 
+are implicit and they control the magnitudes of the couplings $J_{i,j}$s which are otherwise 
+zero unless $(i,j) \in \text{NN or NNN}$ lattice points. In the rotated frame the hamiltonian 
+reads, 
+\beq\label{eq:rot_ham}
+    \bal
+        H &= \frac{1}{2}\sum_{i,j}J_{i,j}(R^{-1}_i\cdot R_j)_{\alpha\beta}
+        S^{'\alpha}_i S^{'\beta}_j
+    \eal
+\eeq
+with the standard Holstein-Primakoff (HP) bosons introduced in a very assymetric way,
+\beq\label{eq:hol_prima}
+    \bal
+        S^{'z}_i &= S-a^\dagger_i a_i \\
+        S^{'+}_i &= \sqrt{2S - a^\dagger_i a_i} \ a_i \\
+        S^{'-}_i &= a^\dagger_i \ \sqrt{2S - a^\dagger_i a_i}    
+    \eal
+\eeq
+. In a disordered lattice of a finite size N, one has to consider all these N bosonic 
+operators, $a_i$s, together while performing the spin-wave approximation of the 
+hamilonian (\ref{eq:rot_ham}) in real space. The consideration of a 2N dimensional 
+vector $\vec{\gamma}=(\vec{a},\vec{a}^\dagger)$ consisting of the HP bosons and 
+their hermitian conjugates offers a relative simplification of the resulting expression. 
+The expansion, as obtained for the Heisenberg model on a generic lattice upto third order
+\cite{Wollny-phd-thesis-2016}, can be neatly collected in the powers of the $\gamma_i$ 
+operators.
+\beq\label{eq:sw_ham}
+    \bal
+        H &= H^0
+        + \sum_i^{2N} K^{(1)}_i\gamma_i
+        + \sum_{i,j}^{2N} K^{(2)}_{i,j}\gamma_i\gamma_j \\
+        &+ \sum_{i,j,k}^{2N} K^{(3)}_{i,j,k}\gamma_i\gamma_j\gamma_k
+        + \Ord(\gamma^4) 
+    \eal
+\eeq
+with the coefficients given by,
+\begin{widetext}
+    \beq\label{eq:sw_coeff}
+        \bal
+            H_0 &= \frac{S^2}{2}\sum^N_{i,j}J_{i,j}
+            \Big[\cos\theta_i\cos\theta_j
+            +\cos(\phi_i-\phi_j)\sin\theta_i\sin\theta_j
+            \Big] \\
+            K^{(1)}_i &= \begin{cases} 
+                            \Gamma^{(1)}_i=
+                            \frac{S^{3/2}}{\sqrt{2}}
+                            \sum^N_j J_{i,j}\Big[ 
+                            \cos(\phi_i-\phi_j)
+                            \cos\theta_i\sin\theta_j
+                            -\sin\theta_i\cos\theta_j
+                            -\text{i}
+                            \sin(\phi_i-\phi_j)\sin\theta_j
+                            \Big], \ \text{ if } i \leq N \\
+                            
+                            \Gamma^{(1)*}_{i-N}, \ \text{ if } i > N 
+                        \end{cases}
+
+            K^{(2)}_i &= \begin{cases} 
+                            \frac{S^{3/2}}{\sqrt{2}}
+                            \sum^N_j J_{i,j}\Big[ 
+                            \cos(\phi_i-\phi_j)
+                            \cos\theta_i\sin\theta_j
+                            -\sin\theta_i\cos\theta_j
+                            -\text{i}
+                            \sin(\phi_i-\phi_j)\sin\theta_j
+                            \Big], \ \text{ if } i \leq N \\
+                            
+                            \frac{S^{3/2}}{\sqrt{2}}
+                            \sum^N_j J_{i,j}\Big[ 
+                            \cos(\phi_i-\phi_j)
+                            \cos\theta_i\sin\theta_j
+                            -\sin\theta_i\cos\theta_j
+                            -\text{i}
+                            \sin(\phi_i-\phi_j)\sin\theta_j
+                            \Big], \ \text{ if } i \leq N 
+                        \end{cases}
+
+        \eal
+    \eeq
+\end{widetext}
+
+
 
 \section{Mean-field theory in real space}
 
 \section{Results}
 
 \section{Conclusions}
+
+\bibliography{disordered_triangular_afm}
+
 \end{document}
