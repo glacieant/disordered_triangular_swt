@@ -96,7 +96,6 @@ for fname in glob.iglob('*.npz'):
 
     
     # defining the plane for the spins
-
     
     N = L**2
     indx = N - 1
@@ -112,7 +111,7 @@ for fname in glob.iglob('*.npz'):
 
     U = np.einsum('ij,j->i',spin,e1)
     V = np.einsum('ij,j->i',spin,e2)
-
+    
     e1 = spin0[indx]
     if np.linalg.norm(e1) > 10.0**(-5):
         e1 = e1/np.linalg.norm(e1)

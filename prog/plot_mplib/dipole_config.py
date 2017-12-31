@@ -118,9 +118,11 @@ for fname in glob.iglob('*.npz'):
     w,h = figure.figaspect(1.0)
     fig = plt.figure(figsize=(w,h))
     ax = fig.add_axes([0,0,1,1])
- 
-
+    
     # defining the plane for the spins
+
+    R11 = -np.sqrt(3.0)/2.0
+    R12 = 1.0/2.0
 
     e1 = spin[0]
     if np.linalg.norm(e1) > 10.0**(-5):
@@ -131,8 +133,11 @@ for fname in glob.iglob('*.npz'):
         e1 = np.array([1.0,0.0,0.0])
         e2 = np.array([0.0,1.0,0.0])
 
-    U = 0.5*np.einsum('ij,j->i',spin,e1).reshape((L,L)).transpose()
-    V = 0.5*np.einsum('ij,j->i',spin,e2).reshape((L,L)).transpose()
+    UP = 0.5*np.einsum('ij,j->i',spin,e1)
+    VP = 0.5*np.einsum('ij,j->i',spin,e2)
+
+    U = np.reshape(R11*UP + R12*VP,(L,L)).transpose()
+    V = np.reshape(-R12*UP + R11*VP,(L,L)).transpose()
 
     e1 = spin0[0]
     if np.linalg.norm(e1) > 10.0**(-5):
@@ -143,8 +148,11 @@ for fname in glob.iglob('*.npz'):
         e1 = np.array([1.0,0.0,0.0])
         e2 = np.array([0.0,1.0,0.0])
 
-    U0 = 0.5*np.einsum('ij,j->i',spin0,e1).reshape((L,L)).transpose()
-    V0 = 0.5*np.einsum('ij,j->i',spin0,e2).reshape((L,L)).transpose()
+    UP0 = 0.5*np.einsum('ij,j->i',spin0,e1)
+    VP0 = 0.5*np.einsum('ij,j->i',spin0,e2)
+
+    U0 = np.reshape(R11*UP0 + R12*VP0,(L,L)).transpose()
+    V0 = np.reshape(-R12*UP0 + R11*VP0,(L,L)).transpose()
 
     SX = np.zeros((L,L),dtype=np.float)
     SY = np.zeros((L,L),dtype=np.float)

@@ -4,7 +4,8 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-folder = "sharp_wall"
+#folder = "sharp_wall"
+folder = "zero_field_classical"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -79,9 +80,14 @@ avec = np.array([[-0.5,((3.0)**0.5)/2],
     [0.0,(3.0**0.5)],
     [1.5,((3.0)**0.5)/2]])*a
 """
-avec = np.array([[0,1.0],
+avec = np.array([
+    [-((3.0)**0.5)/2,0.5],
+    [0.0,1.0],
     [((3.0)**0.5)/2,0.5],
-    [((3.0)**0.5)/2,-0.5]])*a
+    [((3.0)**0.5)/2,-0.5],
+    [0.0,-1.0],
+    [-((3.0)**0.5)/2,-0.5],
+    ])*a/2
 
 
 for fname in glob.iglob('*.npz'):
@@ -123,7 +129,7 @@ for fname in glob.iglob('*.npz'):
                 #X[i,j]=(i+j*(1.0/2.0))*a +2*a
                 #Y[i,j]=j*((3.0)**0.5/2.0)*a + 2*a
                 X[i,j]= (i+j)*ax+3*ax
-                Y[i,j]= (i-j)*ay
+                Y[i,j]= (j-i)*ay
 
     # defining the plane for the spins
 
@@ -189,13 +195,12 @@ for fname in glob.iglob('*.npz'):
    
     for i in range(0,N):
 
-        for p in range(1,4):
+        for p in range(0,6):
 
             j = nbr[i,p]
-            q = p -1
 
-            cor_x = [X[i%L,i/L],X[i%L,i/L]+avec[q,0]]
-            cor_y = [Y[i%L,i/L],Y[i%L,i/L]+avec[q,1]]
+            cor_x = [X[i%L,i/L],X[i%L,i/L]+avec[p,0]]
+            cor_y = [Y[i%L,i/L],Y[i%L,i/L]+avec[p,1]]
 
             """
 
@@ -275,7 +280,8 @@ for fname in glob.iglob('*.npz'):
     """
     # picturing the spin orientation
     Q=ax.quiver(X,Y,U,V,
-            color='gray',pivot='mid',
+            color='red',
+            pivot='mid',
             angles='xy',
             scale=1,
             scale_units='xy',

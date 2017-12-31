@@ -22,23 +22,22 @@ def init_cpl(NSYS,nbr,
     if DELTA != 0.0:
         JBANK = np.random.uniform(1.0-DELTA,1.0+DELTA,size=(NSYS*12))
     else:
-        JBANK = np.full((NSYS*12),1.0)
+        JBANK = np.full((NSYS*6),1.0)
     q = 0
     for i in range(0,NSYS):
         for m in range(0,6):
             j = nbr[i,m]
             if j > i:
-                J[i][j] = JBANK[q]
-                J[j][i] = J[i][j]
+                J[i,j] = JBANK[q]
+                J[j,i] = J[i,j]
                 q += 1
         for m in range(6,12):
             j = nbr[i,m]
             if j > i:
-                J[i][j] = ALPHA*JBANK[q]
-                J[j][i] = J[i][j]
+                J[i,j] = ALPHA*JBANK[q]
+                J[j,i] = J[i,j]
                 q += 1
-
-
+    
 def init_param(NSYS,nbr,
         ZCO,
         DELTA,ALPHA,

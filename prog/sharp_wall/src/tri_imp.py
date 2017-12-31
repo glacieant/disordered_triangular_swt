@@ -11,7 +11,7 @@ import algo
 import tool
 
 # seeding the random number generators
-# np.random_intel.seed(0)
+np.random.seed(0)
 
 # defining the main function block
 
