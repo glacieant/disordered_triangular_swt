@@ -121,8 +121,10 @@ for fname in glob.iglob('*.npz'):
     
     # defining the plane for the spins
 
-    R11 = -np.sqrt(3.0)/2.0
-    R12 = 1.0/2.0
+    R1 = np.array([[-1.0,0.0],[0.0,1.0]])
+    phx = -np.pi/6
+    R2 = np.array([[np.cos(phx),-np.sin(phx)],[np.sin(phx),np.cos(phx)]])
+    R = np.dot(R1,R2)
 
     e1 = spin[0]
     if np.linalg.norm(e1) > 10.0**(-5):
@@ -136,8 +138,8 @@ for fname in glob.iglob('*.npz'):
     UP = 0.5*np.einsum('ij,j->i',spin,e1)
     VP = 0.5*np.einsum('ij,j->i',spin,e2)
 
-    U = np.reshape(R11*UP + R12*VP,(L,L)).transpose()
-    V = np.reshape(-R12*UP + R11*VP,(L,L)).transpose()
+    U = np.reshape(R[0,0]*UP + R[0,1]*VP,(L,L)).transpose()
+    V = np.reshape(R[1,0]*UP + R[1,1]*VP,(L,L)).transpose()
 
     e1 = spin0[0]
     if np.linalg.norm(e1) > 10.0**(-5):
@@ -151,8 +153,8 @@ for fname in glob.iglob('*.npz'):
     UP0 = 0.5*np.einsum('ij,j->i',spin0,e1)
     VP0 = 0.5*np.einsum('ij,j->i',spin0,e2)
 
-    U0 = np.reshape(R11*UP0 + R12*VP0,(L,L)).transpose()
-    V0 = np.reshape(-R12*UP0 + R11*VP0,(L,L)).transpose()
+    U0 = np.reshape(R[0,0]*UP0 + R[0,1]*VP0,(L,L)).transpose()
+    V0 = np.reshape(R[1,0]*UP0 + R[1,1]*VP0,(L,L)).transpose()
 
     SX = np.zeros((L,L),dtype=np.float)
     SY = np.zeros((L,L),dtype=np.float)
@@ -187,7 +189,7 @@ for fname in glob.iglob('*.npz'):
                         /VGRID)*(VMAX-VMIN)
                     )
     """
-    impsite = (N+1)/2-1
+    impsite = (L*(L-1))/2-1
     impcor = np.array([X[impsite%L,impsite/L]+0.5*a,Y[impsite%L,impsite/L]])
     for i in range(0,N):
 
@@ -196,10 +198,10 @@ for fname in glob.iglob('*.npz'):
 
         cor = np.array([X[x,y],Y[x,y]])
         dixt = cor-impcor
+        dx = (5)*a
+        dy = (5)*(np.sqrt(3.0)*a/2)
 
-        d = np.linalg.norm(dixt)
-
-        if d < 4*a:
+        if ((np.abs(dixt[0])/dx+np.abs(dixt[1])/dy)<=1.0):
 
             SX[x,y] = X[x,y]
             SY[x,y] = Y[x,y]
@@ -276,22 +278,39 @@ for fname in glob.iglob('*.npz'):
             fontsize=12)
     """
     # picturing the spin orientation
+    pivot="mid"
+    width=0.005
+    headwidth=4
+    headlength=5
+
     LQ=ax.quiver(SX,SY,LSU,LSV,
-            color='red',pivot='mid',
+            color='red',
+            width=width,
+            headwidth=headwidth,
+            headlength=headlength,
+            pivot=pivot,
             angles='xy',
             scale=1,
             scale_units='xy',
             zorder=2
             )
     RQ=ax.quiver(SX,SY,RSU,RSV,
-            color='blue',pivot='mid',
+            color='blue',
+            width=width,
+            headwidth=headwidth,
+            headlength=headlength,
+            pivot=pivot,
             angles='xy',
             scale=1,
             scale_units='xy',
             zorder=2
             )
     Q=ax.quiver(SX,SY,SU,SV,
-            color='black',pivot='mid',
+            color='black',
+            width=width,
+            headwidth=headwidth,
+            headlength=headlength,
+            pivot=pivot,
             angles='xy',
             scale=1,
             scale_units='xy',
@@ -301,14 +320,10 @@ for fname in glob.iglob('*.npz'):
     Q0=ax.quiver(SX,SY,SU0,SV0,
             color='gray',
             edgecolor='gray',
-            #linestyle='dashed',
-            #linewidth=2,
-            #facecolor='none',
-            #width=0.0001,
-            #headwidth=100,
-            #headlength=100,
-            #hatch='ooo',
-            pivot='mid',
+            width=width,
+            headwidth=headwidth,
+            headlength=headlength,
+            pivot=pivot,
             angles='xy',
             scale=1,
             scale_units='xy',
@@ -320,8 +335,8 @@ for fname in glob.iglob('*.npz'):
             edgecolor='palegreen',facecolor='palegreen',
             zorder=0)
     ax.add_patch(ellipse)
-    plt.axis([impcor[0]-4.5*a,impcor[0]+4.5*a,
-        impcor[1]-4.5*a,impcor[1]+4.5*a])
+    plt.axis([impcor[0]-dx-a/2,impcor[0]+dx+a/2,
+        impcor[1]-dy-np.sqrt(3)*a/2,impcor[1]+dy+np.sqrt(3)*a/2])
     ax.axis('off')
     
     # adding label patch
@@ -352,7 +367,7 @@ for fname in glob.iglob('*.npz'):
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
             ".pdf",
-            bbox_inches='tight'
+            #bbox_inches='tight'
             )
     plt.close('all')
 

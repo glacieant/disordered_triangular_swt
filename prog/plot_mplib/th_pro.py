@@ -80,17 +80,14 @@ avec = np.array([[-0.5,((3.0)**0.5)/2],
     [0.0,(3.0**0.5)],
     [1.5,((3.0)**0.5)/2]])*a
 """
-
-evec = np.array([
+avec = np.array([
     [-((3.0)**0.5)/2,0.5],
     [0.0,1.0],
     [((3.0)**0.5)/2,0.5],
     [((3.0)**0.5)/2,-0.5],
     [0.0,-1.0],
     [-((3.0)**0.5)/2,-0.5],
-    ])
-
-avec = evec*a/2
+    ])*a/2
 
 
 for fname in glob.iglob('*.npz'):
@@ -133,8 +130,9 @@ for fname in glob.iglob('*.npz'):
                 #Y[i,j]=j*((3.0)**0.5/2.0)*a + 2*a
                 X[i,j]= (i+j)*ax+3*ax
                 Y[i,j]= (j-i)*ay
-    """
+
     # defining the plane for the spins
+
     e1 = spin[0]
     if np.linalg.norm(e1) > 10.0**(-5):
         e1 = e1/np.linalg.norm(e1)
@@ -144,37 +142,33 @@ for fname in glob.iglob('*.npz'):
         e1 = np.array([1.0,0.0,0.0])
         e2 = np.array([0.0,1.0,0.0])
 
-    U = 0.5*np.einsum('ij,j->i',spin,e1).reshape((L,L)).transpose()
-    V = 0.5*np.einsum('ij,j->i',spin,e2).reshape((L,L)).transpose()
-    """
+    U = a*np.einsum('ij,j->i',spin,e1).reshape((L,L)).transpose()
+    V = a*np.einsum('ij,j->i',spin,e2).reshape((L,L)).transpose()
 
-    US = np.zeros(N,dtype=np.float)
-    VS = np.zeros(N,dtype=np.float)
+    VMIN = 0.0
+    VMAX = 4.0
+    VGRID = 20
+    
+    JMIN = np.amin(J)
+    JMAX = np.amax(J)
+
+    JWDTH = (JMAX-JMIN)/VGRID
+
+    JLW = np.zeros((N,N))
     
     for i in range(0,N):
-        p = 0
-        q = 2
-        s1 = np.arccos(np.dot(spin[i],spin[nbr[i,p]]))
-        s2 = np.arccos(np.dot(spin[i],spin[nbr[i,q]]))
-        US[i] = s1 + s2
-        VS[i] = (s2 - s1)/np.sqrt(3)
-    
-    U = np.reshape(US,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
-    V = np.reshape(VS,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
 
-    #print U
-    #print "====Shit====="
-    #print V
-    
+        for j in nbr[i]:
 
+            JLW[i,j] = (VMIN + 
+                    (np.floor((J[i,j]-JMIN)/JWDTH)
+                        /VGRID)*(VMAX-VMIN)
+                    )
+    
     # fixing colormap for line plotting
 
-    cmstyle = cm.plasma
-    VMIN = np.pi/2
-    VMAX = 3.0*np.pi/2
-
-    Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
-    scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
+    Norm = Normalize(vmin=0,vmax=np.pi,clip=False)
+    scalarMap = cm.ScalarMappable(norm=Norm,cmap=cm.viridis)
     
     # getting some colorbar
 
@@ -184,26 +178,21 @@ for fname in glob.iglob('*.npz'):
     w,h = figure.figaspect(1.0)
     fig = plt.figure(figsize=(w,h))
     ax = fig.add_axes([0,0,1,1])
-    ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
-
-    cbar = colorbar.ColorbarBase(ax1,cmap=cmstyle,
-            norm=Norm,
-            ticks=(VMIN,
-                VMIN+(VMAX-VMIN)/4,
-                VMIN+2*(VMAX-VMIN)/4,
-                VMIN+3*(VMAX-VMIN)/4,
-                VMAX),
+    #ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
+    
+    """
+    cbar = colorbar.ColorbarBase(ax1,cmap=cm.viridis,
+            norm=Norm,ticks=(0,np.pi/4,np.pi/2,3*np.pi/4,np.pi),
             orientation='horizontal') 
-    cbar.set_label(r'$|\vec{Q}_i|$',
+    cbar.set_label(r'$\cos^{-1}(\vec{S}_i\cdot\vec{S}_{i+1})$',
             fontsize=12,
             labelpad=-45)
-    #cbar.set_ticklabels([r'$0$',
-    #    r'$\pi/2$',
-    #    r'$\pi$',
-    #    r'$3\pi/2$',
-    #    r'$2\pi$',
-    #    ])
-   
+    cbar.set_ticklabels([r'$0$',
+        r'$\pi/4$',
+        r'$\pi/2$',
+        r'$3\pi/4$',
+        r'$\pi$',
+        ])
     """
     for i in range(0,N):
 
@@ -214,43 +203,133 @@ for fname in glob.iglob('*.npz'):
             cor_x = [X[i%L,i/L],X[i%L,i/L]+avec[p,0]]
             cor_y = [Y[i%L,i/L],Y[i%L,i/L]+avec[p,1]]
 
-            #cval = scalarMap.to_rgba(
-            #        np.arccos(np.dot(spin[i],spin[j])))
+            """
+
+            # plotting the lattice
+            line = plt.Line2D(cor_x,cor_y,
+                    color='gray',
+                    alpha=0.1,
+                    ls='solid',
+                    lw=0.25)
+            ax.add_line(line)
+
+            """
+
+            cval = scalarMap.to_rgba(
+                    np.arccos(np.dot(spin[i],spin[j])))
 
             #cval = scalarMap.to_rgba(i)
             # plotting the couplings
             line = plt.Line2D(cor_x,cor_y,
-                    color='gray',
+                    color='black',
+                    #color=cval,
                     alpha=1,
                     ls='solid',
                     #lw=JLW[i,j],
-                    lw=J[i,j],
+                    lw=0.5*J[i,j],
                     zorder = 0
                     )
             ax.add_line(line)
+
+        """
+
+        # plotting additonal bonds
+        for p in range(0,3):
+
+            j = nbr[i,6+p]
+            q = p +3
+
+            cor_x = [X[i%L,i/L],X[i%L,i/L]+avec[q,0]]
+            cor_y = [Y[i%L,i/L],Y[i%L,i/L]+avec[q,1]]
+
+            # plotting the couplings
+            line = plt.Line2D(cor_x,cor_y,
+                    color='red',
+                    alpha=0.5,
+                    ls='solid',
+                    lw=JLW[i,j])
+            ax.add_line(line)
+        """
+    # plotting the colorbar
+    #fig.colorbar(CS3,shrink=0.5)
+    #sm = ax1.cm.ScalarMappable(cmap=cm.viridis,norm=Norm)
+    #sm._A = []
+    #cbar = fig.colorbar(sm,shrink=0.5,ticks=(0,np.pi/4,np.pi/2,3*np.pi/4,np.pi))
+   
+    
+    """
+
+    # energy etimate
+    ENX = 0.0
+    for i in range(0,N):
+        for k in range(0,6):
+            j = nbr[i,k]
+            ENX += J[i,j]*np.dot(spin[i],spin[j])
+
+    ENX = ENX/N
+
+    ax.text(-1.25*a,(3.5*L/4.5)*a,
+            r'$E/N$ = '+str("%.4f" % ENX)
+            ,
+            fontsize=12)
+
+    # labeling scale of coupling and bonds
+    ax.text(-1.25*a,(3.0*L/4.5)*a,
+            r'$J_{\mathrm{max}}$ = '+str("%.4f" % JMAX)
+            ,
+            fontsize=12)
+
     """
     # picturing the spin orientation
-    UVNORM = np.sqrt(U*U+V*V)
-    eU = a*U/np.sqrt(U*U+V*V)
-    eV = a*V/np.sqrt(U*U+V*V)
-
-    Q=ax.quiver(X,Y,eU,eV,UVNORM,
-            cmap=cmstyle,
-            norm=Norm,
-            pivot='tail',
+    Q=ax.quiver(X,Y,U,V,
+            color='blue',
+            pivot='mid',
             angles='xy',
             scale=1,
             scale_units='xy',
-            width=0.002,
-            headwidth=3,
+            width=0.005,
+            headwidth=2,
             headlength=5,
             alpha=1.0,
             zorder = 1.0
             )
 
+    """
+    Q0=ax.quiver(X,Y,U0,V0,
+            color='blue',pivot='mid',
+            angles='xy',
+            scale=1,
+            scale_units='xy',
+            )
+    """
+    #plt.axis([X.min()-2.0*a,X.max()+2.0*a,
+    #    Y.min()-2.0*a,Y.max()+2.0*a])
     ax.axis('off')
 
-    fig.savefig("../plot/qdom_"+
+    """
+    # adding label patch
+    patch = [mpatches.Patch(color='red',alpha=0.5)]
+    label = [r'Coupling, $J$']
+
+    legend=ax.legend(patch,label,
+            loc='lower right',shadow=True)
+
+    """
+    #plt.suptitle(r"Spin Configuration", 
+    #        x=0.5, y=0.99, fontsize=16)
+    #plt.title(r'Anamalous dipole density domains',x=0.625,fontsize=12)
+
+    """
+    plt.suptitle("Spin Configuration" 
+            , x=0.5, y=0.99, fontsize=16)
+    plt.title(r"$\Delta$ = "+STR_DELTA+" , "
+            +r"$\alpha$ = "+STR_ALPHA+" , "
+            +"Sample. = "+str(IDISD)+" , "
+            +"Init. config. = "+str(BTNUM),x=0.485,fontsize=12)
+    """
+    #ax.set_aspect('equal')
+    #fig.tight_layout(pad=0.5,h_pad=0.5,w_pad=0.5)
+    fig.savefig("../plot/thdom_"+
             STR_L+
             STR_DELTA+
             STR_ALPHA+
@@ -264,12 +343,12 @@ for fname in glob.iglob('*.npz'):
 for L in zip(*hshchar)[0]:
     for DLT in zip(*hshchar)[1]:
         for ALP in zip(*hshchar)[2]:
-            subprocess.call('pdftk ../plot/qdom_'+
+            subprocess.call('pdftk ../plot/thdom_'+
                 L+
                 DLT+
                 ALP+
                 '* '+
-                'cat output ../plot/QDOMAIN_L_'+
+                'cat output ../plot/THDOMAIN_L_'+
                 L+
                 '_DELTA_'+
                 DLT+
@@ -278,6 +357,6 @@ for L in zip(*hshchar)[0]:
                 '.pdf',shell=True)
 
 # removing split files
-subprocess.call('rm ../plot/qdom_*',shell=True)
+subprocess.call('rm ../plot/thdom_*',shell=True)
 
 

@@ -27,7 +27,7 @@ def lattice_map(L,nbr):
 
 
         if ((i+L)>=SZE):
-            NUM=i+L-L*L		
+            NUM=i+L-SZE		
             nbr[i,2]=NUM
             if (np.floor((1.0*NUM-1.0)/L)==np.floor((1.0*NUM)/L)):
                 nbr[i,1]=NUM-1
@@ -65,7 +65,7 @@ def lattice_map(L,nbr):
                     nbr[i,6+0]=NUM-2+L
 
         if ((i-L)<0):
-            NUM=i-L+L*L		
+            NUM=i-L+SZE		
             nbr[i,5]=NUM
             if (np.floor((1.0*NUM+1.0)/L)==np.floor((1.0*NUM)/L)):
                 nbr[i,4]=NUM+1
@@ -105,7 +105,7 @@ def lattice_map(L,nbr):
         if NBR_MAX == 12:
 
             if ((i+2*L)>=SZE):
-                NUM=i+2*L-L*L		
+                NUM=i+2*L-SZE		
                 if (np.floor((1.0*NUM-1.0)/L)==np.floor((1.0*NUM)/L)):
                     nbr[i,6+1]=NUM-1
                 elif (np.floor((1.0*NUM-3.0)/L)!=np.floor((1.0*NUM)/L)):

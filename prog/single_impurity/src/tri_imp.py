@@ -70,7 +70,7 @@ def main(const):
             # algo.classic_zmc(CLNUM,NSYS,nbr,J,M_PURE,GTOL)
             
             #introducing single impurity
-            impsite = (NSYS+1)/2-1
+            impsite = (LSYS*(LSYS-1))/2-1
             for p in [3]:
                 J[impsite][nbr[impsite][p]] = 0.0
                 J[nbr[impsite][p]][impsite] = 0.0

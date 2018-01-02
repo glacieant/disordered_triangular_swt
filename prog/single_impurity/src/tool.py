@@ -20,9 +20,9 @@ def init_cpl(NSYS,nbr,
     J[:] = 0.0
     
     if DELTA != 0.0:
-        JBANK = np.random.uniform(1.0-DELTA,1.0+DELTA,size=(NSYS*12))
+        JBANK = np.random.uniform(1.0-DELTA,1.0+DELTA,size=(NSYS*6))
     else:
-        JBANK = np.full((NSYS*12),1.0)
+        JBANK = np.full((NSYS*6),1.0)
     q = 0
     for i in range(0,NSYS):
         for m in range(0,6):
@@ -55,8 +55,9 @@ def init_param(NSYS,nbr,
 
     """
     # setting up the spin and field matrices
-    ROT = np.array([[np.cos(2.0*np.pi/3.0),-np.sin(2.0*np.pi/3.0),0],
-        [np.sin(2.0*np.pi/3.0),np.cos(2.0*np.pi/3.0),0],[0,0,1]])
+    phx = -2.0*np.pi/3.0
+    ROT = np.array([[np.cos(phx),-np.sin(phx),0],
+        [np.sin(phx),np.cos(phx),0],[0,0,1]])
 
     LSYS = int(NSYS**0.5)
     for i in range(0,NSYS):
