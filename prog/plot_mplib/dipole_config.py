@@ -208,11 +208,22 @@ for fname in glob.iglob('*.npz'):
 
             SU0[x,y] = U0[x,y]
             SV0[x,y] = V0[x,y]
-
+            
+            """
             if dixt[0] < 0.0:
                 LSU[x,y] = U[x,y]
                 LSV[x,y] = V[x,y]
             elif dixt[0] > 0.0:
+                RSU[x,y] = U[x,y]
+                RSV[x,y] = V[x,y]
+            else:
+                SU[x,y] = U[x,y]
+                SV[x,y] = V[x,y]
+            """
+            if U[x,y] <= 0.1 and U[x,y] >= -0.1:
+                LSU[x,y] = U[x,y]
+                LSV[x,y] = V[x,y]
+            elif U[x,y] > 0.1:
                 RSU[x,y] = U[x,y]
                 RSV[x,y] = V[x,y]
             else:
@@ -295,7 +306,7 @@ for fname in glob.iglob('*.npz'):
             zorder=2
             )
     RQ=ax.quiver(SX,SY,RSU,RSV,
-            color='blue',
+            color='green',
             width=width,
             headwidth=headwidth,
             headlength=headlength,
@@ -306,7 +317,7 @@ for fname in glob.iglob('*.npz'):
             zorder=2
             )
     Q=ax.quiver(SX,SY,SU,SV,
-            color='black',
+            color='blue',
             width=width,
             headwidth=headwidth,
             headlength=headlength,

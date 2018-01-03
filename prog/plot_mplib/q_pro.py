@@ -5,6 +5,7 @@
 
 import os
 #folder = "sharp_wall"
+#folder = "single_impurity"
 folder = "zero_field_classical"
 os.chdir("../"+folder+"/out/data")
 import sys

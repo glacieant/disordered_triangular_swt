@@ -132,3 +132,4 @@ def lattice_map(L,nbr):
                 elif (np.floor((1.0*NUM+1.0)/L)!=np.floor((1.0*NUM)/L)):
                     nbr[i,6+4]=NUM+1-L
 
+
