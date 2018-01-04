@@ -4,9 +4,7 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-#folder = "sharp_wall"
-#folder = "single_impurity"
-folder = "zero_field_classical"
+folder = "realspace_mf"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -69,10 +67,6 @@ en = np.zeros(HSHNUM)
 # defining a tolerance limit for calculations
 zero = 10.0**(-8)
 
-# reciprocal lattice vectors
-b1 = np.array([2.0*np.pi,-2.0*np.pi/3.0**0.5])
-b2 = np.array([0.0,4.0*np.pi/3.0**0.5])
-
 for fname in glob.iglob('*.npz'):
 
     match = fpat.match(fname)
@@ -86,22 +80,47 @@ for fname in glob.iglob('*.npz'):
 
     FNDATA = np.load(fname)
 
-    n_sfc[INDX] += 1
+    TOL = FNDATA['err'][()]
 
-    spin = FNDATA['spin']
+    if TOL < 101:
 
-    N = L**2
+        n_sfc[INDX] += 1
 
-    spin_X = spin[:,0].reshape((L,L))
-    spin_Y = spin[:,1].reshape((L,L))
-    spin_Z = spin[:,2].reshape((L,L))
-    SFC_X = np.abs(np.fft.fft2(spin_X,norm='ortho'))**2
-    SFC_Y = np.abs(np.fft.fft2(spin_Y,norm='ortho'))**2
-    SFC_Z = np.abs(np.fft.fft2(spin_Z,norm='ortho'))**2
+        T = FNDATA['T'][()]
+        ensys = FNDATA['ensys']
+        lmult = FNDATA['lmult']
+        vsys = FNDATA['vsys']
 
-    SFC = SFC_X + SFC_Y + SFC_Z
+        N = L**2
 
-    sfc[INDX] += SFC
+        en[INDX] += 0.5*(np.sum(fermi(ensys,T)*ensys)
+                -np.sum(lmult))/N
+       
+        # reshaping the eigenvectors 
+        farray = fermi(ensys,T)
+        hsys = vsys[:,np.where(farray>zero)]
+        [NVEC,d,NEN] = np.array(hsys.shape)
+        if NVEC != 2*N:
+            print "eigenvector size wrong!"
+            quit()
+        vsys = np.reshape(hsys,(2*N,NEN))
+        U = np.zeros((2,NEN,L,L),dtype=np.complex64)
+        U[0] = np.reshape(np.einsum('ij->ji',vsys[:N,:]),(NEN,L,L))
+        U[1] = np.reshape(np.einsum('ij->ji',vsys[N:,:]),(NEN,L,L))
+        UDAGU = np.einsum('amij,bnij->mnabij',U.conj(),U)
+        GAMMA = np.fft.fft2(UDAGU.real,norm='ortho')
+        GAMMA += 1.0j*np.fft.fft2(UDAGU.imag,norm='ortho')
+        
+        SFC = 2*np.einsum("mmabij,nnabij->ij",GAMMA,GAMMA.conj())
+        #SFC = -2*np.einsum("mnabij,mnabij->ij",GAMMA,GAMMA.conj())
+        SFC -= np.einsum("mmaaij,nnbbij->ij",GAMMA,GAMMA.conj())
+        #SFC += np.einsum("mnaaij,mnbbij->ij",GAMMA,GAMMA.conj())
+        sfc[INDX] += SFC.real/4.0
+
+
+# reciprocal lattice vectors
+b1 = np.array([2.0*np.pi,-2.0*np.pi/3.0**0.5])
+b2 = np.array([0.0,4.0*np.pi/3.0**0.5])
 
 for i in range(0,HSHNUM):
 

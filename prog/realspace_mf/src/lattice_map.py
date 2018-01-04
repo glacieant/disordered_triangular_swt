@@ -132,21 +132,3 @@ def lattice_map(L,nbr):
                 elif (np.floor((1.0*NUM+1.0)/L)!=np.floor((1.0*NUM)/L)):
                     nbr[i,6+4]=NUM+1-L
 
-
-def sublattice_map(L,sub):
-
-    N = L*L
-
-    for t in range(0,N):
-
-        i = t/L
-        j = t%L
-
-        if (i%3) == 0:
-            sub[t] = j%3
-        elif (i%3) == 1:
-            sub[t] = (j%3+2)%3
-        else:
-            sub[t] = (j%3+1)%3
-
-

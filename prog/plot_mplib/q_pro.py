@@ -184,7 +184,7 @@ for fname in glob.iglob('*.npz'):
     #fig, ax = plt.subplots()
     w,h = figure.figaspect(1.0)
     fig = plt.figure(figsize=(w,h))
-    ax = fig.add_axes([0,0,1,1])
+    ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
     ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
 
     cbar = colorbar.ColorbarBase(ax1,cmap=cmstyle,
@@ -198,12 +198,12 @@ for fname in glob.iglob('*.npz'):
     cbar.set_label(r'$|\vec{Q}_i|$',
             fontsize=12,
             labelpad=-45)
-    #cbar.set_ticklabels([r'$0$',
-    #    r'$\pi/2$',
-    #    r'$\pi$',
-    #    r'$3\pi/2$',
-    #    r'$2\pi$',
-    #    ])
+    cbar.set_ticklabels([r'$\pi/2$',
+        r'$3\pi/4$',
+        r'$\pi$',
+        r'$5\pi/4$',
+        r'$3\pi/2$',
+        ])
    
     """
     for i in range(0,N):
@@ -243,7 +243,7 @@ for fname in glob.iglob('*.npz'):
             scale=1,
             scale_units='xy',
             width=0.002,
-            headwidth=3,
+            headwidth=4,
             headlength=5,
             alpha=1.0,
             zorder = 1.0
@@ -258,7 +258,7 @@ for fname in glob.iglob('*.npz'):
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
             ".pdf"
-            #,bbox_inches='tight'
+            ,bbox_inches='tight'
             )
     plt.close('all')
 

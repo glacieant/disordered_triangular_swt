@@ -4,7 +4,8 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-folder = "single_impurity"
+#folder = "single_impurity"
+folder = "zero_field_classical"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
