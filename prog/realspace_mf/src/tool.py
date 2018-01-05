@@ -19,13 +19,12 @@ def init_cpl(NSYS,nbr,
 
     J[:] = 0.0
     
-    """
     if DELTA != 0.0:
         JBANK = np.random.lognormal(1.0,DELTA,size=(NSYS*12))
     else:
         JBANK = np.full((NSYS*12),1.0)
-    """
-    JBANK = np.full((NSYS*12),1.0)
+    
+    #JBANK = np.full((NSYS*12),1.0)
     q = 0
     for i in range(0,NSYS):
         for m in range(0,6):
@@ -58,13 +57,6 @@ def init_param(NSYS,nbr,
     lmult[:] = 0.0
     fnum[:] = 0.0
     
-    """
-    bond[1,0,1] = 1.0
-    bond[1,1,0] = 1.0
-    chi[0,1] = 0.5*(1.0-XPAR)*1.0
-    chi[1,0] = 0.5*(1.0-XPAR)*1.0
-
-
     # setting up the bond matrices
     for i in range(0,NSYS):
 
@@ -78,22 +70,8 @@ def init_param(NSYS,nbr,
                 chi[i,j] = 0.5*(1.0-XPAR)*J[i,j]*bond[1,i,j]
                 chi[j,i] = chi[i,j].conj()
     
-    """
-    fill = np.zeros(NSYS,dtype=np.int)
-    for i in range(0,NSYS):
-
-        j = np.random.choice(nbr[i,:6])
-
-        if fill[j] == 0 and fill[i] == 0:
-            bond[1,i,j] = 1.0
-            bond[1,j,i] = 1.0
-            chi[i,j] = 0.5*(1.0-XPAR)*J[i,j]*bond[1,i,j]
-            chi[j,i] = chi[i,j].conj()
-            fill[i] = 1
-            fill[j] =1
-
-    """
     M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
+    #M[1] = SPIN/np.einsum("ij,ij->i",SPIN,SPIN)**0.5
     
     for i in range(0,NSYS):
         
@@ -101,4 +79,3 @@ def init_param(NSYS,nbr,
             
             B[i] += 0.5*XPAR*J[i,j]*M[1,j]
 
-    """

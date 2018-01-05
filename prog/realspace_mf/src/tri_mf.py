@@ -5,15 +5,16 @@
 
 import sys
 import numpy as np
-from numpy import random_intel
+#from numpy import random_intel
 import lattice_map as lmap
-import algo
+#import algo
 import gen_ham
 import calc_mfparam as mfp
 import tool
 
 # seeding the random number generators
-np.random_intel.seed(0)
+#np.random_intel.seed(0)
+np.random.seed(0)
 
 # defining the main function block
 

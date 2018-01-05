@@ -6,7 +6,7 @@
 ##################################################
 
 # system size
-LSYS = [12] 
+LSYS = [24] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
@@ -25,10 +25,10 @@ MFTOL = [10.0**(-5)]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7] 
+DELTA = [0.0] 
 # the ratio between nearest and next 
 # nearest couplings
-ALPHA = [0.0] 
+ALPHA = [0.125] 
 # tempering the fermi function
 TEMP = [0.01] 
 # the fudge parameter

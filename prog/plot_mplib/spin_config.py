@@ -24,8 +24,8 @@ from matplotlib.colors import LogNorm
 
 
 ## The tex style commands
-plt.rc('text',usetex=True)
-plt.rc('font',family='serif')
+#plt.rc('text',usetex=True)
+#plt.rc('font',family='serif')
 
 # the font styleset
 #from matplotlib import rcParams
@@ -139,7 +139,8 @@ for fname in glob.iglob('*.npz'):
     #fig, ax = plt.subplots()
     w,h = figure.figaspect(1)
     fig = plt.figure(figsize=(w,h))
-    ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
+    #ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
+    ax = fig.add_axes([0,0,1,1])
     ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
     # defining the plane for the spins
 
@@ -315,7 +316,7 @@ for fname in glob.iglob('*.npz'):
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
             ".pdf"
-            ,bbox_inches='tight'
+            #,bbox_inches='tight'
             )
     plt.close('all')
 
@@ -336,6 +337,6 @@ for L in zip(*hshchar)[0]:
                 '.pdf',shell=True)
 
 # removing split files
-subprocess.call('rm ../plot/spin_config_*',shell=True)
+#subprocess.call('rm ../plot/spin_config_*',shell=True)
 
 
