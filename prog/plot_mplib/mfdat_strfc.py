@@ -227,12 +227,13 @@ for i in range(0,HSHNUM):
                 cmap=cm.viridis,aspect='auto')
         cbar = fig.colorbar(cax,shrink=0.5,format='%.0e')
         
-        plt.suptitle(r"Static Structure Factor, $\chi (q)/L^{2}$", 
-                x=0.5, fontsize=16)
+        #plt.suptitle(r"Static Structure Factor, $\chi (q)/L^{2}$", 
+        #        x=0.5, fontsize=16)
         plt.title(r"$\Delta$ = "+STR_DELTA+" , "
-                +r"$\alpha$ = "+STR_ALPHA+" , "
-                +"|E|/$L^{2}$ = "+str("%f" % en[i]),
-                x=0.6,fontsize=12)
+                +r"$\alpha$ = "+STR_ALPHA
+                #+" , "
+                #+"|E|/$L^{2}$ = "+str("%f" % en[i])
+                ,x=0.6,fontsize=12)
         xticks = [0,dtx,2*dtx]
         xtickslabel = [r'$-2\pi$',0,r'$2\pi$']
         yticks = [0,dtx,2*dtx]
@@ -251,7 +252,7 @@ for i in range(0,HSHNUM):
         plt.figtext(.8,.85,
                 r'$\chi^{\mathrm{max}}/L^{2}$ = '+str("%.2e" % smax),
                 fontsize=12)
-        plt.xlabel('L = '+STR_L,fontsize=16)
+        #plt.xlabel('L = '+STR_L,fontsize=16)
         fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)
         fig.savefig("../plot/stsc_"+
                 STR_L+
@@ -266,7 +267,7 @@ for L in zip(*hshchar)[0]:
     subprocess.call('pdftk ../plot/stsc_'+
             L+
             '* '+
-            'cat output ../plot/STRFC_L_'+
+            'cat output ../plot/MF_STRFC_L_'+
             L+
             '.pdf',shell=True)
 

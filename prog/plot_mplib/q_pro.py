@@ -170,7 +170,7 @@ for fname in glob.iglob('*.npz'):
 
     # fixing colormap for line plotting
 
-    cmstyle = cm.spring
+    cmstyle = cm.viridis
     VMIN = np.pi/2
     VMAX = 3.0*np.pi/2
 

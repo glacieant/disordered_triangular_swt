@@ -4,8 +4,7 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-folder = "realspace_mf"
-os.chdir("../"+folder+"/out/data")
+os.chdir("../out/data")
 import sys
 import subprocess
 import re
@@ -320,22 +319,16 @@ for fname in glob.iglob('*.npz'):
         EN = 0.5*(np.sum(fermi(ensys,T)*ensys)
                 -np.sum(lmult))/N
 
-        #plt.suptitle("Spin & Bond Configuration", x=0.5, y=0.99, fontsize=16)
+        plt.suptitle("Spin & Bond Configuration", x=0.5, y=0.99, fontsize=16)
         plt.title(r"$\Delta$ = "+STR_DELTA+" , "
-                +r"$\alpha$ = "+STR_ALPHA
-                #+" , "
-                #+"E/$L^{2}$ = "+str("%.5f" % EN)
-                #+" , "
-                #+"Sample. = "+str(IDISD)+" , "
-                #+"Init. config. = "+str(BTNUM)
-                ,x=0.485,fontsize=15)
-        """
+                +r"$\alpha$ = "+STR_ALPHA+" , "
+                +"E/$L^{2}$ = "+str("%.5f" % EN)+" , "
+                +"Sample. = "+str(IDISD)+" , "
+                +"Init. config. = "+str(BTNUM),x=0.485,fontsize=12)
         plt.xlabel(r'Iteration count = '+
                 str("%d" % inum)+
                 r', Error = '+
                 str("%.4e" % err))
-        """
-        ax.axis('off')
         fig.tight_layout(pad=1.6,h_pad=1.6,w_pad=1.6)
         fig.savefig("../plot/esbc_"+
                 STR_L+
@@ -355,7 +348,7 @@ for L in zip(*hshchar)[0]:
                 DLT+
                 ALP+
                 '* '+
-                'cat output ../plot/MF_CONFIG_L_'+
+                'cat output ../plot/CONFIG_L_'+
                 L+
                 '_DELTA_'+
                 DLT+

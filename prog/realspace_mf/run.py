@@ -10,7 +10,7 @@ LSYS = [24]
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [1]
+ITERDISD = [10]
 # initial angle fluctuation
 ANGVAR = [0.5]
 # initial bond fluctuation
@@ -25,10 +25,10 @@ MFTOL = [10.0**(-5)]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [0.0] 
+DELTA = [1.0,10.0] 
 # the ratio between nearest and next 
 # nearest couplings
-ALPHA = [0.125] 
+ALPHA = [0.0,0.125] 
 # tempering the fermi function
 TEMP = [0.01] 
 # the fudge parameter

@@ -5,16 +5,15 @@
 
 import sys
 import numpy as np
-#from numpy import random_intel
+from numpy import random_intel
 import lattice_map as lmap
-#import algo
+import algo
 import gen_ham
 import calc_mfparam as mfp
 import tool
 
 # seeding the random number generators
-#np.random_intel.seed(0)
-np.random.seed(0)
+np.random_intel.seed(0)
 
 # defining the main function block
 
@@ -99,7 +98,6 @@ def main(const):
             ###
             for j in range(0,SIMSZE):
 
-
                 # checking the tolerance
                 if TOL > MFTOL:
 
@@ -112,8 +110,6 @@ def main(const):
 
                     # diagonalising the hamiltonian
                     en_mf, v_mf = np.linalg.eigh(ham)
-
-                    """
 
                     # calculating the mean-field parameters
                     mfp.paramset(NSYS,j,nbr,
@@ -129,13 +125,9 @@ def main(const):
                     TOL = np.amax([np.linalg.norm(bond[1]-bond[0]),
                         np.linalg.norm(M[1]-M[0]),
                         np.linalg.norm(fnum[1])])/LSYS
-
-                    """
-                    TOL = 0.0
                     
                 else:
                     break
-
 
 
 

@@ -18,13 +18,12 @@ def init_cpl(NSYS,nbr,
     # zeroing out the couplings
 
     J[:] = 0.0
-    
+
     if DELTA != 0.0:
         JBANK = np.random.lognormal(1.0,DELTA,size=(NSYS*12))
     else:
         JBANK = np.full((NSYS*12),1.0)
-    
-    #JBANK = np.full((NSYS*12),1.0)
+
     q = 0
     for i in range(0,NSYS):
         for m in range(0,6):
@@ -56,7 +55,7 @@ def init_param(NSYS,nbr,
     B[:] = 0.0
     lmult[:] = 0.0
     fnum[:] = 0.0
-    
+
     # setting up the bond matrices
     for i in range(0,NSYS):
 
@@ -71,11 +70,11 @@ def init_param(NSYS,nbr,
                 chi[j,i] = chi[i,j].conj()
     
     M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
-    #M[1] = SPIN/np.einsum("ij,ij->i",SPIN,SPIN)**0.5
     
     for i in range(0,NSYS):
         
         for j in nbr[i]:
             
             B[i] += 0.5*XPAR*J[i,j]*M[1,j]
+
 
