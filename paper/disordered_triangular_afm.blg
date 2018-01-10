@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: disordered_triangular_afm.aux
 The style file: apsrev4-1.bst
@@ -24,45 +24,45 @@ Control: page (0) single
 Control: year (1) truncated
 Control: production of eprint (0) enabled
 Warning--empty year in Dey-Vojta-disordered-non-collinear-2018
-You've used 19 entries,
+You've used 22 entries,
             5847 wiz_defined-function locations,
-            1757 strings with 19005 characters,
-and the built_in function-call counts, 16291 in all, are:
-= -- 1075
-> -- 360
-< -- 133
-+ -- 123
-- -- 97
-* -- 2390
-:= -- 1635
-add.period$ -- 17
-call.type$ -- 19
-change.case$ -- 68
-chr.to.int$ -- 27
-cite$ -- 20
-duplicate$ -- 1555
-empty$ -- 1174
-format.name$ -- 215
-if$ -- 3183
+            1783 strings with 19800 characters,
+and the built_in function-call counts, 19184 in all, are:
+= -- 1273
+> -- 431
+< -- 152
++ -- 145
+- -- 113
+* -- 2827
+:= -- 1922
+add.period$ -- 20
+call.type$ -- 22
+change.case$ -- 80
+chr.to.int$ -- 30
+cite$ -- 23
+duplicate$ -- 1821
+empty$ -- 1390
+format.name$ -- 260
+if$ -- 3765
 int.to.chr$ -- 1
-int.to.str$ -- 26
-missing$ -- 216
-newline$ -- 103
-num.names$ -- 51
-pop$ -- 687
+int.to.str$ -- 29
+missing$ -- 251
+newline$ -- 112
+num.names$ -- 60
+pop$ -- 798
 preamble$ -- 1
-purify$ -- 84
+purify$ -- 99
 quote$ -- 0
-skip$ -- 622
+skip$ -- 733
 stack$ -- 0
-substring$ -- 456
-swap$ -- 1421
-text.length$ -- 39
+substring$ -- 540
+swap$ -- 1672
+text.length$ -- 47
 text.prefix$ -- 0
 top$ -- 10
-type$ -- 238
+type$ -- 279
 warning$ -- 2
-while$ -- 58
+while$ -- 67
 width$ -- 0
-write$ -- 185
+write$ -- 209
 (There were 2 warnings)

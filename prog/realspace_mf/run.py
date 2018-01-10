@@ -6,33 +6,33 @@
 ##################################################
 
 # system size
-LSYS = [24] 
+LSYS = [12] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [10]
+ITERDISD = [1]
 # initial angle fluctuation
-ANGVAR = [0.5]
+ANGVAR = [2.0]
 # initial bond fluctuation
 BONDVAR = [0.5]
 # number of bootstrapping
 BOOTNUM = [1]
 # maximum number of iteration for 
 # the mean-field simulation
-SIMSZE = [1000] 
+SIMSZE = [500] 
 # tolerance for the mean-field routine
 MFTOL = [10.0**(-5)]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [1.0,10.0] 
+DELTA = [0.0] 
 # the ratio between nearest and next 
 # nearest couplings
-ALPHA = [0.0,0.125] 
+ALPHA = [0.125] 
 # tempering the fermi function
-TEMP = [0.01] 
+TEMP = [0.001] 
 # the fudge parameter
-XPAR = [0.5] 
+XPAR = [0.0] 
 # update ratio for magnetisation and bonds
 UPAR = [[0.3,0.7],[0.3,0.7]]
 # maximum iteration for classical algorithm

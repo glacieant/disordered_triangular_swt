@@ -6,7 +6,7 @@
 %Control: page (0) single
 %Control: year (1) truncated
 %Control: production of eprint (0) enabled
-\begin{thebibliography}{17}%
+\begin{thebibliography}{20}%
 \makeatletter
 \providecommand \@ifxundefined [1]{%
  \@ifx{#1\undefined}
@@ -198,4 +198,33 @@
   \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
   {Wollny}},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Ph.D
   Thesis}\ } (\bibinfo {year} {2016})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Chernyshev}\ and\ \citenamefont
+  {Zhitomirsky}(2009)}]{Chernyshev-swt-triangular-2009}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~L.}\ \bibnamefont
+  {Chernyshev}}\ and\ \bibinfo {author} {\bibfnamefont {M.~E.}\ \bibnamefont
+  {Zhitomirsky}},\ }\href {\doibase 10.1103/PhysRevB.79.144416} {\bibfield
+  {journal} {\bibinfo  {journal} {Phys. Rev. B}\ }\textbf {\bibinfo {volume}
+  {79}},\ \bibinfo {pages} {144416} (\bibinfo {year} {2009})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Bhatt}\ and\ \citenamefont
+  {Lee}(1982)}]{Bhatt-disordered-afm-1982}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.~N.}\ \bibnamefont
+  {Bhatt}}\ and\ \bibinfo {author} {\bibfnamefont {P.~A.}\ \bibnamefont
+  {Lee}},\ }\href {\doibase 10.1103/PhysRevLett.48.344} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {48}},\
+  \bibinfo {pages} {344} (\bibinfo {year} {1982})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Zhou}\ \emph {et~al.}(2009)\citenamefont {Zhou},
+  \citenamefont {Hoyos}, \citenamefont {Dobrosavljević},\ and\ \citenamefont
+  {Miranda}}]{Zhou-disordered-afm-2009}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Zhou}}, \bibinfo {author} {\bibfnamefont {J.~A.}\ \bibnamefont {Hoyos}},
+  \bibinfo {author} {\bibfnamefont {V.}~\bibnamefont {Dobrosavljević}}, \ and\
+  \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Miranda}},\ }\href
+  {http://stacks.iop.org/0295-5075/87/i=2/a=27003} {\bibfield  {journal}
+  {\bibinfo  {journal} {EPL (Europhysics Letters)}\ }\textbf {\bibinfo {volume}
+  {87}},\ \bibinfo {pages} {27003} (\bibinfo {year} {2009})}\BibitemShut
+  {NoStop}%
 \end{thebibliography}%

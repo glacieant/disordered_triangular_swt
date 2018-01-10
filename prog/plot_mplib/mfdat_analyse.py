@@ -130,7 +130,7 @@ for fname in glob.iglob('*.npz'):
 
         # defining the plane for the spins
 
-        S_SQR = 0.5*np.einsum('ij->i',spin**2)
+        S_SQR = np.einsum('ij->i',spin**2)**(0.5)
         SMAX = np.amax(S_SQR)
 
         e1 = spin[0]
@@ -142,8 +142,8 @@ for fname in glob.iglob('*.npz'):
             e1 = np.array([1.0,0.0,0.0])
             e2 = np.array([0.0,1.0,0.0])
 
-        U = 0.5*np.einsum('ij,j->i',spin,e1).reshape((L,L)).transpose()
-        V = 0.5*np.einsum('ij,j->i',spin,e2).reshape((L,L)).transpose()
+        U = np.einsum('ij,j->i',spin,e1).reshape((L,L)).transpose()
+        V = np.einsum('ij,j->i',spin,e2).reshape((L,L)).transpose()
 
         VMIN = 0.0
         VMAX = 2.0
@@ -329,14 +329,14 @@ for fname in glob.iglob('*.npz'):
                 #+"Sample. = "+str(IDISD)+" , "
                 #+"Init. config. = "+str(BTNUM)
                 ,x=0.485,fontsize=15)
-        """
+        
         plt.xlabel(r'Iteration count = '+
                 str("%d" % inum)+
                 r', Error = '+
                 str("%.4e" % err))
-        """
-        ax.axis('off')
-        fig.tight_layout(pad=1.6,h_pad=1.6,w_pad=1.6)
+        
+        #ax.axis('off')
+        #fig.tight_layout(pad=1.6,h_pad=1.6,w_pad=1.6)
         fig.savefig("../plot/esbc_"+
                 STR_L+
                 STR_DELTA+

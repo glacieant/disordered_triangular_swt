@@ -36,7 +36,7 @@ def paramset(NSYS,INUM,nbr,XPAR,
         bdb = np.vdot(vec[i+NSYS,:],farray*vec[i+NSYS,:])
         
         # getting the magnetic moments
-        MAG = np.array([adb+bda,
+        MAG = 0.5*np.array([adb+bda,
             (-adb+bda)*1.0j,ada-bdb]).real
         rx = np.random_intel.uniform(UPAR[0][0],
                 UPAR[0][1])
@@ -64,7 +64,7 @@ def paramset(NSYS,INUM,nbr,XPAR,
                 chi[j,i] = chi[i,j].conj()
 
             # computing the magnetic fields
-            BMAG += 0.5*XPAR*J[i,j]*M[1,j]
+            BMAG += XPAR*J[i,j]*M[1,j]
 
         # Updating B fields
         B[i] = BMAG

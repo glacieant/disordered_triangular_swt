@@ -51,7 +51,7 @@ Technische Universit\"{a}t Dresden, 01062 Dresden}
     This rules out the possiblity to characterize the system without carefuly 
     eliminating the finite size effects. To this end we resort to two 
     different microscopic modelling of the disordered $J_1-J_2$ Heisenberg 
-    hamiltonian, improving on the system size limitations of prior 
+    Hamiltonian, improving on the system size limitations of prior 
     calculations and also mapping out the entire phase diagram of the 
     model which corroborates to the signatures observed in experiments.
 
@@ -79,12 +79,12 @@ has the familiar form,
     \eal
 \eeq
 with the symbols $\bra i,j\ket$ and $\bra\bra i,j\ket\ket$ representing sum over
-nearest and next to nearest neighbours. This is a SU(2) symmetric hamiltonian
+nearest and next to nearest neighbours. This is a SU(2) symmetric Hamiltonian
 but the discrete translational symmetry of the lattice is lost as the couplings
 $J_{i,j}$ and $J'_{i,j}$ are all uncorrelated random variables 
 drawn from a random distribution $P(J,\Delta)$ with $\Delta$, the standard deviation 
 characterizing the strength of the disorder. $\Delta$ is an implicit parameter for 
-the disordered hamiltonian. In a clean system, however, all the couplings are fixed 
+the disordered Hamiltonian. In a clean system, however, all the couplings are fixed 
 to a scale and in the absence of any external magnetic field, $\alpha$ becomes the 
 sole adjustable parameter that determines the relative strength of the next to nearest 
 neighbour (NNN) couplings over the nearest neighbour (NN) couplings. In the following 
@@ -133,7 +133,7 @@ to the limits of very strong disorder.
 
 \section{Spinwave excitations with finite disorder}
 
-The spin-wave theory (SWT) for a disordered Heisenberg hamiltonian, not unlike its 
+The spin-wave theory (SWT) for a disordered Heisenberg Hamiltonian, not unlike its 
 homogeneous counterpart, entails an expansion in terms of quantum excitation modes 
 around the magnetically ordered classical ground state\cite{Wessel-quasicrystal-2005,
 Andrade-disordered-spin-glass-2012}. The starting point for such an expansion is the
@@ -145,13 +145,13 @@ transformations themselves are exact, they retain the highly interacting charact
 of the heisenberg model. The spin-wave approximation, i.e. the assumption that the 
 quanutm corrections due to these bosons are weaker compared to the corresponding 
 classical expectation values is an additonal input which allows a controlled expansion 
-of the hamiltonian in terms of these bosonic modes. The chief distinction in the 
+of the Hamiltonian in terms of these bosonic modes. The chief distinction in the 
 disordered case is that the loss of the lattice translational symmetry prevents any 
 description in terms of lattice momentums, which are no longer good quantum numbers
 and instead a real space formulation is necessitated.
 
 The situation is further complicated by the non-triviality of the energy landscape of 
-the disordered classical hamiltonian. In our treatment we follow a simple local 
+the disordered classical Hamiltonian. In our treatment we follow a simple local 
 energy minimzation scheme iteratively to reach the ground state configuration. The 
 scheme involves a starting with a randomized initial spin configurations and afterwards
 performing local energy minimization at each site to antialign the spins with respect to
@@ -178,10 +178,10 @@ Euler angles $\theta_i,\phi_i$ describing the rigid body rotation of the body ax
         \end{pmatrix}
     \eal
 \eeq
-For notational simplicity the hamiltonian in Eq. (\ref{eq:main_ham}) can be recast in the 
+For notational simplicity the Hamiltonian in Eq. (\ref{eq:main_ham}) can be recast in the 
 form $H = 1/2\sum_{i,j}J_{i,j}\vS_i\cdot\vS_j$, where both the parameters $\alpha$ and $\Delta$ 
 are implicit and they control the magnitudes of the couplings $J_{i,j}$s which are otherwise 
-zero unless $(i,j) \in \text{NN or NNN}$ lattice points. In the rotated frame the hamiltonian 
+zero unless $(i,j) \in \text{NN or NNN}$ lattice points. In the rotated frame the Hamiltonian 
 reads, 
 \beq\label{eq:rot_ham}
     \bal
@@ -261,23 +261,22 @@ with the coefficients given by,
 \rcol{To do:finish equation}
 
 When the expansion is around the true ground state of \rcol{a homogeneous}
-lattice the linear term in the hamiltonian (\ref{eq:sw_ham}) drops out
-\cite{Chernyshev-swt-triangular-2009}. This eliminates the possiblity 
-of transverse fluctuation of the classically ordered ground state due 
-to the spin-wave excitations. The quantum effect, however, renormalizes 
+lattice the linear term in the Hamiltonian (\ref{eq:sw_ham}) drops out
+to leading order\cite{Chernyshev-swt-triangular-2009}. This relates to
+the absence of transverse or angular fluctuation of the classically ordered 
+ground state. The spin-wave excitations, however, renormalizes 
 the staggered moment heavily\cite{Jolicoeur-NN-triangular-1989} and in
-principle can further reinforce the effect of quenched disorder. In 
+principle can further enhance the effect of quenched disorder. In 
 addition, for an expansion around the glassy ground state of the disordered 
-spin model one can not, apriori, rule out the possibility of a finite
-linear term, hence quantum correction to the classical ordering angles. 
-In our treatment we consider both the third order term and the linear
-term of the hamiltonian (\ref{eq:sw_ham}) together and find the appropriate
-angle correction to the classical ground state at finite disorder in the 
-saddle point approximation. A generalized bogolioubov transformation 
-\rcol{To do: Bogolioubov transformation} brings the quadratic part of the 
-hamiltonian in a diagonal form\cite{Wessel-quasicrystal-2005} while with 
-the appropriate angle correction incorporated back to the hamiltonian, the 
-linear and the cubic terms identically vanishes at a mean field level.
+spin model one can not, apriori, rule out the perturbative corrections
+to classical angles.  In our treatment we follow a strictly $1/S$ expansion
+scheme and consider both the third order term and the linear term of the 
+Hamiltonian (\ref{eq:sw_ham}) together and find the appropriate angle correction t
+o the classical ground state at finite disorder in a saddle point approximation. 
+With the quantum corrected angles, a generalized bogolioubov transformation
+\rcol{To do: Bogolioubov transformation} brings the quadratic part of the Hamiltonian 
+in a diagonal form\cite{Wessel-quasicrystal-2005} while the linear and the cubic terms 
+now identically vanishes at the mean field level.
 
 \rcol{To do: Bogolioubov transformation equations}
 
@@ -285,7 +284,7 @@ The angle corrections are obtained from solving the following equations.
 
 \rcol{To do: angle correction equation}
 
-It is natural to expect that for relatively weaker disorder, when the ground
+It is natural to expect that for relatively weaker disorder i.e. when the ground
 state is close to the $120^\circ$ spiral state, the success of the linear spin
 wave theory (i.e. effectively truncating the spin-wave expansion after the 
 second order) in describing the appropriate quantum ground state for the 
@@ -295,6 +294,43 @@ to
 \rcol{A brief discussion of why we might want to go beyond the spin-waves}
 
 \section{Mean-field theory in real space}
+
+Singlet formation is usually favored in highly disordered antiferromagnetic
+systems\cite{Bhatt-disordered-afm-1982,Zhou-disordered-afm-2009}. However,
+in the complicated energy landscape of our model which is both frustrated and
+disordered, a competition between spin glass type and valence bond type 
+behavior can be expected. To that effect we consider a composite mean-field
+approximation of our Hamiltonian (\ref{eq:main_ham}) with 
+a $SU(2)$ symmetric slave fermionic Hubbard-Stratanovich transformation in the 
+spirit of the Large-N expansions\cite{Affleck-large-N-1988,
+Zhou-disordered-afm-2009} and also including an expansion in terms of the 
+magnetic moments and local fields similar to a Weiss mean-field 
+theory. The mean-field Hamiltonian assumes the following form,
+\beq\label{eq:mf_ham}
+    \bal
+        H_{\text{mf}} &= 
+    -\sum_{\langle i,j\rangle,\alpha}\Big(\chi^*_{ij}
+    f^\dagger_{i\alpha}f_{j,\alpha}+\text{h.c}\Big)
+    +\frac{1}{2}\sum_{i,\alpha,\beta}\vec{B}_i\cdot
+    f^\dagger_{i\alpha}\vec{\sigma}_{\alpha,\beta}f_{i\beta}
+    \eal
+\eeq
+The mean-field parameters are determined by the following equations.
+
+\rcol{mean-field equations}
+
+Although both these channels can not be accessed together by a single canonical 
+transformation, the inclusion of both the magnetic and bond instabilities in a 
+single theory is useful to see the competetion between the two relevant phases 
+of our disordered model. 
+
+In the absence of the bond parameters our mean-field theory (\ref{eq:mf_ham}) is 
+equivalent to the problem of minimization of energy for classical spins in a 
+disordered media. In essence this is the same starting point we use for the 
+semi-classical spin-wave analysis. For the full mean-field Hamiltonian,
+quantum suppression of the spin moments can lead to a variety of possible 
+symmetry broken or symmetry unbroken singlet ground states depending upon the 
+parameters of our model (\ref{eq:main_ham}), $\alpha$ and $\Delta$.
 
 \section{Results}
 

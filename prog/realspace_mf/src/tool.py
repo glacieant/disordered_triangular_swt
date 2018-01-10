@@ -29,16 +29,16 @@ def init_cpl(NSYS,nbr,
         for m in range(0,6):
             j = nbr[i,m]
             if j > i:
-                J[i][j] = JBANK[q]
-                J[j][i] = J[i][j]
+                J[i,j] = JBANK[q]
+                J[j,i] = J[i,j]
                 q += 1
         for m in range(6,12):
             j = nbr[i,m]
             if j > i:
-                J[i][j] = ALPHA*JBANK[q]
-                J[j][i] = J[i][j]
+                J[i,j] = ALPHA*JBANK[q]
+                J[j,i] = J[i,j]
                 q += 1
-
+    
 
 def init_param(NSYS,nbr,
         ZCO,XPAR,
@@ -68,13 +68,55 @@ def init_param(NSYS,nbr,
                 bond[1,j,i] = bond[1,i,j].conj()
                 chi[i,j] = 0.5*(1.0-XPAR)*J[i,j]*bond[1,i,j]
                 chi[j,i] = chi[i,j].conj()
+       
+    """
+    # setting up the spin and field matrices
+    ROT = np.array([[np.cos(2.0*np.pi/3.0),-np.sin(2.0*np.pi/3.0),0],
+        [np.sin(2.0*np.pi/3.0),np.cos(2.0*np.pi/3.0),0],[0,0,1]])
+
+    LSYS = int(NSYS**0.5)
+    for i in range(0,NSYS):
     
-    M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
-    
+        if i==0:
+            fleet=0.0
+            M[0,i] = np.array([np.cos(fleet),np.sin(fleet),0])
+            if ANGVAR != 0.0:
+                phi = np.random_intel.uniform(-ANGVAR,ANGVAR)
+            else:
+                phi =0.0
+            M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
+                [np.sin(phi),np.cos(phi),0],[0,0,1]],
+                M[0,i])
+        elif i!=0 and i%LSYS!=0:
+            M[0,i] = np.einsum('ab,b->a',ROT,M[0,i-1])
+            if ANGVAR != 0.0:
+                phi = np.random_intel.uniform(-ANGVAR,ANGVAR)
+            else:
+                phi =0.0
+            M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
+                [np.sin(phi),np.cos(phi),0],[0,0,1]],
+                M[0,i])
+        elif i!=0 and i%LSYS==0:
+            M[0,i] = M[0,i-1]
+            if ANGVAR != 0.0:
+                phi = np.random_intel.uniform(-ANGVAR,ANGVAR)
+            else:
+                phi =0.0
+            M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
+                [np.sin(phi),np.cos(phi),0],[0,0,1]],
+                M[0,i])
+
+    M[1] = 0.5*M[1]
+    M[0] = 0.5*M[0]
+    """
+    M[1] = np.random.uniform(1.0-ALPHA,1.0+ALPHA,size=(NSYS,3))
+    MNORM = np.einsum('ij,ij->i',M[1],M[1])**(-0.5)
+    M[1] = 0.5*np.einsum('i,ij->ij',MNORM,M[1])
+   
     for i in range(0,NSYS):
         
         for j in nbr[i]:
             
-            B[i] += 0.5*XPAR*J[i,j]*M[1,j]
+            B[i] += XPAR*J[i,j]*M[1,j]
 
 
