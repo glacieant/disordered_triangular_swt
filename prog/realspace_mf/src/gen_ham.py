@@ -27,3 +27,4 @@ def mfmatrix(NSYS,chi,B,lmult,ham):
         ham[i,i] += lmult[i]
         ham[i+NSYS,i+NSYS] += lmult[i]
 
+

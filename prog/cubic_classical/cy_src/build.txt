@@ -1,0 +1,7 @@
+# run the following command from the bash shell
+
+python setup.py build_ext --inplace
+
+# to check for bottlenecks
+
+cython -a x.pyx

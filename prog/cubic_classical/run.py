@@ -6,9 +6,7 @@
 ##################################################
 
 # system size
-LSYS = [24] 
-# co-ordination number of the lattice
-ZCO = 12
+LSYS = [20] 
 # disorder iteration number 
 ITERDISD = [1]
 # initial angle fluctuation
@@ -18,12 +16,12 @@ BOOTNUM = [1]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6] 
+DELTA = [0.0] 
 # the ratio between nearest and next 
 # nearest couplings
-ALPHA = [0.0] 
+ALPHA = [0.5] 
 # maximum iteration for classical algorithm
-CLNUM = 10**7
+CLNUM = 10**5
 
 # checking the lengths of simulation arrays #
 
@@ -45,7 +43,7 @@ import collections
 if not os.path.exists("src"):
     print "Executables could not be found"
     quit()
-if not os.path.exists("src/tri_imp.py"):
+if not os.path.exists("src/cubic_imp.py"):
     print "Main executables could not be found"
     quit()
 if not os.path.exists("out"):
@@ -59,12 +57,12 @@ os.putenv("MKL_DYNAMIC","FALSE")
 
 # Importing the main script
 
-import src.tri_imp as tmi
+import src.cubic_imp as cmi
 
 # fixing the simulation parameter tuple #
 
 ivar = collections.namedtuple('ivar',
-        'LSYS ZCO ITERDISD \
+        'LSYS ITERDISD \
                 ANGVAR BOOTNUM \
                 GTOL DELTA ALPHA \
                 CLNUM DNMR')
@@ -82,7 +80,6 @@ for i in range(0,isize):
         for k in range(0,asize):
 
             const = ivar(LSYS = LSYS[i],
-                    ZCO = ZCO,
                     ITERDISD = ITERDISD[i],
                     ANGVAR = ANGVAR[i],
                     BOOTNUM = BOOTNUM[i],
@@ -92,5 +89,5 @@ for i in range(0,isize):
                     CLNUM = CLNUM,
                     DNMR = DNMR)
 
-            tmi.main(const)
+            cmi.main(const)
             DNMR += 1

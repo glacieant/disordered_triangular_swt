@@ -197,18 +197,24 @@ for i in range(0,HSHNUM):
         fig = plt.figure(figsize=(w,h))
         ax = fig.add_axes([0,0,1,1])
         
-        indx = (L*(L-1))/2
+        shift = 1
+        indx = (L*(L-1))/2+shift
         inde = indx+(L+1)/2-1
-        l = np.array(range(0,(L+1)/2-1),
+        l = np.array(range(0,(inde-indx)),
                 dtype=np.float64)
-        l += 0.5
+        l += shift+0.5
 
         dtheta = np.abs(sfc[i][indx:inde])
 
-        #print len(l)
-        #print len(dtheta)
-    
-        ax.loglog(l,dtheta,'bx',
+        indx0 = (L*(L-1))/2
+        inde0 = indx0+(L+1)/2-1
+        l0 = np.array(range(0,(inde0-indx0)),
+                dtype=np.float64)
+        l0 += 0.5
+
+        dtheta0 = np.abs(sfc[i][indx0:inde0])
+
+        ax.loglog(l0,dtheta0,'bx',
                 ms=10,
                 mew=2,
                 basex=10,basey=10
@@ -242,11 +248,11 @@ for i in range(0,HSHNUM):
         #plt.legend(loc='best')
         #plt.suptitle(r"$\delta\theta$(r) vs $r$", 
         #        x=0.5, fontsize=16)
-        plt.xlim([0.5,20.0])
-        plt.ylim([10.0**(-2),0.5])
-        plt.ylabel(r'$\delta\theta(r)$',fontsize=20)
-        plt.xlabel(r'$r$',fontsize=20)
-        plt.tick_params(which='both',width=2,labelsize=16)
+        plt.xlim([0.5,50])
+        plt.ylim([10.0**(-5),(1.0/2)*10.0**(-2)])
+        plt.ylabel(r'$\delta\theta(r)$',fontsize=24)
+        plt.xlabel(r'$r$',fontsize=24)
+        plt.tick_params(which='both',width=2,labelsize=22)
         plt.tick_params(which='major',length=8)
         plt.tick_params(which='minor',length=4)
         #fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)

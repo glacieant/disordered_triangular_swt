@@ -32,7 +32,7 @@ ALPHA = [0.125]
 # tempering the fermi function
 TEMP = [0.001] 
 # the fudge parameter
-XPAR = [0.0] 
+XPAR = [0.5] 
 # update ratio for magnetisation and bonds
 UPAR = [[0.3,0.7],[0.3,0.7]]
 # maximum iteration for classical algorithm

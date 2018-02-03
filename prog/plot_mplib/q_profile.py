@@ -28,9 +28,9 @@ from matplotlib.colors import LogNorm
 #plt.rc('font',family='serif')
 
 # the font styleset
-#from matplotlib import rcParams
-#rcParams['font.serif'] = ['Times New Roman']
-#rcParams['font.family'] = 'serif'
+from matplotlib import rcParams
+rcParams['font.serif'] = ['Times New Roman']
+rcParams['font.family'] = 'serif'
 
 ## picturing the output data
 
@@ -171,8 +171,8 @@ for fname in glob.iglob('*.npz'):
     # fixing colormap for line plotting
 
     cmstyle = cm.viridis
-    VMIN = np.pi/2
-    VMAX = 3.0*np.pi/2
+    VMIN = 0.0*np.pi/2
+    VMAX = 2.0*np.pi
 
     Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
     scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
@@ -184,8 +184,8 @@ for fname in glob.iglob('*.npz'):
     #fig, ax = plt.subplots()
     w,h = figure.figaspect(1.0)
     fig = plt.figure(figsize=(w,h))
-    #ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
-    ax = fig.add_axes([0,0,1,1])
+    ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
+    #ax = fig.add_axes([0,0,1,1])
     ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
 
     cbar = colorbar.ColorbarBase(ax1,cmap=cmstyle,
@@ -259,7 +259,7 @@ for fname in glob.iglob('*.npz'):
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
             ".pdf"
-            #,bbox_inches='tight'
+            ,bbox_inches='tight'
             )
     plt.close('all')
 
@@ -280,6 +280,6 @@ for L in zip(*hshchar)[0]:
                 '.pdf',shell=True)
 
 # removing split files
-#subprocess.call('rm ../plot/qdom_*',shell=True)
+subprocess.call('rm ../plot/qdom_*',shell=True)
 
 

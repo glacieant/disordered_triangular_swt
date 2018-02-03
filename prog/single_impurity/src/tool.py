@@ -55,7 +55,7 @@ def init_param(NSYS,nbr,
 
     """
     # setting up the spin and field matrices
-    phx = -2.0*np.pi/3.0
+    phx = 2.0*np.pi/3.0
     ROT = np.array([[np.cos(phx),-np.sin(phx),0],
         [np.sin(phx),np.cos(phx),0],[0,0,1]])
 
