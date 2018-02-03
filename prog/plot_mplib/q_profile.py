@@ -157,7 +157,7 @@ for fname in glob.iglob('*.npz'):
         q = 2
         s1 = np.arccos(np.dot(spin[i],spin[nbr[i,p]]))
         s2 = np.arccos(np.dot(spin[i],spin[nbr[i,q]]))
-        US[i] = s1 + s2
+        US[i] = s1 + s2 - 4.0*np.pi/3.0 
         VS[i] = (s2 - s1)/np.sqrt(3)
     
     U = np.reshape(US,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
@@ -171,8 +171,8 @@ for fname in glob.iglob('*.npz'):
     # fixing colormap for line plotting
 
     cmstyle = cm.viridis
-    VMIN = 0.0*np.pi/2
-    VMAX = 2.0*np.pi
+    VMIN = -np.pi
+    VMAX = np.pi
 
     Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
     scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
@@ -199,13 +199,14 @@ for fname in glob.iglob('*.npz'):
     cbar.set_label(r'$|\vec{Q}_i|$',
             fontsize=12,
             labelpad=-45)
+    """
     cbar.set_ticklabels([r'$\pi/2$',
         r'$3\pi/4$',
         r'$\pi$',
         r'$5\pi/4$',
         r'$3\pi/2$',
         ])
-   
+    """
     """
     for i in range(0,N):
 
@@ -233,8 +234,10 @@ for fname in glob.iglob('*.npz'):
     """
     # picturing the spin orientation
     UVNORM = np.sqrt(U*U+V*V)
-    eU = U/np.sqrt(U*U+V*V)
-    eV = V/np.sqrt(U*U+V*V)
+    #eU = U/np.sqrt(U*U+V*V)
+    #eV = V/np.sqrt(U*U+V*V)
+    eU = U
+    eV = V
 
     Q=ax.quiver(X,Y,eU,eV,UVNORM,
             cmap=cmstyle,
