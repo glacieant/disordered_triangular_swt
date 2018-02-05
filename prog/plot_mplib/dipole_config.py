@@ -202,7 +202,7 @@ for fname in glob.iglob('*.npz'):
         dx = (5)*a
         dy = (5)*(np.sqrt(3.0)*a/2)
 
-        if ((np.abs(dixt[0])/dx+np.abs(dixt[1])/dy)<=1.0):
+        if ((np.abs(dixt[0])/dx+np.abs(dixt[1])/dy)<=a):
 
             SX[x,y] = X[x,y]
             SY[x,y] = Y[x,y]
@@ -352,8 +352,8 @@ for fname in glob.iglob('*.npz'):
             edgecolor='navajowhite',facecolor='navajowhite',
             zorder=0)
     ax.add_patch(ellipse)
-    plt.axis([impcor[0]-dx-a/2,impcor[0]+dx+a/2,
-        impcor[1]-dy-np.sqrt(3)*a/2,impcor[1]+dy+np.sqrt(3)*a/2])
+    plt.axis([impcor[0]-dx,impcor[0]+dx,
+        impcor[1]-9*dy/10,impcor[1]+dy+3*a/4])
     ax.axis('off')
     
     # adding label patch
