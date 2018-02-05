@@ -4,8 +4,8 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-#folder = "single_impurity"
-folder = "zero_field_classical"
+folder = "single_impurity"
+#folder = "zero_field_classical"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -66,7 +66,7 @@ X = np.zeros(1)
 Y = np.zeros(1)
 Z = np.zeros(1)
 
-a = 0.5
+a = 1.0
 
 # three diffrent translation vector
 
@@ -136,8 +136,8 @@ for fname in glob.iglob('*.npz'):
         e1 = np.array([1.0,0.0,0.0])
         e2 = np.array([0.0,1.0,0.0])
 
-    UP = 0.5*np.einsum('ij,j->i',spin,e1)
-    VP = 0.5*np.einsum('ij,j->i',spin,e2)
+    UP = np.einsum('ij,j->i',spin,e1)
+    VP = np.einsum('ij,j->i',spin,e2)
 
     U = np.reshape(R[0,0]*UP + R[0,1]*VP,(L,L)).transpose()
     V = np.reshape(R[1,0]*UP + R[1,1]*VP,(L,L)).transpose()
@@ -151,8 +151,8 @@ for fname in glob.iglob('*.npz'):
         e1 = np.array([1.0,0.0,0.0])
         e2 = np.array([0.0,1.0,0.0])
 
-    UP0 = 0.5*np.einsum('ij,j->i',spin0,e1)
-    VP0 = 0.5*np.einsum('ij,j->i',spin0,e2)
+    UP0 = np.einsum('ij,j->i',spin0,e1)
+    VP0 = np.einsum('ij,j->i',spin0,e2)
 
     U0 = np.reshape(R[0,0]*UP0 + R[0,1]*VP0,(L,L)).transpose()
     V0 = np.reshape(R[1,0]*UP0 + R[1,1]*VP0,(L,L)).transpose()
@@ -291,60 +291,65 @@ for fname in glob.iglob('*.npz'):
     """
     # picturing the spin orientation
     pivot="mid"
-    width=0.005
-    headwidth=4
-    headlength=5
+    width=0.008
+    headwidth=5
+    headlength=6
+
+    LT = ax.scatter(SX,SY,
+            color='k',
+            zorder=3)
 
     LQ=ax.quiver(SX,SY,LSU,LSV,
-            color='red',
+            color='chocolate',
             width=width,
             headwidth=headwidth,
             headlength=headlength,
             pivot=pivot,
-            angles='xy',
+            #angles='xy',
             scale=1,
             scale_units='xy',
             zorder=2
             )
     RQ=ax.quiver(SX,SY,RSU,RSV,
-            color='green',
+            color='seagreen',
             width=width,
             headwidth=headwidth,
             headlength=headlength,
             pivot=pivot,
-            angles='xy',
+            #angles='xy',
             scale=1,
             scale_units='xy',
             zorder=2
             )
     Q=ax.quiver(SX,SY,SU,SV,
-            color='blue',
+            color='cornflowerblue',
             width=width,
             headwidth=headwidth,
             headlength=headlength,
             pivot=pivot,
-            angles='xy',
+            #angles='xy',
             scale=1,
             scale_units='xy',
             zorder=2
             )
 
     Q0=ax.quiver(SX,SY,SU0,SV0,
-            color='gray',
-            edgecolor='gray',
+            color='black',
+            linewidth=1,
+            facecolor='none',
+            #edgecolor='k',
             width=width,
             headwidth=headwidth,
             headlength=headlength,
             pivot=pivot,
-            angles='xy',
+            #angles='xy',
             scale=1,
             scale_units='xy',
-            alpha=0.5,
             zorder=1
             )
     
-    ellipse = Ellipse(xy=(impcor[0],impcor[1]),width=1.25*a,height=0.25*a,
-            edgecolor='palegreen',facecolor='palegreen',
+    ellipse = Ellipse(xy=(impcor[0],impcor[1]),width=1.75*a,height=0.4*a,
+            edgecolor='navajowhite',facecolor='navajowhite',
             zorder=0)
     ax.add_patch(ellipse)
     plt.axis([impcor[0]-dx-a/2,impcor[0]+dx+a/2,
@@ -376,6 +381,7 @@ for fname in glob.iglob('*.npz'):
             STR_L+
             STR_DELTA+
             STR_ALPHA+
+            '_DNMR_'+
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
             ".pdf",
@@ -383,13 +389,14 @@ for fname in glob.iglob('*.npz'):
             )
     plt.close('all')
 
-for L in zip(*hshchar)[0]:
-    for DLT in zip(*hshchar)[1]:
-        for ALP in zip(*hshchar)[2]:
+for L in set(zip(*hshchar)[0]):
+    for DLT in set(zip(*hshchar)[1]):
+        for ALP in set(zip(*hshchar)[2]):
             subprocess.call('pdftk ../plot/esbc_'+
                 L+
                 DLT+
                 ALP+
+                '_DNMR_'+
                 '* '+
                 'cat output ../plot/CONFIG_L_'+
                 L+

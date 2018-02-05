@@ -100,6 +100,7 @@ for fname in glob.iglob('*.npz'):
     N = L**2
     indx = N - 1
     
+    """
     e1 = spin[indx]
     if np.linalg.norm(e1) > 10.0**(-5):
         e1 = e1/np.linalg.norm(e1)
@@ -128,7 +129,7 @@ for fname in glob.iglob('*.npz'):
     signm = np.sign(np.arcsin(U0*V - U*V0))
     theta *= signm
     
-    """    
+    
     
     # rotating spins to preferred direction
     ROT = np.zeros((3,3),dtype=np.float64)
@@ -140,10 +141,9 @@ for fname in glob.iglob('*.npz'):
     theta = np.arccos(np.einsum('ij,ij->i',r_spin,spin0))
     #theta *= np.sign(np.cross(r_spin,spin0)[:,2])
     #theta = FNDATA['theta']
-    
+    """    
     theta = np.arccos(np.einsum('ij,ij->i',spin,spin0))
     theta *= np.sign(np.cross(spin,spin0)[:,2])
-    """
     sfc[INDX] += theta
 
 # fit function
@@ -197,7 +197,7 @@ for i in range(0,HSHNUM):
         fig = plt.figure(figsize=(w,h))
         ax = fig.add_axes([0,0,1,1])
         
-        shift = 1
+        shift = 2
         indx = (L*(L-1))/2+shift
         inde = indx+(L+1)/2-1
         l = np.array(range(0,(inde-indx)),
@@ -207,17 +207,22 @@ for i in range(0,HSHNUM):
         dtheta = np.abs(sfc[i][indx:inde])
 
         indx0 = (L*(L-1))/2
-        inde0 = indx0+(L+1)/2-1
+        inde0 = indx0 + 50 #+(L+1)/2-1
         l0 = np.array(range(0,(inde0-indx0)),
                 dtype=np.float64)
         l0 += 0.5
 
         dtheta0 = np.abs(sfc[i][indx0:inde0])
 
-        ax.loglog(l0,dtheta0,'bx',
-                ms=10,
+        ax.loglog(l0,dtheta0,
+                ls='None',
+                marker='s',
+                ms=12,
                 mew=2,
-                basex=10,basey=10
+                mfc='None',
+                mec='chocolate',
+                basex=10,basey=10,
+                zorder=1
                 )
         
         #fitting data
@@ -229,18 +234,23 @@ for i in range(0,HSHNUM):
         #print dtheta[1:20]
         popt, pcov = curve_fit(invd,l,
                 dtheta,
-                p0=100)
+                #bounds=(-2.0,2.0),
+                #method='dogbox',
+                #jac='cs'
+                )
 
         #print popt
 
         #plotting the fit
         lp = np.linspace(0.5,(L+1.0)/2.0-1.0+0.5,num=200)
         ax.loglog(lp,invd(lp, *popt),
-                'r--',
-                lw=2,
+                color='cornflowerblue',
+                linestyle='--',
+                lw=4,
                 label=r'Power law fit, $\delta\theta\sim1/r$',
                 #label=r'Exponential fit fit, $\delta\theta\sim e^{-r}$'
-                basex=10,basey=10
+                basex=10,basey=10,
+                zorder=2
                 #+' $n$ = '
                 #+str("%.4f" % n)
                 )
@@ -249,12 +259,12 @@ for i in range(0,HSHNUM):
         #plt.suptitle(r"$\delta\theta$(r) vs $r$", 
         #        x=0.5, fontsize=16)
         plt.xlim([0.5,50])
-        plt.ylim([10.0**(-5),(1.0/2)*10.0**(-2)])
-        plt.ylabel(r'$\delta\theta(r)$',fontsize=24)
-        plt.xlabel(r'$r$',fontsize=24)
-        plt.tick_params(which='both',width=2,labelsize=22)
-        plt.tick_params(which='major',length=8)
-        plt.tick_params(which='minor',length=4)
+        plt.ylim([10.0**(-3),1.0])
+        plt.ylabel(r'$\delta\theta(r)$',fontsize=30)
+        plt.xlabel(r'$r$',fontsize=30)
+        plt.tick_params(which='both',width=2,labelsize=30)
+        plt.tick_params(which='major',length=20)
+        plt.tick_params(which='minor',length=10)
         #fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)
         fig.savefig("../plot/tht_"+
                 STR_L+
@@ -267,16 +277,7 @@ for i in range(0,HSHNUM):
         
         plt.close('all')
 
-for L in zip(*hshchar)[0]:
-    """
-    subprocess.call('pdftk ../plot/dnsty_'+
-            L+
-            '* '+
-            'cat output ../plot/THDSTY_L_'+
-            L+
-            '.pdf',shell=True)
-    """
-    
+for L in set(zip(*hshchar)[0]):
     subprocess.call('pdftk ../plot/tht_'+
             L+
             '* '+

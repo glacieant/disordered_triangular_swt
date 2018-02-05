@@ -93,6 +93,43 @@ evec = np.array([
 
 avec = evec*a/2
 
+for fname in glob.iglob('*.npz'):
+
+    match = fpat.match(fname)
+    STR_L = match.group(1)
+    L = int(STR_L)
+    STR_DELTA = match.group(2)
+    STR_ALPHA = match.group(3)
+
+    FNDATA = np.load(fname)
+
+    J = FNDATA['J']
+    spin = FNDATA['spin']
+    spin0 = FNDATA['spin0']
+
+    N = L**2
+
+    nbr = np.zeros((N,ZCO),dtype=np.int)
+    lmap.lattice_map(L,nbr)
+
+    if np.abs(np.float(STR_DELTA)) < 10.0**(-4) \
+            and np.abs(np.float(STR_ALPHA)) < 10.0**(-4) :
+        
+        US = np.zeros(N,dtype=np.float)
+        VS = np.zeros(N,dtype=np.float)
+        
+        for i in range(0,N):
+            p = 0
+            q = 2
+            s1 = np.arccos(np.dot(spin[i],spin[nbr[i,p]]))
+            s2 = np.arccos(np.dot(spin[i],spin[nbr[i,q]]))
+            #US[i] = s1 + s2
+            #VS[i] = (s2 - s1)/np.sqrt(3)
+            US[i] = s1
+            VS[i] = (2.0*s2 - US[i])/np.sqrt(3)
+
+        UZ = np.reshape(US,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
+        VZ = np.reshape(VS,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
 
 for fname in glob.iglob('*.npz'):
 
@@ -157,9 +194,11 @@ for fname in glob.iglob('*.npz'):
         q = 2
         s1 = np.arccos(np.dot(spin[i],spin[nbr[i,p]]))
         s2 = np.arccos(np.dot(spin[i],spin[nbr[i,q]]))
-        US[i] = s1 + s2 - 4.0*np.pi/3.0 
-        VS[i] = (s2 - s1)/np.sqrt(3)
-    
+        #US[i] = s1 + s2
+        #VS[i] = (s2 - s1)/np.sqrt(3)
+        US[i] = s1
+        VS[i] = (2.0*s2 - US[i])/np.sqrt(3)
+
     U = np.reshape(US,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
     V = np.reshape(VS,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
 
@@ -170,8 +209,8 @@ for fname in glob.iglob('*.npz'):
 
     # fixing colormap for line plotting
 
-    cmstyle = cm.viridis
-    VMIN = -np.pi
+    cmstyle = cm.RdPu
+    VMIN = 0.0
     VMAX = np.pi
 
     Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
@@ -196,17 +235,18 @@ for fname in glob.iglob('*.npz'):
                 VMIN+3*(VMAX-VMIN)/4,
                 VMAX),
             orientation='horizontal') 
-    cbar.set_label(r'$|\vec{Q}_i|$',
+   
+    
+    cbar.set_label(r'$|\vec{Q}_i-\vec{Q}_0|$',
             fontsize=12,
             labelpad=-45)
-    """
-    cbar.set_ticklabels([r'$\pi/2$',
+    cbar.set_ticklabels([r'$0$',
+        r'$\pi/4$',
+        r'$\pi/2$',
         r'$3\pi/4$',
         r'$\pi$',
-        r'$5\pi/4$',
-        r'$3\pi/2$',
         ])
-    """
+    
     """
     for i in range(0,N):
 
@@ -233,11 +273,16 @@ for fname in glob.iglob('*.npz'):
             ax.add_line(line)
     """
     # picturing the spin orientation
-    UVNORM = np.sqrt(U*U+V*V)
+    #UVNORM = np.sqrt(U*U+V*V)
     #eU = U/np.sqrt(U*U+V*V)
     #eV = V/np.sqrt(U*U+V*V)
-    eU = U
-    eV = V
+    #UVNORM = np.arctan(eU/eV)
+    U = U - UZ
+    V = V - VZ
+    eta = 0.0000001
+    eU = U/np.sqrt(U*U+V*V+eta)
+    eV = V/np.sqrt(U*U+V*V+eta)
+    UVNORM = np.sqrt(U*U+V*V+eta)
 
     Q=ax.quiver(X,Y,eU,eV,UVNORM,
             cmap=cmstyle,
@@ -255,10 +300,14 @@ for fname in glob.iglob('*.npz'):
 
     ax.axis('off')
 
-    fig.savefig("../plot/qdom_"+
+    fig.savefig("../plot/qdom"+
+            "_L_"+
             STR_L+
+            "_DLT_"+
             STR_DELTA+
+            "_ALP_"+
             STR_ALPHA+
+            "_DNM_"+
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
             ".pdf"
@@ -266,13 +315,17 @@ for fname in glob.iglob('*.npz'):
             )
     plt.close('all')
 
-for L in zip(*hshchar)[0]:
-    for DLT in zip(*hshchar)[1]:
-        for ALP in zip(*hshchar)[2]:
-            subprocess.call('pdftk ../plot/qdom_'+
+for L in set(zip(*hshchar)[0]):
+    for DLT in set(zip(*hshchar)[1]):
+        for ALP in set(zip(*hshchar)[2]):
+            subprocess.call('pdftk ../plot/qdom'+
+                "_L_"+
                 L+
+                "_DLT_"+
                 DLT+
+                "_ALP_"+
                 ALP+
+                "_DNM_"+
                 '* '+
                 'cat output ../plot/QDOMAIN_L_'+
                 L+
@@ -282,7 +335,13 @@ for L in zip(*hshchar)[0]:
                 ALP+
                 '.pdf',shell=True)
 
-# removing split files
-subprocess.call('rm ../plot/qdom_*',shell=True)
-
+            subprocess.call('rm ../plot/qdom'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '*',shell=True)
 

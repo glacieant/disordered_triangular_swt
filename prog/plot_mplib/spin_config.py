@@ -196,7 +196,7 @@ for fname in glob.iglob('*.npz'):
     
     # fixing colormap for line plotting
 
-    cmstyle = cm.binary
+    cmstyle = cm.RdPu
 
     Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
     scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
@@ -309,10 +309,14 @@ for fname in glob.iglob('*.npz'):
     #    Y.min()-2.0*a,Y.max()+2.0*a])
     ax.axis('off')
 
-    fig.savefig("../plot/spin_config_"+
+    fig.savefig("../plot/spin_config"+
+            "_L_"+
             STR_L+
+            "_DLT_"+
             STR_DELTA+
+            "_ALP_"+
             STR_ALPHA+
+            "_DNM_"+
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
             ".pdf"
@@ -320,13 +324,17 @@ for fname in glob.iglob('*.npz'):
             )
     plt.close('all')
 
-for L in zip(*hshchar)[0]:
-    for DLT in zip(*hshchar)[1]:
-        for ALP in zip(*hshchar)[2]:
-            subprocess.call('pdftk ../plot/spin_config_'+
+for L in set(zip(*hshchar)[0]):
+    for DLT in set(zip(*hshchar)[1]):
+        for ALP in set(zip(*hshchar)[2]):
+            subprocess.call('pdftk ../plot/spin_config'+
+                "_L_"+
                 L+
+                "_DLT_"+
                 DLT+
+                "_ALP_"+
                 ALP+
+                "_DNM_"+
                 '* '+
                 'cat output ../plot/SPIN_CONFIG_L_'+
                 L+
@@ -336,7 +344,13 @@ for L in zip(*hshchar)[0]:
                 ALP+
                 '.pdf',shell=True)
 
-# removing split files
-subprocess.call('rm ../plot/spin_config_*',shell=True)
-
+            subprocess.call('rm ../plot/spin_config'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '*',shell=True)
 

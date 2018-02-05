@@ -1,0 +1,148 @@
+\documentclass[twocolumn,english,aps,prl,floatfix]{revtex4-1}
+\setcounter{secnumdepth}{3}
+\usepackage{color}
+\usepackage{babel}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{esint}
+%\usepackage{mnsymbol}
+%\usepackage[unicode=true,pdfusetitle,
+% bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+% breaklinks=true,pdfborder={0 0 0},backref=false,colorlinks=true]
+% {hyperref}
+%\hypersetup{
+% linkcolor=blue,citecolor=blue,urlcolor=blue}
+%\usepackage{breakurl}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+%Format of numbering
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\makeatother
+
+\newcommand{\w}{\omega}
+\newcommand{\mimp}{m_{\rm imp}}
+
+\newcommand{\todo}[1]{{\color{red} {\bf [ToDo: #1]}}}
+\newcommand{\mv}[1]{{\color{green}{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\title{Supplementary information for:\\
+Destruction of long-range order in non-collinear two-dimensional antiferromagnets by random-bond disorder
+%Destruction of long-range order in chiral two-dimensional antiferromagnets by random-bond disorder
+}
+
+\author{Santanu Dey}
+\author{Matthias Vojta}
+\affiliation{Institut f\"ur Theoretische Physik, Technische Universit\"at Dresden,
+01062 Dresden, Germany}
+
+\date{\today}
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Single bond defect}
+
+Here we provide a few details concerning the physics of a single defect bond.
+
+\subsection{Spin texture via linear response}
+
+As explained in the main text, the spin texture induced by a bond defect can be understood as the response to a local dipolar transverse field which acts to rotate the two spins on the defect bond away from their clean-limit configuration. This is most efficiently calculated in a local frame where the clean-limit state is uniform. 
+
+To this end we start from a coplanar state in the $x-y$ plane and rotate the spins such that all point along the $\hat{x}$ axis. The rotation involves the $y$ components of the spins, i.e., the susceptibility $\chi^\perp(\vec{q}) = \langle S^y; S^y \rangle$. For a system with underlying SU(2) spin symmetry, this susceptibility is governed by the in-plane Goldstone modes and generically behaves as $\chi^\perp(\vec{q})\propto 1/q^2$ for small momenta. For the triangular-lattice Heisenberg model in the classical limit an explicit calculation gives
+\begin{align}
+\chi^\perp(\vec{q}) = ...
+\end{align}
+where we have used ... \todo{fill in}.
+
+For a bond defect on sites $(0,1)$ the transverse response at site $r$ is given by
+\begin{align}
+\langle S_r^\perp \rangle = \sum_{j=0}^1 h^\perp \beta_j \langle S_r^y; S_j^y \rangle 
+\end{align}
+where $\beta_j=(-1)^j$ is the dipolar form factor of the perturbation, and $h^\perp \propto \delta J$ measures the strength of the perturbation.
+\todo{write detailed result including direction dependence}
+
+
+\subsection{Uniform moment}
+
+In the presence of a single defect bond, the bulk spin moments do not exactly cancel each other, such that the resulting state has a non-vanishing uniform magnetization $\mimp$. For small $\delta J$ this is proportional to $\delta J$,
+\begin{equation}
+\mimp = \gamma S \delta J + \mathcal{O}(S^0)\,.
+\end{equation}
+For the triangular-lattice Heisenberg model we numerically find $\gamma = $ \todo{add number}, see Fig.~\todo{add fig}. The proportionality can be expected to break down for larger $\delta J$, but still holds to very good accuracy for $\delta J=-J$ where we find $\mimp = 0.41 S + \mathcal{O}(S^0)$.
+\todo{can you get the $1/S$ correction?}
+
+A finite-size scaling analysis of $\mimp$ is shown in Fig.~\todo{add fig}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Destruction of long-range order}
+
+As explained in the main text, an estimate of the transverse spin fluctuations induced by a collection of bond defects can be used to assess the destruction of long-range order.
+
+... can be written as ... \todo{check}
+\begin{equation}
+\overline{\left\langle {S_{l}^{\perp}}^2\right\rangle } = 3 \alpha (\delta J)^2 \int d^d q \left(q_x \chi^\perp(\vec q) \right)^2
+\end{equation}
+
+
+\subsection{SU(2) symmetry and $T=0$}
+
+For SU(2) symmetry we have $\chi^\perp(\vec{q})\propto 1/q^2$ and directly obtain ... \todo{fill in}.
+This implies a correlation length $\xi^{2-d} \propto (J/\delta J)^2$ for $d<2$, while in $d=2$
+\begin{equation}
+\xi \propto e^{(J/\delta J)^2}\,.
+\label{xi}
+\end{equation}
+
+
+\subsection{Finite $T$}
+
+At finite $T$ ... thermal correlation length ...
+\todo{work out crossover}
+
+
+\subsection{Layered systems}
+
+A realistic layered system displays a small inter-layer coupling which tends to stabilizes magnetic order at finite temperatures in the presence of SU(2) symmetry. We assume an (unfrustrated) inter-layer coupling of magnitude $J_\perp$. \todo{write down susceptibility and work out transition criterion}
+
+
+\subsection{Broken SU(2)}
+
+For a system with broken SU(2) symmetry, some or all of the Goldstone modes acquire a gap. For simplicity we assume
+\begin{align}
+\chi^\perp(\vec{q}) = \frac{\chi_0}{q^2+\Delta^2} \,.
+\end{align}
+As a result ... \todo{workout transition criterion}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Incommensurability in anisotropic Heisenberg model}
+
+We consider a spatially anisotropic Heisenberg model on the triangular lattice, with couplings $J_{1,2,3}$ on the bonds $1,2,3$, with mean $J$. In the classical limit, the ground state is given by a single-$Q$ coplanar spiral whose propagation wavevector $\vec Q$ can be found by minimizing the Fourier-transformed coupling constant $J({\vec q})$. In the isotropic case, the system orders at $\vec Q_0 = \pm (4\pi/3,0)$.
+
+The degree of anisotropy can be parameterized by $\vec{d} = \sum_{i=1}^3 (J_i/J) \hat{e}_i$ where $\hat{e}_i$ are the directed unit vectors along the nearest-neighbor bonds of the lattice. As explained in the main text, $\vec d$ takes the role of a local dipole density in the bond-disordered case.
+
+For small deviations from isotropy, $|\vec d|\ll 1$, the relation between $\vec{Q}$ and $\vec d$ can be determined analytically \todo{work out, write down}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Numerical results}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Bond defect in three dimensions}
+
+We have checked that our scenario for bond disorder applies to three space dimensions as well. To this end, we have considered a single bond defect in \todo{describe model and results}.
+
+
+\end{document} 

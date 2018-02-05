@@ -18,10 +18,11 @@ BOOTNUM = [1]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6] 
+DELTA = [0.0,0.1,0.2,0.3,0.4,0.5,\
+        0.6,0.7,0.8,0.9] 
 # the ratio between nearest and next 
 # nearest couplings
-ALPHA = [0.0] 
+ALPHA = [0.0,0.05,0.1] 
 # maximum iteration for classical algorithm
 CLNUM = 10**7
 
