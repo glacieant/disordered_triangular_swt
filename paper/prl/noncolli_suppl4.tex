@@ -7,7 +7,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{esint}
-%\usepackage{mnsymbol}
+\usepackage{MnSymbol}
 %\usepackage[unicode=true,pdfusetitle,
 % bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
 % breaklinks=true,pdfborder={0 0 0},backref=false,colorlinks=true]
@@ -51,78 +51,273 @@ Destruction of long-range order in non-collinear two-dimensional antiferromagnet
 
 \section{Single bond defect}
 
-Here we provide a few details concerning the physics of a single defect bond.
+Here we provide a few details concerning the physics of a single 
+defect bond.
 
 \subsection{Spin texture via linear response}
 
-As explained in the main text, the spin texture induced by a bond defect can be understood as the response to a local dipolar transverse field which acts to rotate the two spins on the defect bond away from their clean-limit configuration. This is most efficiently calculated in a local frame where the clean-limit state is uniform. 
+As explained in the main text, the spin texture induced by a bond 
+defect can be understood as the response to a local dipolar 
+transverse field which acts to rotate the two spins on the defect 
+bond away from their clean-limit configuration. This is most 
+efficiently calculated in a local frame where the clean-limit state 
+is uniform. 
 
-To this end we start from a coplanar state in the $x-y$ plane and rotate the spins such that all point along the $\hat{x}$ axis. The rotation involves the $y$ components of the spins, i.e., the susceptibility $\chi^\perp(\vec{q}) = \langle S^y; S^y \rangle$. For a system with underlying SU(2) spin symmetry, this susceptibility is governed by the in-plane Goldstone modes and generically behaves as $\chi^\perp(\vec{q})\propto 1/q^2$ for small momenta. For the triangular-lattice Heisenberg model in the classical limit an explicit calculation gives
+To this end we start from a coplanar state in the $x-y$ plane and 
+rotate the spins such that all point along the $\hat{x}$ axis. The 
+rotation involves the $y$ components of the spins, i.e., the 
+susceptibility $\chi^\perp(\vec{q}) = \llangle S_{\vec{q}}^y; 
+S^y_{-\vec{q}} \rrangle$. 
+For a system with underlying SU(2) spin symmetry, this susceptibility
+is governed by the in-plane Goldstone modes and generically behaves 
+as $\chi^\perp(\vec{q})\propto 1/q^2$ for small momenta. For the 
+triangular-lattice Heisenberg model in the classical limit the 
+full expression for the transverse susceptibility is given by
+\cite{wollny-thesis16}
+
 \begin{align}
-\chi^\perp(\vec{q}) = ...
+    \chi^\perp(\vec{q}) = S\frac{1}{\gamma(\vec{q})-1}
 \end{align}
-where we have used ... \todo{fill in}.
+where the triangular lattice structure factor 
 
-For a bond defect on sites $(0,1)$ the transverse response at site $r$ is given by
+\begin{equation}\label{eq:gamma}
+    \begin{aligned}
+        \gamma(\vec{q})
+        &=\frac{1}{6}\sum_{\vec{\delta}\in\text{NN}}
+        e^{i\vec{q}\cdot\vec{\delta}} \\
+        &=\frac{1}{3}\left(\cos q_x + 2\cos\frac{q_x}{2}
+        \cos\frac{\sqrt{3}}{2}q_y\right)
+    \end{aligned}
+\end{equation}
+encodes the geometry of the lattice.
+For a bond defect at a position $\vec{r}'$ on a coupling along the 
+direction $\vec{\delta}(\vec{r}')$, the transverse response at a 
+separate site $\vec{r}$ is given by
+
 \begin{align}
-\langle S_r^\perp \rangle = \sum_{j=0}^1 h^\perp \beta_j \langle S_r^y; S_j^y \rangle 
+    \langle S_{\vec{r}}^\perp \rangle = \sum_{j=0}^1 h_{\vec{r}'}^\perp 
+    \beta_j \llangle S_{\vec{r}}^y; 
+    S_{r'+\beta_j\vec{\delta}(\vec{r}')/2}^y \rrangle 
 \end{align}
-where $\beta_j=(-1)^j$ is the dipolar form factor of the perturbation, and $h^\perp \propto \delta J$ measures the strength of the perturbation.
-\todo{write detailed result including direction dependence}
+where $\beta_j=(-1)^j$ is the dipolar form factor of the perturbation, 
+and $h^\perp \propto \delta J/J$ measures the strength of the 
+perturbation. The proportionality factor, which we call 
+$\tilde{\alpha}$, depends on the microscopic details of the lattice 
+and in itself is proportional to the stiffness of the ordered phase. 
+Later, we extract the values of this non-universal prefactor for 
+two different non-collinear antiferromagnets, the triangular-lattice 
+Heisenberg model and the $J_1-J_4$ cubic-lattice Heisenberg model.
 
+Once the transverse response is expressed in terms of the 
+susceptibility $\chi^\perp(q)$,
+
+\begin{align}
+    \langle S_{\vec{r}}^\perp \rangle = \frac{\tilde{\alpha}}{J}
+    \sum_{\vec{q}} \delta J(\vec{r}')
+    \tilde{\beta}_{\vec{\delta}(\vec{r}')}(\vec{q})\chi^\perp(\vec{q})
+    e^{i\vec{q}\cdot\left(\vec{r}-\vec{r}'\right)}
+\end{align}
+with the momentum dependence of the form factor given by 
+$\tilde{\beta}_{\vec{\delta}(\vec{r}')}(\vec{q})=
+e^{-i\vec{q}\cdot\vec{\delta}(\vec{r}')/2}-
+e^{i\vec{q}\cdot\vec{\delta}(\vec{r}')/2}
+=-2i\sin(\vec{q}\cdot\vec{\delta}(\vec{r}')/2)$, its dipolar nature 
+becomes apparent. The long wave length response, 
+
+\begin{align}\label{eq:tr_resp}
+    \langle S_{\vec{r}}^\perp\rangle = \frac{\alpha S}{J}
+    \sum_{\vec{q}}
+    \delta J(\vec{r}')
+    \frac{\vec{q}\cdot\vec{\delta}(\vec{r}')}{q^2}
+    e^{i\vec{q}\cdot(\vec{r}-\vec{r}')}
+\end{align}
+and thereby the spin texture of the resulting state is 
+determined by the defect induced dipole moment 
+$\vec{d}(\vec{r}')=
+(\delta J(\vec{r}')/J)\vec{\delta}
+(\vec{r}')$ and the quadratic dispersion of the Goldstone 
+modes. Once again the prefactor $\alpha$ (see also in main 
+text) depends on the underlying lattice and following 
+(\ref{eq:gamma}), for triangular lattice, we get 
+$\alpha=4i\tilde{\alpha}$.
 
 \subsection{Uniform moment}
 
-In the presence of a single defect bond, the bulk spin moments do not exactly cancel each other, such that the resulting state has a non-vanishing uniform magnetization $\mimp$. For small $\delta J$ this is proportional to $\delta J$,
+In the presence of a single defect bond, the bulk spin moments do 
+not exactly cancel each other, such that the resulting state has a 
+non-vanishing uniform magnetization $\mimp$. For small $\delta J$ 
+this is proportional to $\delta J$,
 \begin{equation}
-\mimp = \gamma S \delta J + \mathcal{O}(S^0)\,.
+    \mimp = \gamma S \delta J + \mathcal{O}(S^0)\,.
 \end{equation}
-For the triangular-lattice Heisenberg model we numerically find $\gamma = $ \todo{add number}, see Fig.~\todo{add fig}. The proportionality can be expected to break down for larger $\delta J$, but still holds to very good accuracy for $\delta J=-J$ where we find $\mimp = 0.41 S + \mathcal{O}(S^0)$.
+For the triangular-lattice Heisenberg model we numerically find 
+$\gamma = $ \todo{add number}, see Fig.~\todo{add fig}. The 
+proportionality can be expected to break down for larger $\delta J$, 
+but still holds to very good accuracy for $\delta J=-J$ where we 
+find $\mimp = 0.41 S + \mathcal{O}(S^0)$.
 \todo{can you get the $1/S$ correction?}
 
-A finite-size scaling analysis of $\mimp$ is shown in Fig.~\todo{add fig}.
+A finite-size scaling analysis of $\mimp$ is shown in 
+Fig.~\todo{add fig}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Destruction of long-range order}
 
-As explained in the main text, an estimate of the transverse spin fluctuations induced by a collection of bond defects can be used to assess the destruction of long-range order.
+As explained in the main text, an estimate of the transverse spin 
+fluctuations induced by a collection of bond defects can be used to 
+assess the destruction of long-range order.
 
-... can be written as ... \todo{check}
-\begin{equation}
-\overline{\left\langle {S_{l}^{\perp}}^2\right\rangle } = 3 \alpha (\delta J)^2 \int d^d q \left(q_x \chi^\perp(\vec q) \right)^2
+In the linear response regime, we can consider the superposition of
+individual dipolar responses (\ref{eq:tr_resp}) from a spatially
+random distribution of bond defects. The average transverse response
+is simply zero for a defect distribution with zero mean and therefore 
+their collective effect is manifested through the squared transverse
+fluctuation. Although the angular profile of the response due 
+to each bond defect is dependent on the orientations
+of the respective bonds, for the case of a perfectly random 
+distribution of such defects, 
+$\overline{\delta J(\vec{r})\delta J(\vec{r}')}=
+(\delta J)^2\delta_{\vec{r},\vec{r}'}$, the contribution coming
+from the separate bond or dipolar orientations decouple. From
+(\ref{eq:tr_resp}) it is also easy to see that these contributions
+differ by phase factors of constant angular rotations. Therefore by 
+choosing appropriately rotated frames of axes for each, we can cast 
+them in an identical form and sum up to find the expression for the 
+total transverse spin fluctuation,
+
+
+\begin{equation}\label{eq:sq_resp}
+    \begin{aligned}
+        \overline{\left\langle {S_0^{\perp}}^2\right\rangle } =& 
+        \left(\frac{\alpha}{J}\right)^2
+        \sum_{\vec{r},\vec{r}'}\sum_{\vec{q},\vec{q}'}
+        \overline{\delta J(\vec{r})\delta J(\vec{r}')} \\
+        &(\vec{q}\cdot\vec{\delta}(\vec{r}))
+        (\vec{q}'\cdot\vec{\delta}(\vec{r}'))
+        \chi^\perp(\vec{q})\chi^\perp(\vec{q}') 
+        e^{i\left(\vec{q}\cdot\vec{r}+\vec{q}'\cdot\vec{r}'\right)}\\
+        =& \left(\frac{\alpha\delta J}{J}\right)^2
+        \sum_{\vec{r}}\sum_{\vec{q},\vec{q}'}
+        (\vec{q}\cdot\vec{\delta}(\vec{r}))
+        (\vec{q}'\cdot\vec{\delta}(\vec{r})) \\
+        & \chi^\perp(\vec{q})\chi^\perp(\vec{q}') 
+        e^{i\left(\vec{q}+\vec{q}'\right)\cdot\vec{r}}\\
+        =& \left(\frac{\alpha\delta J}{J}\right)^2
+        \frac{1}{N_B}\sum_{i}\sum_{\vec{q}}
+        (\vec{q}\cdot\vec{\delta}_i)
+        (\vec{q}\cdot\vec{\delta}_i)
+        \chi^\perp(\vec{q})\chi^\perp(\vec{q}') \\
+        =&\left(\frac{\alpha\delta J}{J}\right)^2 \int 
+        \frac{d^d q}{(2\pi)^d}\left(q_x 
+        \chi^\perp(\vec q) \right)^2
+    \end{aligned}
 \end{equation}
-
+where $\chi^\perp(q)\propto S/q^2$ is the transverse susceptibility 
+from the previous section and $N_B$ is the number of distinct bond 
+orientation for a given lattice geometry. It is notworthy that the 
+additional factor from the summation over the bond orientation is 
+cancelled by the overall volume fraction for each such contribution. 
+As discussed in the foremost part of this letter, if the susceptibility 
+$\chi^\perp(\vec{q})$ is dominated by massless Goldstone modes, the 
+integral (\ref{eq:sq_resp}) diverges below a lower critical dimension. 
+This signal the destruction of the long-range order and precisely at 
+the critical dimension emergence of exponentially growing domains. 
+In the following we consider the criterion 
+$ \overline{\left\langle {S^{\perp}}^2\right\rangle } \simeq S^2 $  
+and provide a detailed supplement to our original discussion on 
+various aspects of the destruction of longe-range order in 
+bond-disordered non-collinear magnets.
 
 \subsection{SU(2) symmetry and $T=0$}
 
-For SU(2) symmetry we have $\chi^\perp(\vec{q})\propto 1/q^2$ and directly obtain ... \todo{fill in}.
-This implies a correlation length $\xi^{2-d} \propto (J/\delta J)^2$ for $d<2$, while in $d=2$
+For spontaneously broken SU(2) symmetry in a magnetic system 
+the fundamental massless excitations have quadratic dispersions and 
+therefore the transverse susceptibility 
+$\chi^\perp(\vec{q})\propto 1/q^2$. The convergence criterion of the 
+integral (\ref{eq:sq_resp}) makes the correlation length of 
+the order parameter short-ranged,
 \begin{equation}
-\xi \propto e^{(J/\delta J)^2}\,.
-\label{xi}
+    \begin{aligned}
+        \left(\frac{\alpha S\delta J}{J}\right)^2
+        \int_{1/\xi}^1q^{d-1}dq
+        \left(\frac{1}{q}\right)^2
+        & \simeq S^2
+    \end{aligned}
+\end{equation}
+This implies a correlation length $\xi^{2-d} \propto (J/\delta J)^2$ 
+for $d<2$, while for $d=2$, barring the non-universal stiffness 
+dependent factor $\alpha$
+\begin{equation}
+    \xi \propto e^{(J/\delta J)^2}\,.
+    \label{xi}
 \end{equation}
 
 
 \subsection{Finite $T$}
 
-At finite $T$ ... thermal correlation length ...
-\todo{work out crossover}
-
+At finite $T$ and at $d=2$ the magnet would be thermally disordered,
+but similar to the effect of bond disorder from the previous
+segment is exhibits exponential correlation growth, 
+$\xi \propto e^{1/T} $\cite{chakravarty87}. As temperature decreases,
+the thermal and quenched bond disorder competes for precedence and for
+a particular value of disorder strength a crossover temperature
+emerges, $ T^* = \delta J/J$. If the temperature decreases any further
+the disordered state becomes magnetic. \todo {This is apparently
+contentious now, so we should change. In Chakravorty Halperin I 
+see a factor of spin-stiffness in the exponent, should we try to be
+precise and try get an appropriate cancellation of this with our
+prefactor $\alpha$?
+}
 
 \subsection{Layered systems}
 
-A realistic layered system displays a small inter-layer coupling which tends to stabilizes magnetic order at finite temperatures in the presence of SU(2) symmetry. We assume an (unfrustrated) inter-layer coupling of magnitude $J_\perp$. \todo{write down susceptibility and work out transition criterion}
+A realistic layered system displays a small inter-layer coupling 
+which tends to stabilizes magnetic order at finite temperatures 
+in the presence of SU(2) symmetry. We assume an (unfrustrated) 
+inter-layer coupling of magnitude $J_\perp$. Using the ratio 
+between the interplanar and intraplanar couplings,
+$\kappa=J_\perp/J$ we can express the long-wavelength transverse 
+susceptibility of the coupled layered system as
 
+\begin{equation}
+    \begin{aligned}
+        \chi^\perp(\vec{q},q_\perp) &= 
+        \frac{\lambda S}{q^2+\kappa^2q_\perp^2}
+    \end{aligned}
+\end{equation}
+where as before we have a dimensionless lattice dependent 
+factor $\lambda$. Substituting this expression in the integral 
+relation (\ref{eq:sq_resp}) it becomes apparent that only the 
+impurities among the in-plane bonds affect the longe-range order.
+The stability criterion is determined by the coupling ratio 
+$\kappa$ alone, 
+\begin{equation}
+    \begin{aligned}
+    \left(\frac{\lambda\alpha S\delta J}{J}\right)^2
+    \int \frac{d^2qdq_\perp}{(2\pi)^3}
+    \frac{q_x}{q^2+\kappa^2q_\perp^2} &\leq S^2
+    \end{aligned}
+\end{equation}
+with longe-range ordered phase stable if,
+\begin{equation}
+\begin{aligned}
+    \frac{J_\perp}{J} = \kappa \geq 
+    \frac{1}{2}\left(\frac{\lambda\alpha\delta J}{J}\right)^2
+\end{aligned}
+\end{equation}
 
 \subsection{Broken SU(2)}
 
-For a system with broken SU(2) symmetry, some or all of the Goldstone modes acquire a gap. For simplicity we assume
+For a system with broken SU(2) symmetry, some or all of the 
+Goldstone modes acquire a gap. For simplicity we assume a
+particular form of the response function,
 \begin{align}
-\chi^\perp(\vec{q}) = \frac{\chi_0}{q^2+\Delta^2} \,.
+    \chi^\perp(\vec{q}) = \frac{\lambda S}{q^2+\Delta^2}
 \end{align}
-As a result ... \todo{workout transition criterion}
+with the dimensionless phenomenological factor $\lambda$
+absorbing the particular details of the lattice. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -143,6 +338,25 @@ For small deviations from isotropy, $|\vec d|\ll 1$, the relation between $\vec{
 \section{Bond defect in three dimensions}
 
 We have checked that our scenario for bond disorder applies to three space dimensions as well. To this end, we have considered a single bond defect in \todo{describe model and results}.
+
+\begin{thebibliography}{99}
+    \bibitem{wollny-thesis16}
+        %Fractional Moments and Singular Field Response
+        A. Wollny,
+        PhD Thesis. (2016).
+
+    \bibitem{chakravarty87}
+        %Low-temperature Behavior of Two-Dimensional Quantum
+        %Antiferromagnets
+        S. Chakravorty, B. I. Halperin, and D. R. Nelson
+        Phys. Rev. Lett. \textbf{60}, 1057 (1988).
+
+    \bibitem{chalker10}
+        % Spin glass transition in geometrically frustrated antiferromagnets with weak disorder
+        A. Andreanov, J. T. Chalker, T. E. Saunders, and D. Sherrington,
+        Phys. Rev. B \textbf{81}, 014406 (2010).
+\end{thebibliography}
+
 
 
 \end{document} 
