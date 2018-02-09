@@ -101,7 +101,9 @@ for fname in glob.iglob('*.npz'):
     N = L**2
 
     nbr = np.zeros((N,ZCO),dtype=np.int)
+    sub = np.zeros(N,dtype=np.int)
     lmap.lattice_map(L,nbr)
+    lmap.sublattice_map(L,sub)
 
     # laying out the lattice skeleton
     if len(X) != N:
@@ -169,27 +171,6 @@ for fname in glob.iglob('*.npz'):
     SU0 = np.zeros((L,L),dtype=np.float)
     SV0 = np.zeros((L,L),dtype=np.float)
 
-    """
-    VMIN = 0.0
-    VMAX = 2.0
-    VGRID = 20
-    
-    JMIN = np.amin(J)
-    JMAX = np.amax(J)
-
-    JWDTH = (JMAX-JMIN)/VGRID
-
-    JLW = np.zeros((N,N))
-    
-    for i in range(0,N):
-
-        for j in nbr[i]:
-
-            JLW[i,j] = (VMIN + 
-                    (np.floor((J[i,j]-JMIN)/JWDTH)
-                        /VGRID)*(VMAX-VMIN)
-                    )
-    """
     impsite = (L*(L-1))/2-1
     impcor = np.array([X[impsite%L,impsite/L]+0.5*a,Y[impsite%L,impsite/L]])
     for i in range(0,N):
@@ -209,86 +190,17 @@ for fname in glob.iglob('*.npz'):
 
             SU0[x,y] = U0[x,y]
             SV0[x,y] = V0[x,y]
-            
-            """
-            if dixt[0] < 0.0:
+
+            if sub[i] == 0:
                 LSU[x,y] = U[x,y]
                 LSV[x,y] = V[x,y]
-            elif dixt[0] > 0.0:
-                RSU[x,y] = U[x,y]
-                RSV[x,y] = V[x,y]
-            else:
-                SU[x,y] = U[x,y]
-                SV[x,y] = V[x,y]
-            """
-            if U[x,y] <= 0.1 and U[x,y] >= -0.1:
-                LSU[x,y] = U[x,y]
-                LSV[x,y] = V[x,y]
-            elif U[x,y] > 0.1:
+            elif sub[i] == 1:
                 RSU[x,y] = U[x,y]
                 RSV[x,y] = V[x,y]
             else:
                 SU[x,y] = U[x,y]
                 SV[x,y] = V[x,y]
 
-
-
-
-            # plotting the lattice
-            #line = plt.Line2D(cor_x,cor_y,
-            #        color='gray',
-            #        alpha=0.1,
-            #        ls='solid',
-            #        lw=0.25)
-            #ax.add_line(line)
-
-            # plotting the couplings
-            #line = plt.Line2D(cor_x,cor_y,
-            #        color='red',
-            #        alpha=0.5,
-            #        ls='solid',
-            #        lw=JLW[i,j])
-            #ax.add_line(line)
-
-        # plotting additonal bonds
-        """
-        for p in range(0,3):
-
-            j = nbr[i,6+p]
-            q = p +3
-
-            cor_x = [X[i%L,i/L],X[i%L,i/L]+avec[q,0]]
-            cor_y = [Y[i%L,i/L],Y[i%L,i/L]+avec[q,1]]
-        """
-            # plotting the couplings
-            #line = plt.Line2D(cor_x,cor_y,
-            #        color='red',
-            #        alpha=0.5,
-            #        ls='solid',
-            #        lw=JLW[i,j])
-            #ax.add_line(line)
-
-    """
-    # energy etimate
-    ENX = 0.0
-    for i in range(0,N):
-        for k in range(0,6):
-            j = nbr[i,k]
-            ENX += J[i,j]*np.dot(spin[i],spin[j])
-
-    ENX = ENX/N
-
-    ax.text(-1.25*a,(3.5*L/4.5)*a,
-            r'$E/N$ = '+str("%.4f" % ENX)
-            ,
-            fontsize=12)
-
-    # labeling scale of coupling and bonds
-    ax.text(-1.25*a,(3.0*L/4.5)*a,
-            r'$J_{\mathrm{max}}$ = '+str("%.4f" % JMAX)
-            ,
-            fontsize=12)
-    """
     # picturing the spin orientation
     pivot="mid"
     width=0.008
@@ -300,7 +212,7 @@ for fname in glob.iglob('*.npz'):
             zorder=3)
 
     LQ=ax.quiver(SX,SY,LSU,LSV,
-            color='chocolate',
+            color='red',
             width=width,
             headwidth=headwidth,
             headlength=headlength,
@@ -311,7 +223,7 @@ for fname in glob.iglob('*.npz'):
             zorder=2
             )
     RQ=ax.quiver(SX,SY,RSU,RSV,
-            color='seagreen',
+            color='limegreen',
             width=width,
             headwidth=headwidth,
             headlength=headlength,
@@ -322,7 +234,7 @@ for fname in glob.iglob('*.npz'):
             zorder=2
             )
     Q=ax.quiver(SX,SY,SU,SV,
-            color='cornflowerblue',
+            color='royalblue',
             width=width,
             headwidth=headwidth,
             headlength=headlength,
@@ -355,28 +267,7 @@ for fname in glob.iglob('*.npz'):
     plt.axis([impcor[0]-dx,impcor[0]+dx,
         impcor[1]-9*dy/10,impcor[1]+dy+3*a/4])
     ax.axis('off')
-    
-    # adding label patch
-    """
-    patch = [patches.Ellipse(xy={0,0},width=1.25,height=0.25,color='palegreen',alpha=0.5)]
-    label = [r'Dipolar perturbation']
 
-    legend=ax.legend(patch,label,
-            loc='lower right',shadow=True)
-
-    plt.suptitle(r"Spin Configuration", 
-            x=0.5, y=0.99, fontsize=16)
-    plt.title(r'Anomalous dipole density',x=0.485,fontsize=12)
-
-    
-    plt.suptitle("Spin Configuration" 
-            , x=0.5, y=0.99, fontsize=16)
-    plt.title(r"$\Delta$ = "+STR_DELTA+" , "
-            +r"$\alpha$ = "+STR_ALPHA+" , "
-            +"Sample. = "+str(IDISD)+" , "
-            +"Init. config. = "+str(BTNUM),x=0.485,fontsize=12)
-    """
-    #fig.tight_layout(pad=1.6,h_pad=1.6,w_pad=1.6)
     fig.savefig("../plot/esbc_"+
             STR_L+
             STR_DELTA+

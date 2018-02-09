@@ -6,7 +6,7 @@
 ##################################################
 
 # system size
-LSYS = [20] 
+LSYS = [36] 
 # disorder iteration number 
 ITERDISD = [1]
 # initial angle fluctuation
@@ -21,7 +21,7 @@ DELTA = [0.0]
 # nearest couplings
 ALPHA = [0.5] 
 # maximum iteration for classical algorithm
-CLNUM = 10**5
+CLNUM = 10**7
 
 # checking the lengths of simulation arrays #
 

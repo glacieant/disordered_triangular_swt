@@ -1,13 +1,13 @@
 #!/bin/bash -e
 STRSW=0;
 LSTSW=1;
-iter_CL=1e+5;
-LARRAY=(60 66);
-iter_DSARRAY=(20 15);
-PAR_XARRAY=(8 8);
-ANGDWIDTH=0.5;
+iter_CL=1e+7;
+LARRAY=(12 24);
+iter_DSARRAY=(1 1);
+PAR_XARRAY=(1 1);
+ANGDWIDTH=0.0;
 INUM=0;
-BOGTOLARRAY=(0.025 0.025);
+BOGTOLARRAY=(0.001 0.001);
 GTOL=1.0e-8;
 VCUTARRAY=(0 1);
 HCUTARRAY=(1 2);
@@ -28,7 +28,7 @@ IPRMIN=0.0;
 IPRMAX=4.00;
 IPRGRID=200;
 GWDTH=0.025;
-CORES=10;
+CORES=1;
 EXEC=trilat.x;
 
 ALENG=${#LARRAY[@]};
@@ -117,9 +117,9 @@ for (( iL=0; iL <${ALENG}; iL++ ));
 do
 	for (( xL=0; xL <${XLENG}; xL++ ));
 	do
-		for DIS_WDTH in 0.0 0.2 0.4 0.6 0.8 0.99;
+		for DIS_WDTH in 0.0;
 		do
-			for JP_WDTH in 0.0 0.025 0.05 0.075 0.1 0.125 0.15 0.175;
+			for JP_WDTH in 0.0;
 			do
 
 				L=${LARRAY[iL]};

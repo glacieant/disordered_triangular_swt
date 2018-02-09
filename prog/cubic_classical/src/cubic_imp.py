@@ -56,8 +56,8 @@ def main(const):
 
             M[1,:] = M0[1,:]
             
-            impsite = ((LSYS/2)*(LSYS**2) 
-                    + (LSYS*(LSYS/2-1)+LSYS/2))
+            impsite = (((LSYS+1)/2)*(LSYS**2) 
+                    + (LSYS*((LSYS+1)/2-1)+LSYS/2))
 
             J[impsite-1,impsite] = 0.0
             J[impsite,impsite-1] = 0.0

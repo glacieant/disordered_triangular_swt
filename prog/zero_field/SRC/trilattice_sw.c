@@ -526,11 +526,13 @@ int main(int argc,char *argv[]) {
 
 			//Getting the magnetization
 
+            printf("%lf\n",SPIN);
 			stag_spin(N_lattpoint,lsite,alpha,
 					OMEGA,&SPIN,&SPIN_var,
 					spin_grid,spin_grid_var);
-
-			//Getting the energy
+            printf("%lf\n",SPIN);
+			
+            //Getting the energy
 
 			ground_en(N_lattpoint,lsite,J,
 					OMEGA,&EN,&EN_var);
@@ -627,6 +629,10 @@ int main(int argc,char *argv[]) {
 
 	int LAT_SMPLE=N_lattpoint*iter_DISD;
 	int TRI_SMPLE=(L-1)*(L-1)*iter_DISD;
+
+    printf("%lf\n",SPIN);
+    printf("%d\n",LAT_SMPLE);
+    printf("%lf\n",SYSAVG(SPIN,LAT_SMPLE));
 
 	if (LSTSWITCH != 0) {
 		fprintf(outf,"%d\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf\t%lf"

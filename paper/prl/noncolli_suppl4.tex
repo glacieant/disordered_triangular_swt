@@ -65,13 +65,13 @@ is uniform.
 
 To this end we start from a coplanar state in the $x-y$ plane and 
 rotate the spins such that all point along the $\hat{x}$ axis. The 
-rotation involves the $y$ components of the spins, i.e., the 
-susceptibility $\chi^\perp(\vec{q}) = \llangle S_{\vec{q}}^y; 
-S^y_{-\vec{q}} \rrangle$. 
+rotation due to the dipolar field involves only the $y$ components 
+of the  spins, i.e., the susceptibility 
+$\chi^\perp(\vec{q}) = \llangle S_{\vec{q}}^y; S^y_{-\vec{q}} \rrangle$. 
 For a system with underlying SU(2) spin symmetry, this susceptibility
 is governed by the in-plane Goldstone modes and generically behaves 
 as $\chi^\perp(\vec{q})\propto 1/q^2$ for small momenta. For the 
-triangular-lattice Heisenberg model in the classical limit the 
+triangular-lattice Heisenberg model in the classical limit, the 
 full expression for the transverse susceptibility is given by
 \cite{wollny-thesis16}
 
@@ -100,13 +100,17 @@ separate site $\vec{r}$ is given by
     S_{r'+\beta_j\vec{\delta}(\vec{r}')/2}^y \rrangle 
 \end{align}
 where $\beta_j=(-1)^j$ is the dipolar form factor of the perturbation, 
-and $h^\perp \propto \delta J/J$ measures the strength of the 
-perturbation. The proportionality factor, which we call 
-$\tilde{\alpha}$, depends on the microscopic details of the lattice 
+and $h_{\vec{r}'}^\perp \propto \delta J/J$ measures the strength of 
+the perturbation due to the defect at bond location $\vec{r}'$. 
+The proportionality factor, which we call $\tilde{\alpha}$, depends 
+on the microscopic details of the lattice 
 and in itself is proportional to the stiffness of the ordered phase. 
 Later, we extract the values of this non-universal prefactor for 
 two different non-collinear antiferromagnets, the triangular-lattice 
 Heisenberg model and the $J_1-J_4$ cubic-lattice Heisenberg model.
+At this stage the co-ordinate locations of the bonds and the spins 
+are considered separately. However, when we take the appropriate 
+continuum limit the distinction will disappear.
 
 Once the transverse response is expressed in terms of the 
 susceptibility $\chi^\perp(q)$,
@@ -143,7 +147,7 @@ $\alpha=4i\tilde{\alpha}$.
 
 \subsection{Uniform moment}
 
-In the presence of a single defect bond, the bulk spin moments do 
+In the presence of a single bond defect, the bulk spin moments do 
 not exactly cancel each other, such that the resulting state has a 
 non-vanishing uniform magnetization $\mimp$. For small $\delta J$ 
 this is proportional to $\delta J$,
@@ -171,8 +175,8 @@ assess the destruction of long-range order.
 
 In the linear response regime, we can consider the superposition of
 individual dipolar responses (\ref{eq:tr_resp}) from a spatially
-random distribution of bond defects. The average transverse response
-is simply zero for a defect distribution with zero mean and therefore 
+random distribution of bond defects. The averaged transverse response
+is simply zero for a defect distribution with zero mean. Therefore 
 their collective effect is manifested through the squared transverse
 fluctuation. Although the angular profile of the response due 
 to each bond defect is dependent on the orientations
@@ -180,9 +184,9 @@ of the respective bonds, for the case of a perfectly random
 distribution of such defects, 
 $\overline{\delta J(\vec{r})\delta J(\vec{r}')}=
 (\delta J)^2\delta_{\vec{r},\vec{r}'}$, the contribution coming
-from the separate bond or dipolar orientations decouple. From
+from the different bond or dipolar orientations decouple. From
 (\ref{eq:tr_resp}) it is also easy to see that these contributions
-differ by phase factors of constant angular rotations. Therefore by 
+differ by phase factors of constant angular rotations. Therefore, by 
 choosing appropriately rotated frames of axes for each, we can cast 
 them in an identical form and sum up to find the expression for the 
 total transverse spin fluctuation,
@@ -217,14 +221,15 @@ total transverse spin fluctuation,
 where $\chi^\perp(q)\propto S/q^2$ is the transverse susceptibility 
 from the previous section and $N_B$ is the number of distinct bond 
 orientation for a given lattice geometry. It is notworthy that the 
-additional factor from the summation over the bond orientation is 
-cancelled by the overall volume fraction for each such contribution. 
+additional factor from the summation over the bond orientations is 
+cancelled by the overall volume fraction for each such contribution.
+\todo{I think it does, do you?}
 As discussed in the foremost part of this letter, if the susceptibility 
 $\chi^\perp(\vec{q})$ is dominated by massless Goldstone modes, the 
 integral (\ref{eq:sq_resp}) diverges below a lower critical dimension. 
-This signal the destruction of the long-range order and precisely at 
-the critical dimension emergence of exponentially growing domains. 
-In the following we consider the criterion 
+This signals the destruction of the long-range order and precisely at 
+the critical dimension gives rise to the emergence of exponentially 
+growing domains. In the following we consider the criterion 
 $ \overline{\left\langle {S^{\perp}}^2\right\rangle } \simeq S^2 $  
 and provide a detailed supplement to our original discussion on 
 various aspects of the destruction of longe-range order in 
@@ -240,41 +245,44 @@ integral (\ref{eq:sq_resp}) makes the correlation length of
 the order parameter short-ranged,
 \begin{equation}
     \begin{aligned}
-        \left(\frac{\alpha S\delta J}{J}\right)^2
+        \frac{1}{(2\pi)^{d-1}}
+        \left(\frac{\alpha S\delta J}{\sqrt{2} J}\right)^2
         \int_{1/\xi}^1q^{d-1}dq
         \left(\frac{1}{q}\right)^2
-        & \simeq S^2
+        & \simeq S^2 \,.
     \end{aligned}
 \end{equation}
 This implies a correlation length $\xi^{2-d} \propto (J/\delta J)^2$ 
-for $d<2$, while for $d=2$, barring the non-universal stiffness 
-dependent factor $\alpha$
+for $d<2$, while for $d=2$, barring the numerical and non-universal 
+prefactors,
 \begin{equation}
     \xi \propto e^{(J/\delta J)^2}\,.
     \label{xi}
 \end{equation}
-
+\todo{Should I be more precise?}
 
 \subsection{Finite $T$}
 
-At finite $T$ and at $d=2$ the magnet would be thermally disordered,
-but similar to the effect of bond disorder from the previous
-segment is exhibits exponential correlation growth, 
+At finite $T$ and in \todo{in or at?} $d=2$ the magnet would be 
+thermally disordered, but similar to the effect of bond disorder 
+from the previous segment it would exhibit exponential correlation growth, 
 $\xi \propto e^{1/T} $\cite{chakravarty87}. As temperature decreases,
 the thermal and quenched bond disorder competes for precedence and for
-a particular value of disorder strength a crossover temperature
+a fixed value of disorder strength a crossover temperature
 emerges, $ T^* = \delta J/J$. If the temperature decreases any further
 the disordered state becomes magnetic. \todo {This is apparently
-contentious now, so we should change. In Chakravorty Halperin I 
+contentious now, so we should change may be? In Chakravorty Halperin, I 
 see a factor of spin-stiffness in the exponent, should we try to be
 precise and try get an appropriate cancellation of this with our
-prefactor $\alpha$?
+prefactor $\alpha$? Although, don't you think comparing our bare
+values to the renormalized stiffness from Chakravarty et. al 
+would be comparing apples to oranges?
 }
 
 \subsection{Layered systems}
 
 A realistic layered system displays a small inter-layer coupling 
-which tends to stabilizes magnetic order at finite temperatures 
+which tends to stabilize magnetic order at finite temperatures 
 in the presence of SU(2) symmetry. We assume an (unfrustrated) 
 inter-layer coupling of magnitude $J_\perp$. Using the ratio 
 between the interplanar and intraplanar couplings,
@@ -297,47 +305,181 @@ $\kappa$ alone,
     \begin{aligned}
     \left(\frac{\lambda\alpha S\delta J}{J}\right)^2
     \int \frac{d^2qdq_\perp}{(2\pi)^3}
-    \frac{q_x}{q^2+\kappa^2q_\perp^2} &\leq S^2
+    \left(\frac{q_x}{q^2+\kappa^2q_\perp^2}\right)^2
+        &\leq S^2
     \end{aligned}
 \end{equation}
-with longe-range ordered phase stable if,
+with the longe-range ordered phase stable if,
 \begin{equation}
 \begin{aligned}
     \frac{J_\perp}{J} = \kappa \geq 
-    \frac{1}{2}\left(\frac{\lambda\alpha\delta J}{J}\right)^2
+    \frac{1}{16\pi}\left(\frac{\lambda\alpha\delta J}{J}\right)^2
 \end{aligned}
 \end{equation}
 
 \subsection{Broken SU(2)}
 
 For a system with broken SU(2) symmetry, some or all of the 
-Goldstone modes acquire a gap. For simplicity we assume a
-particular form of the response function,
+Goldstone modes acquire a gap. For the latter situation, we 
+assume a generic form of the transverse response function
 \begin{align}
     \chi^\perp(\vec{q}) = \frac{\lambda S}{q^2+\Delta^2}
 \end{align}
 with the dimensionless phenomenological factor $\lambda$
-absorbing the particular details of the lattice. 
+absorbing the particular details of the lattice. The
+gap removes the infrared divergence of the integral 
+(\ref{eq:sq_resp}) and the stability criterion for the
+longe-range order is solely determined by the amplitude 
+prefactor of the integral. With the presently adopted
+parametrization, the critical minimum value of the gap which
+stabilizes the long-range order is
+\begin{align}
+    \Delta^{2-d} \geq \frac{1}{(2\pi)^{d-1}}
+    \left(\frac{\lambda\alpha S\delta J}{\sqrt{2}J}\right)^2\,.
+\end{align}
+Below this value the correlation length decays as a power law of the
+gap magnitude with $\Delta\rightarrow 0$. \todo{I think so, Do you?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Incommensurability in anisotropic Heisenberg model}
 
-We consider a spatially anisotropic Heisenberg model on the triangular lattice, with couplings $J_{1,2,3}$ on the bonds $1,2,3$, with mean $J$. In the classical limit, the ground state is given by a single-$Q$ coplanar spiral whose propagation wavevector $\vec Q$ can be found by minimizing the Fourier-transformed coupling constant $J({\vec q})$. In the isotropic case, the system orders at $\vec Q_0 = \pm (4\pi/3,0)$.
+We consider a spatially anisotropic Heisenberg model on the 
+triangular lattice, with couplings $J_{1,2,3}$ on the bonds $1,2,3$, 
+with mean $J$. In the classical limit, the ground state is given by 
+a single-$Q$ coplanar spiral whose propagation wavevector $\vec Q$ 
+can be found by minimizing the Fourier-transformed coupling constant 
+$J({\vec q})$. In the isotropic case, the system orders at 
+$\vec Q_0 = \pm (4\pi/3,0)$.
 
-The degree of anisotropy can be parameterized by $\vec{d} = \sum_{i=1}^3 (J_i/J) \hat{e}_i$ where $\hat{e}_i$ are the directed unit vectors along the nearest-neighbor bonds of the lattice. As explained in the main text, $\vec d$ takes the role of a local dipole density in the bond-disordered case.
+The degree of anisotropy can be parameterized by 
+$\vec{d} = \sum_{i=1}^3 ((J_i-J)/J) \hat{e}_i$ 
+\todo{Note: change of definition, do you agree?}
+where $\hat{e}_i$ are the 
+directed unit vectors along the nearest-neighbor bonds of the lattice.
+For the following, we chose the convention, $\hat{e}_1=(1,0),
+\hat{e}_2=(-1/2,\sqrt(3)/2)$ and $\hat{e}_3=(-1/2,-\sqrt{3}/2)$.
+As discussed in the main text and also in the preceeding sections, 
+for localized anisotropies, $\vec d$ takes the role of a local 
+dipole density which becomes crucial in the bond-disordered case.
 
-For small deviations from isotropy, $|\vec d|\ll 1$, the relation between $\vec{Q}$ and $\vec d$ can be determined analytically \todo{work out, write down}.
+Within the parameter regime 
+$J_1^2(J_2-J_3)^2<J_2^2J_3^2<J_1^2(J_2+J_3)^2$,
+the ordering vector for the anisotropic triangular lattice is given by
+\begin{equation}
+    \begin{aligned}
+        &\vec{Q} = (Q_x,Q_y) \\
+        &Q_x = 2\tan^{-1}
+        \left(\frac{-\sqrt{J_1^2(J_2+J_3)^2-J_2^2J_3^2}}
+            {\sqrt{-J_1^2(J_2-J_3)^2+J_2^2J_3^2}}
+        \right) \\
+        &Q_y = -\frac{2}{\sqrt{3}}
+        \tan^{-1}
+        \left(\frac{J_2-J_3}{J_2+J_3}
+            \frac{\sqrt{J_1^2(J_2+J_3)^2-J_2^2J_3^2}}
+            {\sqrt{-J_1^2(J_2-J_3)^2+J_2^2J_3^2}}        
+        \right)
+    \end{aligned}
+\end{equation}
+
+For small deviations from isotropy, $|\vec d|\ll 1$, the relation 
+between $\vec{Q}$ and $\vec d$ gets simpler, $\vec{Q}-\vec{Q}_0 
+= -\frac{2}{\sqrt{3}}\vec{d}$. However, the most general relation 
+between the shift of the ordering wave vector and the anisotropy 
+induced dipole moment in an arbitrary lattice with non-collinear
+order reads,
+\begin{align}
+    Q^\alpha-Q_0^\alpha = \sum_{i,\alpha,\beta}
+    \omega_i^{\alpha\beta}d_i^\beta 
+\end{align}
+where we sum over dipole moments along different directed bond 
+orientations and their components.
+\todo{Do we give $\omega$ a name? or do we leave this generelization
+all together?} It is evident from the above expression that
+for even small bond anisotropies the ordering wave vector becomes
+incommensurate. 
+
+We can extend this result for the fixed lattice anisotropies to
+the case of isolated bond defects by noticing that now instead of 
+a single energy functional $\propto J(\vec{q})$,  we have to 
+simultaneously minimize multiple distinct local energy functionals, 
+$J_{\vec{r}}(\vec{Q})=\sum_{i}2 
+J_{\vec{r},i}\cos(\vec{Q}\cdot\vec{e}_i)$ at all the sites $\vec{r}$. 
+However, due to the nearest neighbour nature of the exchange interaction, 
+the effect of an isolated infinitesimal defect remains limited to the 
+generation of a local infinitesimal dipole moment $\vec{d}$ on the same
+location. A random distribution of such bond defects thus lead to 
+rigid incommensurability domains. In the main text we have identified 
+the consequence of the emergence of these domains as the destruction 
+of longe-range order.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Numerical results}
+\section{Numerical Simulations}
+
+\todo{Changed it from NUMERICAL RESULTS. Would this be a more proper? 
+Or did you have something else in your mind}
+
+From the discussion in the previous section it is clear that the 
+introduction of bond impurities change the ordering wave vectors 
+for non-collinear magnets. The loss of translational invariance 
+implies that the classical ground state can no longer be anayltically 
+obtained for arbitrarily strong bond defects. Therefore, in order to 
+find the consequent spin-texture, dipolar decay and impurity moments 
+\todo{should we call this defect moment?}, we adopt an iterative 
+classical energy minimization scheme \cite{walker77}
+to reach the ground state configuration. For the triangular lattice,
+we start from the $120^\circ$ initial configuration and the spins 
+rotate in response to the emergent dipolar moment generated by the
+bond defect.
+
+\todo{Should we discuss a bit about random bond configurations
+and incommensurability domains here?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Bond defect in three dimensions}
 
-We have checked that our scenario for bond disorder applies to three space dimensions as well. To this end, we have considered a single bond defect in \todo{describe model and results}.
+We have checked that our scenario for bond disorder applies to three 
+space dimensions as well. To this end, we have considered a single 
+bond defect in the $J_1-J_4$ cubic-lattice Heisenberg model.
+\todo{Should I write a hamiltonian?}
+The presesnce of the $J_4$, or the fourth nearest neighbour interaction
+term in the hamiltonian makes the original cubic-lattice weakly 
+frustrated as the spins can no longer anti-align in pairs to minimize
+their energies. Ignoring the bonds $ J_2 $ and $ J_3$ does not qualitatively 
+affect the discussion that follows as they do not frustrate the spin 
+configuration and in the absence of the $ J_4$ term the ground
+state remains collinear. \todo{A reference here?}. A finite $J_4$, 
+however, renders the ground state spin configuration non-collinear
+and in general, also incommensurate. The ordering wave vector 
+can be extracted follwing the same procedure which was applied to 
+the trinagular-lattice Heisenberg model. For $J_1<4 J_4$, we consider
+the ordering vector,
+\begin{equation}
+    \begin{aligned}
+        &\vec{Q} = (Q,Q) \\
+        &Q = \pi - \tan^{-1}
+        \left(\sqrt{16\left(\frac{J_4}{J_1}\right)^2-1}
+        \right)\,.
+    \end{aligned}
+\end{equation}
+which is one of the four equivalent ordering vectors of the model 
+in this parameter range. 
+
+We take $J_4 = J_1/2$ for which the order is commensurate and 
+non-collinear with ordering vector $\vec{Q}=(2\pi/3,2\pi/3)$. We 
+introduce an isolated bond defect and find that the dipolar nature of 
+the defect is manifested through the reoriented spin-texture around it. 
+However, the decay of the transverse response is quadratic in this 
+case as the underlying lattice is three-dimensional.
+\todo{Add two figures of the texture and the decay}
+The faster decay of the transverse response significantly affects the
+long-wavelength behavior of this model. Following on the arguments 
+presented throughout this letter we can easily conclude that being 
+above the lower critical dimension, long-range order in $J_1-J_4$ 
+cubic lattice is unaffected by random distribution of infinitesimal 
+bond defects.
 
 \begin{thebibliography}{99}
     \bibitem{wollny-thesis16}
@@ -351,10 +493,10 @@ We have checked that our scenario for bond disorder applies to three space dimen
         S. Chakravorty, B. I. Halperin, and D. R. Nelson
         Phys. Rev. Lett. \textbf{60}, 1057 (1988).
 
-    \bibitem{chalker10}
-        % Spin glass transition in geometrically frustrated antiferromagnets with weak disorder
-        A. Andreanov, J. T. Chalker, T. E. Saunders, and D. Sherrington,
-        Phys. Rev. B \textbf{81}, 014406 (2010).
+    \bibitem{walker77}
+        %Computer Model of Metallic Spin-Glasses 
+        L. R. Walker, and R. E. Walstedt,
+        Phys. Rev. Lett. \textbf{38}, 514 (1977).
 \end{thebibliography}
 
 

@@ -8,10 +8,14 @@ from matplotlib.patches import FancyArrow
 from matplotlib.patches import Ellipse
 from matplotlib.patches import Rectangle
 
-
 ## The tex style commands
 plt.rc('text',usetex=True)
 plt.rc('font',family='serif')
+
+# setting up the three colors
+col1 = 'royalblue'
+col2 = 'red'
+col3 = 'limegreen'
 
 # plotting the configuration
 
@@ -24,16 +28,16 @@ ax = fig.add_axes([0,0,1,1])
 ffs = 34
 
 arr1 = FancyArrow(0.25,0.75,0.9-0.25,0.0,
-        ec='cornflowerblue',
-        fc='cornflowerblue',
+        ec=col1,
+        fc=col1,
         width=0.025,
         head_width=0.08,
         head_length=0.05,
         zorder=1
         )
 circ1 = Ellipse((0.25,0.75),0.04,0.08,
-        ec='chocolate',
-        fc='chocolate',
+        ec=col2,
+        fc=col2,
         zorder=2
         )
 
@@ -47,11 +51,11 @@ ax.text(-0.05,0.75-0.025/2,r'(a) classical',
         fontsize=ffs)
 
 ax.text(0.2125,0.85,r'LRO',
-        color='chocolate',
+        color=col2,
         fontsize=ffs)
 
 ax.text(0.5,0.85,r'spin glass',
-        color='cornflowerblue',
+        color=col1,
         fontsize=ffs)
 
 ax.add_artist(arr1)
@@ -61,8 +65,8 @@ ax.add_artist(circ1)
 
 rect2 = Rectangle((0.25,0.25),
         (0.9-0.25)/2,0.025,
-        ec='cornflowerblue',
-        fc='cornflowerblue',
+        ec=col1,
+        fc=col1,
         zorder=1
         )
 
@@ -75,8 +79,8 @@ rect3 = Rectangle(((0.9-0.25)/2+0.25,0.225),
 
 arr2 = FancyArrow((0.9-0.25)/2+0.25+0.001,
         0.25+0.025/2,0.9-((0.9-0.25)/2+0.25+0.001),0.0,
-        ec='seagreen',
-        fc='seagreen',
+        ec=col3,
+        fc=col3,
         width=0.025,
         head_width=0.08,
         head_length=0.05,
@@ -84,8 +88,8 @@ arr2 = FancyArrow((0.9-0.25)/2+0.25+0.001,
         )
 
 circ2 = Ellipse((0.25,0.2625),0.04,0.08,
-        ec='chocolate',
-        fc='chocolate',
+        ec=col2,
+        fc=col2,
         zorder=2
         )
 
@@ -103,15 +107,15 @@ ax.text(-0.05,0.25,r'(b) quantum',
         fontsize=ffs)
 
 ax.text(0.2125,0.35,r'LRO',
-        color='chocolate',
+        color=col2,
         fontsize=ffs)
 
 ax.text(0.34,0.35,r'spin glass',
-        color='cornflowerblue',
+        color=col1,
         fontsize=ffs)
 
 ax.text(0.615,0.35,r'random singlet',
-        color='seagreen',
+        color=col3,
         fontsize=ffs)
 
 ax.add_artist(rect2)

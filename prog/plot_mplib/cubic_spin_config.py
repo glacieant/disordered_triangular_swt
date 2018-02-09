@@ -112,7 +112,8 @@ for fname in glob.iglob('*.npz'):
         e2 = np.array([0.0,1.0,0.0])
 
 
-    for zix in range(0,L):
+    for zix in range((L+1)/2,(L+1)/2+1):
+    #for zix in range(0,L):
 
         # plotting the configuration
 
@@ -225,9 +226,9 @@ for fname in glob.iglob('*.npz'):
                 )
         plt.close('all')
 
-for L in zip(*hshchar)[0]:
-    for DLT in zip(*hshchar)[1]:
-        for ALP in zip(*hshchar)[2]:
+for L in set(zip(*hshchar)[0]):
+    for DLT in set(zip(*hshchar)[1]):
+        for ALP in set(zip(*hshchar)[2]):
             subprocess.call('pdftk ../plot/cubic_spin_config_'+
                 L+
                 DLT+

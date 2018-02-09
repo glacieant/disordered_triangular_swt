@@ -10,25 +10,25 @@ export LC_ALL=en_US.UTF8
 ##################################################
 
 # Specifying the lattice lengths for the calculation
-L="60 66";
+L="12 24";
 # Specifying the maximum number of iterations for the classical
 # algorithm
-iter_CL="1e+5";
+iter_CL="1e+7";
 # The number of disorder iterations for the specific lattice length, L
 # following the same syntax of L
-iter_DS="20 15";
+iter_DS="1 1";
 # Number of parallel runs for the specific lattice length, L
 # with the same syntax as L
-PAR_X="8 8";
+PAR_X="1 1";
 # The width of the randomness, DELTA of the couplings J(1+DELTA)
-DIS_WDTH="0.0 0.2 0.4 0.6 0.8 0.99";
+DIS_WDTH="0.0";
 # The ratio of the couplings J_prime/J for the nnn
-JP_WDTH="0.0 0.025 0.05 0.075 0.1 0.125 0.15 0.175";
+JP_WDTH="0.0";
 # The width of the angular fulctuation from 120 deg state
 # Number of parallel execution of processes requested
-PLRUNS="10";
+PLRUNS="1";
 # in the unit of pi
-ANGDWIDTH="0.5";
+ANGDWIDTH="0.0";
 #The minimum of frequency for IPR calculation
 IMIN="0.0";
 #The minimum of frequency for IPR calculation
@@ -78,7 +78,7 @@ YMOMNUM="100";
 #The width of the pole of the greens function
 GWDTH="0.025";
 #Tolerance for bogoliubov subroutine for respective L
-BOGTOL="0.025 0.025";
+BOGTOL="0.001 0.001";
 #The global tolerance
 GTOL="1.0e-8";
 #The wavefunction to visualise

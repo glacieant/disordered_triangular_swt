@@ -6,7 +6,7 @@
 import os
 #folder = raw_input("Name of the target folder? ")
 folder = "single_impurity"
-os.chdir("../"+folder+"/out/data")
+os.chdir("../"+folder+"/out/data_bk")
 import sys
 import subprocess
 import re
@@ -220,7 +220,7 @@ for i in range(0,HSHNUM):
                 ms=12,
                 mew=2,
                 mfc='None',
-                mec='chocolate',
+                mec='red',
                 basex=10,basey=10,
                 zorder=1
                 )
@@ -244,7 +244,7 @@ for i in range(0,HSHNUM):
         #plotting the fit
         lp = np.linspace(0.5,(L+1.0)/2.0-1.0+0.5,num=200)
         ax.loglog(lp,invd(lp, *popt),
-                color='cornflowerblue',
+                color='royalblue',
                 linestyle='--',
                 lw=4,
                 label=r'Power law fit, $\delta\theta\sim1/r$',

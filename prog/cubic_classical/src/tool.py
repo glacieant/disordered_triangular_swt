@@ -113,7 +113,8 @@ def init_param(LSYS,DELTA,ALPHA,ANGVAR,M):
     M[:] = 0.0
 
     NSYS = LSYS**3
-    
+   
+    """
     #M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
     #M[1] = np.einsum('i,ij->ij',np.einsum('ij,ij->i',M[1],M[1])**(-0.5),M[1])
 
@@ -124,4 +125,20 @@ def init_param(LSYS,DELTA,ALPHA,ANGVAR,M):
         RND = np.random.uniform(0.0,ANGVAR)
         RX = i+(i/LSYS)%2 + (i/(LSYS**2))%2
         M[1,i] = ((-1.0)**RX)*np.array([np.sqrt(1.0-RND**2),RND,0.0])
+    """
+    # setting up the spin and field matrices
 
+    M[1,0] = np.array([1.0,0.0,0.0])
+    for i in range(1,NSYS):
+        
+        if (i%LSYS == 0):
+            if ((i%(LSYS*LSYS))==0.0):
+                phx = 2.0*np.pi/3.0
+            else:
+                phx = -2.0*np.pi/3.0
+        else:
+            phx = 2.0*np.pi/3.0
+
+        ROT = np.array([[np.cos(phx),-np.sin(phx),0],
+            [np.sin(phx),np.cos(phx),0],[0,0,1]])
+        M[1,i] = np.einsum('ab,b',ROT,M[1,i-1])

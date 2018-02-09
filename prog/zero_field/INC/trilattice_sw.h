@@ -24,7 +24,7 @@
 
 //Defining the maximum number of step for the classical algorithm
 
-#define CITER 1e+5
+#define CITER 1e+7
 
 //Defining minimum frequency for BZ
 
@@ -64,7 +64,7 @@
 
 //Defining width of the angular disorder around the 120 deg state
 
-#define ANGDWIDTH 0.5
+#define ANGDWIDTH 0.0
 
 //Defining lattice constant
 
