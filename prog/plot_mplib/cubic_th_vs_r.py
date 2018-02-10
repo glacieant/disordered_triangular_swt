@@ -140,8 +140,6 @@ for fname in glob.iglob('*.npz'):
 
         dtheta = np.abs(theta[indx:inde])
 
-        print theta[indx:inde]
-
         indx0 = indx
         inde0 = inde
         l0 = np.array(range(0,(inde0-indx0)),
@@ -176,8 +174,8 @@ for fname in glob.iglob('*.npz'):
                 zorder=2
                 )
 
-        #plt.xlim([0.5,10])
-        #plt.ylim([10.0**(-3),1.0])
+        plt.xlim([0.5,20])
+        plt.ylim([10.0**(-4),1.0])
         plt.ylabel(r'$\delta\theta(r)$',fontsize=30)
         plt.xlabel(r'$r$',fontsize=30)
         plt.tick_params(which='both',width=2,labelsize=30)
@@ -196,7 +194,7 @@ for fname in glob.iglob('*.npz'):
                 ,bbox_inches='tight'
                 )
         plt.close('all')
-
+"""
 for L in set(zip(*hshchar)[0]):
     for DLT in set(zip(*hshchar)[1]):
         for ALP in set(zip(*hshchar)[2]):
@@ -220,4 +218,4 @@ for L in set(zip(*hshchar)[0]):
                 "DNMR"+
                 '* ',shell=True)
 
-
+"""
