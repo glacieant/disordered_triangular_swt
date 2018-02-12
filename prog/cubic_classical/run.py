@@ -6,7 +6,7 @@
 ##################################################
 
 # system size
-LSYS = [36] 
+LSYS = [9] 
 # disorder iteration number 
 ITERDISD = [1]
 # initial angle fluctuation

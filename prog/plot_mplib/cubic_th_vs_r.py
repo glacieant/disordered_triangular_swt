@@ -140,8 +140,6 @@ for fname in glob.iglob('*.npz'):
 
         dtheta = np.abs(theta[indx:inde])
 
-        print theta[indx:inde]
-
         indx0 = indx
         inde0 = inde
         l0 = np.array(range(0,(inde0-indx0)),
@@ -219,5 +217,4 @@ for L in set(zip(*hshchar)[0]):
                 ALP+
                 "DNMR"+
                 '* ',shell=True)
-
 
