@@ -44,9 +44,13 @@ S = 0.5
 
 ##### Defining fitting functions ####
 
-def power(x,a,b,c):
+def power(x,a):
 
-    return a + b*x + c*(x**2)
+    return a*x
+
+def power_2(x,a,b,c):
+
+    return a + b*x
 
 def invd(x,a,b):
 
@@ -65,7 +69,7 @@ for g in range(0,data_len):
     
     data_C[ln,dn,an] = np.linalg.norm(s)
     data_Q[ln,dn,an] = np.linalg.norm(qs)
-    data[ln,dn,an] = np.linalg.norm(s+(1.0/S)*qs)
+    data[ln,dn,an] = S*np.linalg.norm(s+(1.0/S)*qs)
 
 ##### Figure generation ##########
 
@@ -90,7 +94,7 @@ for an in range(0,ASET):
         
         w,h = figure.figaspect(1.0)
         fig = plt.figure(figsize=(w,h))
-        ax = fig.add_axes([0,0,1,1])
+        ax = fig.add_axes([0.26,0.15,0.685,0.8])
 
         dmx_C = data_C[:,dn,an] 
         dmx_Q = data_Q[:,dn,an] 
@@ -108,9 +112,9 @@ for an in range(0,ASET):
                 zorder=1
                 )
 
-        popt_C, pcov_C = curve_fit(power,invL,dmx_C) 
-        popt_Q, pcov_Q = curve_fit(power,invL,dmx_Q) 
-        popt, pcov = curve_fit(power,invL,dmx)
+        popt_C, pcov_C = curve_fit(power_2,invL,dmx_C) 
+        popt_Q, pcov_Q = curve_fit(power_2,invL,dmx_Q) 
+        popt, pcov = curve_fit(power_2,invL,dmx)
 
         DLALPHA[dn,an] = popt[0]
 
@@ -119,20 +123,21 @@ for an in range(0,ASET):
         
         print >> fyl2, ALPX[an], DELTA[dn], \
                 str("%.4f" % popt[0]), str("%.4f" % popt[1]), \
-                str("%.4f" % popt[1])
+                str("%.4f" % popt[2])
 
         invLP = np.linspace(0.0,0.1,num=200)
         
-        ax.plot(invLP,power(invLP, *popt),
+        ax.plot(invLP,power_2(invLP, *popt),
                 color='royalblue',
                 linestyle='--',
                 lw=4,
-                label=r'$m^{(0)}_L+m^{(1)}_L/L+m^{(2)}_L/L^2$',
+                label=r'$a^{(0)}_L+a^{(1)}_L/L+a^{(2)}_L/L^2$',
                 zorder=2
                 )
         ax.xaxis.set_ticks(np.arange(0.0,0.12,0.02))
         plt.xlim([0.0,0.1])
-        plt.ylabel(r'$m = |\vec{S}_{\textrm{tot}}|$',fontsize=30)
+        plt.ylabel(r'$m_{\textrm{imp}}(\delta J = - J)$'
+                ,fontsize=30)
         plt.xlabel(r'$1/L$',fontsize=30)
         plt.tick_params(which='both',width=2,labelsize=30)
         plt.tick_params(which='major',length=20)
@@ -152,14 +157,14 @@ for an in range(0,ASET):
                 +"_ALPHA_"
                 +str("%.4f" % ALPX[an])
                 +".pdf",
-                bbox_inches='tight'
+                #bbox_inches='tight'
                 )
         
         plt.close('all')
     
     w,h = figure.figaspect(1.0)
     fig = plt.figure(figsize=(w,h))
-    ax = fig.add_axes([0,0,1,1])
+    ax = fig.add_axes([0.26,0.15,0.685,0.8])
 
     ax.plot(DELTA,DLALPHA[:,an],
             ls='None',
@@ -174,32 +179,31 @@ for an in range(0,ASET):
 
     DELTAX = np.linspace(np.amin(DELTA),np.amax(DELTA),num=200)
     
-    print >> fyl3, ALPX[an], \
-            str("%.4f" % popt[0]), str("%.4f" % popt[1]), \
-            str("%.4f" % popt[1])
+    print >> fyl3, ALPX[an], str("%.4f" % popt[0])
 
     ax.plot(DELTAX,power(DELTAX, *popt),
             color='royalblue',
             linestyle='--',
             lw=4,
-            label=r'$m^{(0)}_\Delta+m^{(1)}_\Delta/\Delta+m^{(2)}_\Delta/\Delta^2$',
             zorder=2
             )
     
-    plt.ylabel(r'$m = |\vec{S}_{\textrm{tot}}|$',fontsize=30)
-    plt.xlabel(r'$\Delta$',fontsize=30)
+    plt.ylabel(r'$m_{\textrm{imp}}$',fontsize=30)
+    plt.xlabel(r'$\delta J$',fontsize=30)
 
     plt.tick_params(which='both',width=2,labelsize=30)
     plt.tick_params(which='major',length=20)
     plt.tick_params(which='minor',length=10)
 
+    """
     legend=ax.legend(loc='best',
                 fontsize=20,
                 markerscale=2,
                 shadow=True)
+    """
     fig.savefig("PLOT/UMOM-DELTA_VS_ALPHA"
             +".pdf",
-            bbox_inches='tight'
+            #bbox_inches='tight'
             )
     
     plt.close('all')

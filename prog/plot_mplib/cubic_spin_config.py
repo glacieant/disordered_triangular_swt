@@ -244,5 +244,3 @@ for L in set(zip(*hshchar)[0]):
 
 # removing split files
 subprocess.call('rm ../plot/cubic_spin_config_*',shell=True)
-
-

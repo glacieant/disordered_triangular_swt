@@ -174,8 +174,8 @@ for fname in glob.iglob('*.npz'):
                 zorder=2
                 )
 
-        #plt.xlim([0.5,10])
-        #plt.ylim([10.0**(-3),1.0])
+        plt.xlim([0.5,20])
+        plt.ylim([10.0**(-4),1.0])
         plt.ylabel(r'$\delta\theta(r)$',fontsize=30)
         plt.xlabel(r'$r$',fontsize=30)
         plt.tick_params(which='both',width=2,labelsize=30)
