@@ -120,11 +120,13 @@ for fname in glob.iglob('*.npz'):
         
         for i in range(0,N):
             p = 0
+            pp = 3
             q = 2
-            s1 = np.arccos(np.dot(spin[i],spin[nbr[i,p]]))
-            s2 = np.arccos(np.dot(spin[i],spin[nbr[i,q]]))
-            #US[i] = s1 + s2
-            #VS[i] = (s2 - s1)/np.sqrt(3)
+            qq = 5
+            s1 = (np.arccos(np.dot(spin[i],spin[nbr[i,p]]))+
+                    np.arccos(np.dot(spin[i],spin[nbr[i,pp]])))/2
+            s2 = (np.arccos(np.dot(spin[i],spin[nbr[i,q]]))+
+                    np.arccos(np.dot(spin[i],spin[nbr[i,qq]])))/2
             US[i] = s1
             VS[i] = (2.0*s2 - US[i])/np.sqrt(3)
 
@@ -191,11 +193,13 @@ for fname in glob.iglob('*.npz'):
     
     for i in range(0,N):
         p = 0
+        pp = 3
         q = 2
-        s1 = np.arccos(np.dot(spin[i],spin[nbr[i,p]]))
-        s2 = np.arccos(np.dot(spin[i],spin[nbr[i,q]]))
-        #US[i] = s1 + s2
-        #VS[i] = (s2 - s1)/np.sqrt(3)
+        qq = 5
+        s1 = (np.arccos(np.dot(spin[i],spin[nbr[i,p]]))+
+                np.arccos(np.dot(spin[i],spin[nbr[i,pp]])))/2
+        s2 = (np.arccos(np.dot(spin[i],spin[nbr[i,q]]))+
+                np.arccos(np.dot(spin[i],spin[nbr[i,qq]])))/2
         US[i] = s1
         VS[i] = (2.0*s2 - US[i])/np.sqrt(3)
 
@@ -209,7 +213,7 @@ for fname in glob.iglob('*.npz'):
 
     # fixing colormap for line plotting
 
-    cmstyle = cm.viridis
+    cmstyle = cm.RdPu
     VMIN = 0.0
     VMAX = np.pi/4
 
@@ -287,7 +291,7 @@ for fname in glob.iglob('*.npz'):
     Q=ax.quiver(X,Y,eU,eV,UVNORM,
             cmap=cmstyle,
             norm=Norm,
-            pivot='tail',
+            pivot='mid',
             angles='xy',
             scale=1,
             scale_units='xy',
@@ -318,7 +322,8 @@ for fname in glob.iglob('*.npz'):
 for L in set(zip(*hshchar)[0]):
     for DLT in set(zip(*hshchar)[1]):
         for ALP in set(zip(*hshchar)[2]):
-            subprocess.call('pdftk ../plot/qdom'+
+            """
+            subprocess.call('pdfjam -q --scale 1.0 ../plot/qdom'+
                 "_L_"+
                 L+
                 "_DLT_"+
@@ -327,14 +332,32 @@ for L in set(zip(*hshchar)[0]):
                 ALP+
                 "_DNM_"+
                 '* '+
-                'cat output ../plot/QDOMAIN_L_'+
+                '-o ../plot/QDOMAIN_L_'+
                 L+
                 '_DELTA_'+
                 DLT+
                 '_ALPHA_'+
                 ALP+
                 '.pdf',shell=True)
-
+            """
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/QDOMAIN_L_'+
+                L+
+                '_DELTA_'+
+                DLT+
+                '_ALPHA_'+
+                ALP+
+                '.pdf '+
+                '../plot/qdom'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '* ',shell=True)
             subprocess.call('rm ../plot/qdom'+
                 "_L_"+
                 L+
