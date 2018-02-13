@@ -5,8 +5,8 @@
 
 import os
 #folder = "sharp_wall"
-#folder = "single_impurity"
-folder = "zero_field_classical"
+folder = "single_impurity"
+#folder = "zero_field_classical"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -209,9 +209,9 @@ for fname in glob.iglob('*.npz'):
 
     # fixing colormap for line plotting
 
-    cmstyle = cm.RdPu
+    cmstyle = cm.viridis
     VMIN = 0.0
-    VMAX = np.pi
+    VMAX = np.pi/4
 
     Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
     scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
@@ -240,12 +240,12 @@ for fname in glob.iglob('*.npz'):
     cbar.set_label(r'$|\vec{Q}_i-\vec{Q}_0|$',
             fontsize=12,
             labelpad=-45)
-    cbar.set_ticklabels([r'$0$',
-        r'$\pi/4$',
-        r'$\pi/2$',
-        r'$3\pi/4$',
-        r'$\pi$',
-        ])
+    #cbar.set_ticklabels([r'$0$',
+    #    r'$\pi/4$',
+    #    r'$\pi/2$',
+    #    r'$3\pi/4$',
+    #    r'$\pi$',
+    #    ])
     
     """
     for i in range(0,N):
