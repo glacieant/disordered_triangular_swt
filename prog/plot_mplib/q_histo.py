@@ -5,8 +5,8 @@
 
 import os
 #folder = "sharp_wall"
-folder = "single_impurity"
-#folder = "zero_field_classical"
+#folder = "single_impurity"
+folder = "zero_field_classical"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -19,18 +19,19 @@ import matplotlib.cm as cm
 import matplotlib.patches as mpatches
 import matplotlib.patheffects as path_effects
 import matplotlib.figure as figure
+import matplotlib.mlab as mlab
 from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
 
 
 ## The tex style commands
-#plt.rc('text',usetex=True)
-#plt.rc('font',family='serif')
+plt.rc('text',usetex=True)
+plt.rc('font',family='serif')
 
 # the font styleset
-from matplotlib import rcParams
-rcParams['font.serif'] = ['Times New Roman']
-rcParams['font.family'] = 'serif'
+#from matplotlib import rcParams
+#rcParams['font.serif'] = ['Times New Roman']
+#rcParams['font.family'] = 'serif'
 
 ## picturing the output data
 
@@ -69,7 +70,7 @@ X = np.zeros(1)
 Y = np.zeros(1)
 Z = np.zeros(1)
 
-a = 1.0*np.pi/2
+a = 1.0
 
 # three diffrent translation vector
 
@@ -93,12 +94,45 @@ evec = np.array([
 
 avec = evec*a/2
 
-# reference 120 degree Q
-    
-s1 = np.arccos(-0.5)
-s2 = np.arccos(-0.5)
-UZ = s1
-VZ = (2.0*s2 - UZ)/np.sqrt(3)
+for fname in glob.iglob('*.npz'):
+
+    match = fpat.match(fname)
+    STR_L = match.group(1)
+    L = int(STR_L)
+    STR_DELTA = match.group(2)
+    STR_ALPHA = match.group(3)
+
+    FNDATA = np.load(fname)
+
+    J = FNDATA['J']
+    spin = FNDATA['spin']
+    spin0 = FNDATA['spin0']
+
+    N = L**2
+
+    nbr = np.zeros((N,ZCO),dtype=np.int)
+    lmap.lattice_map(L,nbr)
+
+    if np.abs(np.float(STR_DELTA)) < 10.0**(-4) \
+            and np.abs(np.float(STR_ALPHA)) < 10.0**(-4) :
+        
+        US = np.zeros(N,dtype=np.float)
+        VS = np.zeros(N,dtype=np.float)
+        
+        for i in range(0,N):
+            p = 0
+            pp = 3
+            q = 2
+            qq = 5
+            s1 = (np.arccos(np.dot(spin[i],spin[nbr[i,p]]))+
+                    np.arccos(np.dot(spin[i],spin[nbr[i,pp]])))/2
+            s2 = (np.arccos(np.dot(spin[i],spin[nbr[i,q]]))+
+                    np.arccos(np.dot(spin[i],spin[nbr[i,qq]])))/2
+            US[i] = s1
+            VS[i] = (2.0*s2 - US[i])/np.sqrt(3)
+
+        UZ = US[i]
+        VZ = VS[i]
 
 for fname in glob.iglob('*.npz'):
 
@@ -136,13 +170,10 @@ for fname in glob.iglob('*.npz'):
         Y = np.zeros((L,L))
         for i in range(0,L):
             for j in range(0,L):
-                # the rhombus lattice
-                # X[i,j] = (i+j)*ax+3*ax
-                # Y[i,j] = (j-i)*ay
-                # the slanted lattice
-                X[i,j] = i*a + j*ay
-                Y[i,j] = j*ax 
-    
+                #X[i,j]=(i+j*(1.0/2.0))*a +2*a
+                #Y[i,j]=j*((3.0)**0.5/2.0)*a + 2*a
+                X[i,j]= (i+j)*ax+3*ax
+                Y[i,j]= (j-i)*ay
     """
     # defining the plane for the spins
     e1 = spin[0]
@@ -173,117 +204,20 @@ for fname in glob.iglob('*.npz'):
         US[i] = s1
         VS[i] = (2.0*s2 - US[i])/np.sqrt(3)
 
+    U = US[i] - UZ
+    V = VS[i] - VZ
 
-    U = np.reshape(US,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
-    V = np.reshape(VS,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
+    # plotting the histogram
 
-    #print U
-    #print "====Shit====="
-    #print V
-    
-    # getting the rescaled data
-    #UVNORM = np.sqrt(U*U+V*V)
-    #eU = U/np.sqrt(U*U+V*V)
-    #eV = V/np.sqrt(U*U+V*V)
-    #UVNORM = np.arctan(eU/eV)
-    U = U - UZ
-    V = V - VZ
-    eta = 0.0000001
-    eU = U
-    eV = V
-    #eU = U/np.sqrt(U*U+V*V+eta)
-    #eV = V/np.sqrt(U*U+V*V+eta)
-    #UVNORM = np.sqrt(U*U+V*V+eta)
-    UVNORM = np.arctan2(eV+eta,eU+eta)
-   
-
-    # fixing colormap for line plotting
-
-    cmstyle = cm.viridis
-    VMIN = -np.pi/2
-    VMAX = np.pi/2
-
-    Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
-    scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
-    
-    # getting some colorbar
-
-    # plotting the configuration
-
-    #fig, ax = plt.subplots()
     w,h = figure.figaspect(1.0)
     fig = plt.figure(figsize=(w,h))
-    ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
-    #ax = fig.add_axes([0,0,1,1])
-    ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
+    ax = fig.add_axes([0,0,1,1])
 
-    cbar = colorbar.ColorbarBase(ax1,cmap=cmstyle,
-            norm=Norm,
-            ticks=(VMIN,
-                VMIN+(VMAX-VMIN)/4,
-                VMIN+2*(VMAX-VMIN)/4,
-                VMIN+3*(VMAX-VMIN)/4,
-                VMAX),
-            orientation='horizontal') 
-   
-    
-    #cbar.set_label(r'$|\vec{Q}_i-\vec{Q}_0|$',
-    #        fontsize=12,
-    #        labelpad=-45)
-    cbar.set_label(r'$\tan^{-1}\left(\frac{Q^y-Q_0^y}{Q^x-Q_0^x}\right)$',
-            fontsize=12,
-            labelpad=-45)
+    # the histogram of the dara
+    ax.hist(U,bins=50,normed=1,facecolor='royalblue')
 
-    cbar.set_ticklabels([r'$-\pi/2$',
-        r'$-\pi/4$',
-        r'$0$',
-        r'$\pi/4$',
-        r'$\pi/2$',
-        ])
-    
-    """
-    for i in range(0,N):
-
-        for p in range(0,6):
-
-            j = nbr[i,p]
-
-            cor_x = [X[i%L,i/L],X[i%L,i/L]+avec[p,0]]
-            cor_y = [Y[i%L,i/L],Y[i%L,i/L]+avec[p,1]]
-
-            #cval = scalarMap.to_rgba(
-            #        np.arccos(np.dot(spin[i],spin[j])))
-
-            #cval = scalarMap.to_rgba(i)
-            # plotting the couplings
-            line = plt.Line2D(cor_x,cor_y,
-                    color='gray',
-                    alpha=1,
-                    ls='solid',
-                    #lw=JLW[i,j],
-                    lw=J[i,j],
-                    zorder = 0
-                    )
-            ax.add_line(line)
-    """
-
-    Q=ax.quiver(X,Y,eU,eV,UVNORM,
-            cmap=cmstyle,
-            norm=Norm,
-            pivot='mid',
-            angles='xy',
-            scale=1,
-            scale_units='xy',
-            width=0.002,
-            headwidth=4,
-            headlength=5,
-            alpha=1.0,
-            zorder = 1.0
-            )
-
-    ax.axis('off')
-
-    fig.savefig("../plot/qdom"+
+    plt.title(r'Histogram of $\Delta Q_x$')
+    fig.savefig("../plot/qhist_x"+
             "_L_"+
             STR_L+
             "_DLT_"+
@@ -298,20 +232,44 @@ for fname in glob.iglob('*.npz'):
             )
     plt.close('all')
 
+    # plotting the histogram
+
+    w,h = figure.figaspect(1.0)
+    fig = plt.figure(figsize=(w,h))
+    ax = fig.add_axes([0,0,1,1])
+
+    # the histogram of the dara
+    ax.hist(V,bins=50,normed=1,facecolor='royalblue')
+
+    plt.title(r'Histogram of $\Delta Q_y$')
+    fig.savefig("../plot/qhist_y"+
+            "_L_"+
+            STR_L+
+            "_DLT_"+
+            STR_DELTA+
+            "_ALP_"+
+            STR_ALPHA+
+            "_DNM_"+
+            str("%06d" % IDISD)+
+            str("%06d" % BTNUM)+
+            ".pdf"
+            ,bbox_inches='tight'
+            )
+    plt.close('all')
 
 for L in set(zip(*hshchar)[0]):
     for DLT in set(zip(*hshchar)[1]):
         for ALP in set(zip(*hshchar)[2]):
             subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
                     '-dPDSETTINGS=/prepress -sOutputFile='+
-                '../plot/QDOMAIN_L_'+
+                '../plot/QXHIST_L_'+
                 L+
                 '_DELTA_'+
                 DLT+
                 '_ALPHA_'+
                 ALP+
                 '.pdf '+
-                '../plot/qdom'+
+                '../plot/qhist_x'+
                 "_L_"+
                 L+
                 "_DLT_"+
@@ -320,7 +278,34 @@ for L in set(zip(*hshchar)[0]):
                 ALP+
                 "_DNM_"+
                 '* ',shell=True)
-            subprocess.call('rm ../plot/qdom'+
+            subprocess.call('rm ../plot/qhist_x'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '*',shell=True)
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/QYHIST_L_'+
+                L+
+                '_DELTA_'+
+                DLT+
+                '_ALPHA_'+
+                ALP+
+                '.pdf '+
+                '../plot/qhist_y'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '* ',shell=True)
+            subprocess.call('rm ../plot/qhist_y'+
                 "_L_"+
                 L+
                 "_DLT_"+

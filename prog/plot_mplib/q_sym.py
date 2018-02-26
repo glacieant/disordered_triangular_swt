@@ -5,8 +5,8 @@
 
 import os
 #folder = "sharp_wall"
-folder = "single_impurity"
-#folder = "zero_field_classical"
+#folder = "single_impurity"
+folder = "zero_field_classical"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -21,7 +21,7 @@ import matplotlib.patheffects as path_effects
 import matplotlib.figure as figure
 from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
-
+from scipy.optimize import minimize
 
 ## The tex style commands
 #plt.rc('text',usetex=True)
@@ -69,7 +69,7 @@ X = np.zeros(1)
 Y = np.zeros(1)
 Z = np.zeros(1)
 
-a = 1.0*np.pi/2
+a = np.pi/4
 
 # three diffrent translation vector
 
@@ -93,12 +93,44 @@ evec = np.array([
 
 avec = evec*a/2
 
-# reference 120 degree Q
-    
-s1 = np.arccos(-0.5)
-s2 = np.arccos(-0.5)
-UZ = s1
-VZ = (2.0*s2 - UZ)/np.sqrt(3)
+dvec = np.array([
+    [-1.0,0.0],
+    [-0.5,(3.0**0.5)/2],
+    [0.5,(3.0**0.5)/2],
+    [1.0,0.0],
+    [0.5,-(3.0**0.5)/2],
+    [-0.5,-(3.0**0.5)/2],
+    ])
+
+# defining the optimizing function
+
+def qval(Q,D):
+    val = ((np.cos(np.dot(Q,dvec[0]))-D[0])**2
+            +(np.cos(np.dot(Q,dvec[1]))-D[1])**2
+            +(np.cos(np.dot(Q,dvec[2]))-D[2])**2
+            +(np.cos(np.dot(Q,dvec[3]))-D[3])**2
+            +(np.cos(np.dot(Q,dvec[4]))-D[4])**2
+            +(np.cos(np.dot(Q,dvec[5]))-D[5])**2
+            )
+    return val
+
+# reference 120 degree Q        
+RHS = np.zeros(6,dtype=np.float)
+for j in range(0,6):
+    RHS[j] = -0.5
+
+UZ, VZ = minimize(qval,[4.0*np.pi/3,0.0],args=(RHS)).x
+
+# gaussian envelope
+
+def gauss(x,sigma):
+
+    return ((1.0/(sigma*np.sqrt(2*np.pi)))
+            *np.exp(-(x**2)/(2*(sigma**2))))
+
+# gaussian parameters
+
+SIGMA = 2
 
 for fname in glob.iglob('*.npz'):
 
@@ -127,11 +159,11 @@ for fname in glob.iglob('*.npz'):
     lmap.lattice_map(L,nbr)
 
     ax = a*(3.0**0.5)/2.0
-    ay = a/2.0
+    ay = 0.5*a
 
-    # laying out the lattice skeleton
     if len(X) != N:
-
+        
+        # laying out the lattice skeleton
         X = np.zeros((L,L))
         Y = np.zeros((L,L))
         for i in range(0,L):
@@ -142,66 +174,62 @@ for fname in glob.iglob('*.npz'):
                 # the slanted lattice
                 X[i,j] = i*a + j*ay
                 Y[i,j] = j*ax 
-    
-    """
-    # defining the plane for the spins
-    e1 = spin[0]
-    if np.linalg.norm(e1) > 10.0**(-5):
-        e1 = e1/np.linalg.norm(e1)
-        e2 = np.cross(e1,np.cross(e1,spin[1]))
-        e2 = e2/np.linalg.norm(e2)
-    else:
-        e1 = np.array([1.0,0.0,0.0])
-        e2 = np.array([0.0,1.0,0.0])
-
-    U = 0.5*np.einsum('ij,j->i',spin,e1).reshape((L,L)).transpose()
-    V = 0.5*np.einsum('ij,j->i',spin,e2).reshape((L,L)).transpose()
-    """
-
+   
     US = np.zeros(N,dtype=np.float)
     VS = np.zeros(N,dtype=np.float)
     
     for i in range(0,N):
-        p = 0
-        pp = 3
-        q = 2
-        qq = 5
-        s1 = (np.arccos(np.dot(spin[i],spin[nbr[i,p]]))+
-                np.arccos(np.dot(spin[i],spin[nbr[i,pp]])))/2
-        s2 = (np.arccos(np.dot(spin[i],spin[nbr[i,q]]))+
-                np.arccos(np.dot(spin[i],spin[nbr[i,qq]])))/2
-        US[i] = s1
-        VS[i] = (2.0*s2 - US[i])/np.sqrt(3)
+        RHS = np.zeros(6,dtype=np.float)
+        for j in range(0,6):
+            RHS[j] = np.dot(spin[i],spin[nbr[i,j]])
+        
+        US[i], VS[i] = minimize(qval,[4.0*np.pi/3,0.0],
+                args=(RHS),
+                bounds=((0,2*np.pi),(0,2*np.pi)),
+                tol=1e-6).x
 
+    U = np.reshape(US,(L,L)).transpose()
+    V = np.reshape(VS,(L,L)).transpose()
 
-    U = np.reshape(US,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
-    V = np.reshape(VS,(L,L)).transpose()#%(2.0*np.pi)#)/(2.0*np.pi)
+    # reprocessing to make data non-local
+    Qx = np.zeros((L,L),dtype=np.float)
+    Qy = np.zeros((L,L),dtype=np.float)
+    for i in range(0,L):
+        for j in range(0,L):
+            NUM = 0
+            for k in range(-2*SIGMA,2*SIGMA+1):
+                for m in range(-2*SIGMA,2*SIGMA+1):
+                    
+                    #DIST = np.sqrt(k**2 + m **2)*a
+                    x = (i + k)%L
+                    y = (j + m)%L
+                    Qx[i,j] += U[x,y]#*gauss(DIST,SIGMA*a)
+                    Qy[i,j] += V[x,y]#*gauss(DIST,SIGMA*a)
+                    #NUM += gauss(DIST,SIGMA*a)
+                    NUM += 1
+           
+            Qx[i,j] *= 1.0/NUM
+            Qy[i,j] *= 1.0/NUM
 
-    #print U
-    #print "====Shit====="
-    #print V
-    
-    # getting the rescaled data
-    #UVNORM = np.sqrt(U*U+V*V)
-    #eU = U/np.sqrt(U*U+V*V)
-    #eV = V/np.sqrt(U*U+V*V)
-    #UVNORM = np.arctan(eU/eV)
-    U = U - UZ
-    V = V - VZ
+    U = Qx
+    V = Qy
+
+    U = (U - UZ)
+    V = (V - VZ)
     eta = 0.0000001
-    eU = U
-    eV = V
     #eU = U/np.sqrt(U*U+V*V+eta)
     #eV = V/np.sqrt(U*U+V*V+eta)
     #UVNORM = np.sqrt(U*U+V*V+eta)
+    eU = U
+    eV = V
     UVNORM = np.arctan2(eV+eta,eU+eta)
    
 
     # fixing colormap for line plotting
 
     cmstyle = cm.viridis
-    VMIN = -np.pi/2
-    VMAX = np.pi/2
+    VMIN = -np.pi
+    VMAX = np.pi
 
     Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
     scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
@@ -234,11 +262,11 @@ for fname in glob.iglob('*.npz'):
             fontsize=12,
             labelpad=-45)
 
-    cbar.set_ticklabels([r'$-\pi/2$',
-        r'$-\pi/4$',
+    cbar.set_ticklabels([r'$-\pi$',
+        r'$-\pi/2$',
         r'$0$',
-        r'$\pi/4$',
         r'$\pi/2$',
+        r'$\pi$',
         ])
     
     """
