@@ -260,7 +260,7 @@ for i in range(0,HSHNUM):
         #        x=0.5, fontsize=16)
         plt.xlim([0.5,50])
         plt.ylim([10.0**(-3),1.0])
-        plt.ylabel(r'$\delta\theta(r)$',fontsize=30)
+        plt.ylabel(r'$|\delta\Theta|$',fontsize=30)
         plt.xlabel(r'$r$',fontsize=30)
         plt.tick_params(which='both',width=2,labelsize=30)
         plt.tick_params(which='major',length=20)
@@ -278,13 +278,17 @@ for i in range(0,HSHNUM):
         plt.close('all')
 
 for L in set(zip(*hshchar)[0]):
-    subprocess.call('pdftk ../plot/tht_'+
-            L+
-            '* '+
-            'cat output ../plot/THT_L_'+
-            L+
-            '.pdf',shell=True)
+    for DLT in set(zip(*hshchar)[1]):
+        for ALP in set(zip(*hshchar)[2]):
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/THT_L_'+
+                L+
+                '.pdf '+
+                '../plot/tht_'+
+                L+
+                '* ',shell=True)
+            subprocess.call('rm ../plot/tht_'+
+                L+
+                '*',shell=True)
 
-# removing split files
-subprocess.call('rm ../plot/tht_*',shell=True)
-#subprocess.call('rm ../plot/dnsty_*',shell=True)

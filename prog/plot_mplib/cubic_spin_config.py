@@ -131,6 +131,8 @@ for fname in glob.iglob('*.npz'):
 
         spin0 = td_spin0[ix:jx]
 
+        spin0[15] = [0,0,0]
+
         U0 = (3.0*a/4)*np.einsum('ij,j->i',spin0,e1).reshape((L,L)).transpose()
         V0 = (3.0*a/4)*np.einsum('ij,j->i',spin0,e2).reshape((L,L)).transpose()
 
@@ -152,8 +154,8 @@ for fname in glob.iglob('*.npz'):
 
                     # plotting the couplings
                     line = plt.Line2D(cor_x,cor_y,
-                            color='gray',
-                            alpha=0.5,
+                            color='black',
+                            alpha=1,
                             ls='solid',
                             lw=2*J[p,q],
                             zorder = 0
@@ -171,8 +173,8 @@ for fname in glob.iglob('*.npz'):
 
                     # plotting the couplings
                     line = plt.Line2D(cor_x,cor_y,
-                            color='gray',
-                            alpha=0.5,
+                            color='black',
+                            alpha=1.0,
                             ls='solid',
                             lw=2*J[p,q],
                             zorder = 1
@@ -181,10 +183,11 @@ for fname in glob.iglob('*.npz'):
 
         # picturing the spin orientation
         pivot="mid"
-        width=0.006
-        headwidth=4
-        headlength=5
+        width=0.008
+        headwidth=5
+        headlength=6
         
+        """
         Q=ax.quiver(X,Y,U,V,
                 color='blue',
                 width=width,
@@ -197,7 +200,7 @@ for fname in glob.iglob('*.npz'):
                 alpha=1.0,
                 zorder=3
                 )
-        
+        """
         Q0=ax.quiver(X,Y,U0,V0,
                 color='red',
                 width=width,
@@ -207,20 +210,24 @@ for fname in glob.iglob('*.npz'):
                 angles='xy',
                 scale=1,
                 scale_units='xy',
-                alpha = 0.75,
+                #alpha = 0.75,
+                alpha=1,
                 zorder=2
                 )
 
 
         ax.axis('off')
 
-        fig.savefig("../plot/cubic_spin_config_"+
+        fig.savefig("../plot/cubic_spin_config"+
+                "_L_"+
                 STR_L+
+                "_DLT_"+
                 STR_DELTA+
+                "_ALP_"+
                 STR_ALPHA+
+                "_DNM_"+
                 str("%06d" % IDISD)+
                 str("%06d" % BTNUM)+
-                str("%06d" % zix)+
                 ".pdf"
                 ,bbox_inches='tight'
                 )
@@ -229,18 +236,31 @@ for fname in glob.iglob('*.npz'):
 for L in set(zip(*hshchar)[0]):
     for DLT in set(zip(*hshchar)[1]):
         for ALP in set(zip(*hshchar)[2]):
-            subprocess.call('pdftk ../plot/cubic_spin_config_'+
-                L+
-                DLT+
-                ALP+
-                '* '+
-                'cat output ../plot/CUBIC_SPIN_CONFIG_L_'+
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/CUBIC_SPIN_CONFIG_L_'+
                 L+
                 '_DELTA_'+
                 DLT+
                 '_ALPHA_'+
                 ALP+
-                '.pdf',shell=True)
+                '.pdf '+
+                '../plot/cubic_spin_config'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '* ',shell=True)
+            subprocess.call('rm ../plot/cubic_spin_config'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '*',shell=True)
 
-# removing split files
-subprocess.call('rm ../plot/cubic_spin_config_*',shell=True)

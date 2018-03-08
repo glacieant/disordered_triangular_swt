@@ -18,13 +18,13 @@ from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
 
 ## The tex style commands
-#plt.rc('text',usetex=True)
-#plt.rc('font',family='serif')
+plt.rc('text',usetex=True)
+plt.rc('font',family='serif')
 
 # the font styleset
-from matplotlib import rcParams
-rcParams['font.serif'] = ['Times New Roman']
-rcParams['font.family'] = 'serif'
+#from matplotlib import rcParams
+#rcParams['font.serif'] = ['Times New Roman']
+#rcParams['font.family'] = 'serif'
 
 # the finite temperature fermi function
 def fermi(E,T):
@@ -337,33 +337,51 @@ for fname in glob.iglob('*.npz'):
         
         #ax.axis('off')
         #fig.tight_layout(pad=1.6,h_pad=1.6,w_pad=1.6)
-        fig.savefig("../plot/esbc_"+
+
+        fig.savefig("../plot/esbc"+
+                "_L_"+
                 STR_L+
+                "_DLT_"+
                 STR_DELTA+
+                "_ALP_"+
                 STR_ALPHA+
+                "_DNM_"+
                 str("%06d" % IDISD)+
                 str("%06d" % BTNUM)+
-                ".pdf"
+                ".pdf",
+                bbox_inches='tight',
                 )
         plt.close('all')
 
-for L in zip(*hshchar)[0]:
-    for DLT in zip(*hshchar)[1]:
-        for ALP in zip(*hshchar)[2]:
-            subprocess.call('pdftk ../plot/esbc_'+
-                L+
-                DLT+
-                ALP+
-                '* '+
-                'cat output ../plot/MF_CONFIG_L_'+
+
+for L in set(zip(*hshchar)[0]):
+    for DLT in set(zip(*hshchar)[1]):
+        for ALP in set(zip(*hshchar)[2]):
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/MF_CONFIG_L_'+
                 L+
                 '_DELTA_'+
                 DLT+
                 '_ALPHA_'+
                 ALP+
-                '.pdf',shell=True)
-
-# removing split files
-subprocess.call('rm ../plot/esbc_*',shell=True)
-
+                '.pdf '+
+                '../plot/esbc'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '* ',shell=True)
+            subprocess.call('rm ../plot/esbc'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '*',shell=True)
 

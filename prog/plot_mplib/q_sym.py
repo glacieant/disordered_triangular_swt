@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/opt/intel/intelpython2/bin/python
 
 ### This is the main program for mean field calculation of ###
 ### the disordered triangular lattice heisenberg model     ###
@@ -22,15 +22,17 @@ import matplotlib.figure as figure
 from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
 from scipy.optimize import minimize
+from scipy.optimize import fsolve
+from scipy.optimize import root
 
 ## The tex style commands
-#plt.rc('text',usetex=True)
-#plt.rc('font',family='serif')
+plt.rc('text',usetex=True)
+plt.rc('font',family='serif')
 
 # the font styleset
-from matplotlib import rcParams
-rcParams['font.serif'] = ['Times New Roman']
-rcParams['font.family'] = 'serif'
+#from matplotlib import rcParams
+#rcParams['font.serif'] = ['Times New Roman']
+#rcParams['font.family'] = 'serif'
 
 ## picturing the output data
 
@@ -92,7 +94,7 @@ evec = np.array([
     ])
 
 avec = evec*a/2
-
+"""
 dvec = np.array([
     [-1.0,0.0],
     [-0.5,(3.0**0.5)/2],
@@ -101,9 +103,15 @@ dvec = np.array([
     [0.5,-(3.0**0.5)/2],
     [-0.5,-(3.0**0.5)/2],
     ])
-
+"""
+dvec = np.array([
+    [1.0,0.0],
+    [0.5,(3.0**0.5)/2],
+    [-0.5,(3.0**0.5)/2]
+    ])
 # defining the optimizing function
 
+"""
 def qval(Q,D):
     val = ((np.cos(np.dot(Q,dvec[0]))-D[0])**2
             +(np.cos(np.dot(Q,dvec[1]))-D[1])**2
@@ -113,13 +121,26 @@ def qval(Q,D):
             +(np.cos(np.dot(Q,dvec[5]))-D[5])**2
             )
     return val
+"""
+
+def qval(Q,D):
+    val = ((np.cos(np.dot(Q,dvec[0]))-D[0])**2
+            +(np.cos(np.dot(Q,dvec[1]))-D[1])**2
+            +(np.cos(np.dot(Q,dvec[2]))-D[2])**2
+            )
+    return val
+
 
 # reference 120 degree Q        
 RHS = np.zeros(6,dtype=np.float)
 for j in range(0,6):
     RHS[j] = -0.5
 
-UZ, VZ = minimize(qval,[4.0*np.pi/3,0.0],args=(RHS)).x
+UZ, VZ = minimize(qval,
+        [4.0*np.pi/3,0.0],
+        args=(RHS),
+        method='Powell'
+        ).x
 
 # gaussian envelope
 
@@ -130,7 +151,7 @@ def gauss(x,sigma):
 
 # gaussian parameters
 
-SIGMA = 2
+SIGMA = 4
 
 for fname in glob.iglob('*.npz'):
 
@@ -158,76 +179,103 @@ for fname in glob.iglob('*.npz'):
     nbr = np.zeros((N,ZCO),dtype=np.int)
     lmap.lattice_map(L,nbr)
 
+    LTR = L-1
+    NTR = LTR**2
+
+    elt = np.zeros((NTR,3),dtype=np.int)
+    lmap.eltriangle(L,elt)
+
     ax = a*(3.0**0.5)/2.0
     ay = 0.5*a
 
-    if len(X) != N:
+    if len(X) != NTR:
         
         # laying out the lattice skeleton
-        X = np.zeros((L,L))
-        Y = np.zeros((L,L))
-        for i in range(0,L):
-            for j in range(0,L):
+        X = np.zeros((LTR,LTR))
+        Y = np.zeros((LTR,LTR))
+        for i in range(0,LTR):
+            for j in range(0,LTR):
                 # the rhombus lattice
-                # X[i,j] = (i+j)*ax+3*ax
-                # Y[i,j] = (j-i)*ay
+                X[i,j] = (i+j)*ax+3*ax
+                Y[i,j] = (j-i)*ay
                 # the slanted lattice
-                X[i,j] = i*a + j*ay
-                Y[i,j] = j*ax 
+                # X[i,j] = i*a + j*ay
+                # Y[i,j] = j*ax 
    
-    US = np.zeros(N,dtype=np.float)
-    VS = np.zeros(N,dtype=np.float)
-    
-    for i in range(0,N):
-        RHS = np.zeros(6,dtype=np.float)
-        for j in range(0,6):
-            RHS[j] = np.dot(spin[i],spin[nbr[i,j]])
-        
-        US[i], VS[i] = minimize(qval,[4.0*np.pi/3,0.0],
+    US = np.zeros(NTR,dtype=np.float)
+    VS = np.zeros(NTR,dtype=np.float)
+
+    ERR = []
+    QSOLX = 4.0*np.pi/3.0
+    QSOLY = 0.0
+    RHS = np.zeros(3,dtype=np.float)
+    for i in range(0,NTR):
+        RHS[0] = np.dot(spin[elt[i,0]],spin[elt[i,1]])
+        RHS[1] = np.dot(spin[elt[i,0]],spin[elt[i,2]])
+        RHS[2] = np.dot(spin[elt[i,1]],spin[elt[i,2]])
+        SOL = minimize(qval,[QSOLX,QSOLY],
                 args=(RHS),
-                bounds=((0,2*np.pi),(0,2*np.pi)),
-                tol=1e-6).x
+                #bounds=((0,2*np.pi),(0,2*np.pi)),
+                method='Powell',
+                tol=1e-6
+                )
 
-    U = np.reshape(US,(L,L)).transpose()
-    V = np.reshape(VS,(L,L)).transpose()
+        US[i], VS[i] = SOL.x
+        if np.abs(SOL.fun) > 1.0:
+            print SOL.fun
+            print SOL.x
+            print spin[i]
+            for m in range(0,6):
+                print spin[nbr[i,m]], np.dot(spin[i],spin[nbr[i,m]])
+            raw_input()
 
+        ERR.append(SOL.fun)
+
+        #QSOLX = US[i]
+        #QSOLY = VS[i]
+
+    print STR_DELTA,'-',STR_ALPHA,'-',max(ERR)
+    U = np.reshape(US,(LTR,LTR)).transpose()
+    V = np.reshape(VS,(LTR,LTR)).transpose()
+    
     # reprocessing to make data non-local
-    Qx = np.zeros((L,L),dtype=np.float)
-    Qy = np.zeros((L,L),dtype=np.float)
-    for i in range(0,L):
-        for j in range(0,L):
+    Qx = np.zeros((LTR,LTR),dtype=np.float)
+    Qy = np.zeros((LTR,LTR),dtype=np.float)
+    for i in range(0,LTR):
+        for j in range(0,LTR):
             NUM = 0
-            for k in range(-2*SIGMA,2*SIGMA+1):
-                for m in range(-2*SIGMA,2*SIGMA+1):
-                    
-                    #DIST = np.sqrt(k**2 + m **2)*a
-                    x = (i + k)%L
-                    y = (j + m)%L
-                    Qx[i,j] += U[x,y]#*gauss(DIST,SIGMA*a)
-                    Qy[i,j] += V[x,y]#*gauss(DIST,SIGMA*a)
-                    #NUM += gauss(DIST,SIGMA*a)
-                    NUM += 1
+            for k in range(-SIGMA,SIGMA+1):
+                for m in range(-SIGMA,SIGMA+1):
+                    x = (i + k)%LTR
+                    y = (j + m)%LTR
+                    DIST = np.sqrt((X[x,y]-X[i,j])**2 
+                            + (Y[x,y]-Y[i,j])**2)
+                    if (DIST <= SIGMA*a) or (DIST > np.sqrt(2)*SIGMA*a):
+                        Qx[i,j] += U[x,y]*gauss(DIST,SIGMA*a)
+                        Qy[i,j] += V[x,y]*gauss(DIST,SIGMA*a)
+                        NUM += gauss(DIST,SIGMA*a)
+                        #NUM += 1
            
             Qx[i,j] *= 1.0/NUM
             Qy[i,j] *= 1.0/NUM
-
+    
     U = Qx
     V = Qy
-
+    
     U = (U - UZ)
     V = (V - VZ)
     eta = 0.0000001
     #eU = U/np.sqrt(U*U+V*V+eta)
     #eV = V/np.sqrt(U*U+V*V+eta)
-    #UVNORM = np.sqrt(U*U+V*V+eta)
+    UVNORM = np.sqrt(U*U+V*V)
     eU = U
     eV = V
-    UVNORM = np.arctan2(eV+eta,eU+eta)
+    UVA = np.arctan2(eV+eta,eU+eta)
    
 
     # fixing colormap for line plotting
 
-    cmstyle = cm.viridis
+    cmstyle = cm.hsv
     VMIN = -np.pi
     VMAX = np.pi
 
@@ -258,7 +306,7 @@ for fname in glob.iglob('*.npz'):
     #cbar.set_label(r'$|\vec{Q}_i-\vec{Q}_0|$',
     #        fontsize=12,
     #        labelpad=-45)
-    cbar.set_label(r'$\tan^{-1}\left(\frac{Q^y-Q_0^y}{Q^x-Q_0^x}\right)$',
+    cbar.set_label(r'$\tan^{-1}\left(\frac{\Delta Q^y}{\Delta Q^x}\right)$',
             fontsize=12,
             labelpad=-45)
 
@@ -295,12 +343,12 @@ for fname in glob.iglob('*.npz'):
             ax.add_line(line)
     """
 
-    Q=ax.quiver(X,Y,eU,eV,UVNORM,
+    Q=ax.quiver(X,Y,eU,eV,UVA,
             cmap=cmstyle,
             norm=Norm,
             pivot='mid',
             angles='xy',
-            scale=1,
+            scale=0.1,
             scale_units='xy',
             width=0.002,
             headwidth=4,
@@ -308,7 +356,20 @@ for fname in glob.iglob('*.npz'):
             alpha=1.0,
             zorder = 1.0
             )
-
+    DELTA = float(STR_DELTA)
+    ax.text(X.min(),Y.max(),
+            r'$\frac{\delta J}{J}$='
+            +str("%.1f" % DELTA),
+            fontsize=20
+            )
+    """
+    QMAX = np.amax(UVNORM)
+    ax.text(X.min(),Y.max(),
+            r'$\Delta Q_{\textrm{max}}$='
+            +str("%.1f" % QMAX),
+            fontsize=14
+            )
+    """
     ax.axis('off')
 
     fig.savefig("../plot/qdom"+
@@ -321,8 +382,9 @@ for fname in glob.iglob('*.npz'):
             "_DNM_"+
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
-            ".pdf"
-            ,bbox_inches='tight'
+            ".pdf",
+            bbox_inches='tight',
+            transparent=True
             )
     plt.close('all')
 

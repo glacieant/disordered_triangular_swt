@@ -20,13 +20,13 @@ from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
 
 ## The tex style commands
-#plt.rc('text',usetex=True)
-#plt.rc('font',family='serif')
+plt.rc('text',usetex=True)
+plt.rc('font',family='serif')
 
 # the font styleset
-from matplotlib import rcParams
-rcParams['font.serif'] = ['Times New Roman']
-rcParams['font.family'] = 'serif'
+# from matplotlib import rcParams
+# rcParams['font.serif'] = ['Times New Roman']
+# rcParams['font.family'] = 'serif'
 
 # setting MKL configuration to allways optimise 
 os.putenv("MKL_DYNAMIC","FALSE")
@@ -233,23 +233,49 @@ for i in range(0,HSHNUM):
                 r'$\chi^{\mathrm{max}}/L^{2}$ = '+str("%.2e" % smax),
                 fontsize=12)
         plt.xlabel('L = '+STR_L,fontsize=16)
-        fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)
-        fig.savefig("../plot/stsc_"+
+        fig.savefig("../plot/strfc"+
+                "_L_"+
                 STR_L+
+                "_DLT_"+
                 STR_DELTA+
+                "_ALP_"+
                 STR_ALPHA+
-                ".pdf"
+                "_DNM"+
+                ".pdf",
+                bbox_inches='tight',
+                transparent=True
                 )
-
         plt.close('all')
 
-for L in zip(*hshchar)[0]:
-    subprocess.call('pdftk ../plot/stsc_'+
-            L+
-            '* '+
-            'cat output ../plot/STRFC_L_'+
-            L+
-            '.pdf',shell=True)
 
-# removing split files
-subprocess.call('rm ../plot/stsc_*',shell=True)
+for L in set(zip(*hshchar)[0]):
+    for DLT in set(zip(*hshchar)[1]):
+        for ALP in set(zip(*hshchar)[2]):
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/STRFC_L_'+
+                L+
+                '_DELTA_'+
+                DLT+
+                '_ALPHA_'+
+                ALP+
+                '.pdf '+
+                '../plot/strfc'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM"+
+                '* ',shell=True)
+            subprocess.call('rm ../plot/strfc'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM"+
+                '*',shell=True)
+

@@ -150,3 +150,13 @@ def sublattice_map(L,sub):
             sub[t] = (j%3+1)%3
 
 
+def eltriangle(L,elt):
+
+    NTR = (L-1)*(L-1)
+
+    for i in range(0,NTR):
+
+        j = i + i/(L-1)
+        elt[i,0] = j
+        elt[i,1] = j+1
+        elt[i,2] = j+L

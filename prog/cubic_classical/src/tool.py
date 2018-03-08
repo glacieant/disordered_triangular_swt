@@ -129,6 +129,7 @@ def init_param(LSYS,DELTA,ALPHA,ANGVAR,M):
     # setting up the spin and field matrices
 
     M[1,0] = np.array([1.0,0.0,0.0])
+    """
     for i in range(1,NSYS):
         
         if (i%LSYS == 0):
@@ -142,3 +143,4 @@ def init_param(LSYS,DELTA,ALPHA,ANGVAR,M):
         ROT = np.array([[np.cos(phx),-np.sin(phx),0],
             [np.sin(phx),np.cos(phx),0],[0,0,1]])
         M[1,i] = np.einsum('ab,b',ROT,M[1,i-1])
+    """

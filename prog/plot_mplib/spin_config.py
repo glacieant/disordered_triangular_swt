@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/opt/intel/intelpython2/bin/python
 
 ### This is the main program for mean field calculation of ###
 ### the disordered triangular lattice heisenberg model     ###
@@ -81,15 +81,15 @@ avec = np.array([[-0.5,((3.0)**0.5)/2],
     [0.0,(3.0**0.5)],
     [1.5,((3.0)**0.5)/2]])*a
 """
-avec = np.array([
-    [-((3.0)**0.5)/2,0.5],
-    [0.0,1.0],
-    [((3.0)**0.5)/2,0.5],
-    [((3.0)**0.5)/2,-0.5],
-    [0.0,-1.0],
-    [-((3.0)**0.5)/2,-0.5],
-    ])*a/2
 
+avec = np.array([
+    [-1.0,0.0],
+    [-0.5,(3.0**0.5)/2],
+    [0.5,(3.0**0.5)/2],
+    [1.0,0.0],
+    [0.5,-(3.0**0.5)/2],
+    [-0.5,-(3.0**0.5)/2],
+    ])*a/2
 
 for fname in glob.iglob('*.npz'):
 
@@ -196,7 +196,7 @@ for fname in glob.iglob('*.npz'):
     
     # fixing colormap for line plotting
 
-    cmstyle = cm.RdPu
+    cmstyle = cm.Greys
 
     Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
     scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
@@ -327,7 +327,16 @@ for fname in glob.iglob('*.npz'):
 for L in set(zip(*hshchar)[0]):
     for DLT in set(zip(*hshchar)[1]):
         for ALP in set(zip(*hshchar)[2]):
-            subprocess.call('pdftk ../plot/spin_config'+
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/SPIN_CONFIG_L_'+
+                L+
+                '_DELTA_'+
+                DLT+
+                '_ALPHA_'+
+                ALP+
+                '.pdf '+
+                '../plot/spin_config'+
                 "_L_"+
                 L+
                 "_DLT_"+
@@ -335,15 +344,7 @@ for L in set(zip(*hshchar)[0]):
                 "_ALP_"+
                 ALP+
                 "_DNM_"+
-                '* '+
-                'cat output ../plot/SPIN_CONFIG_L_'+
-                L+
-                '_DELTA_'+
-                DLT+
-                '_ALPHA_'+
-                ALP+
-                '.pdf',shell=True)
-
+                '* ',shell=True)
             subprocess.call('rm ../plot/spin_config'+
                 "_L_"+
                 L+

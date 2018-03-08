@@ -50,15 +50,12 @@ def main(const):
 
     # bond params
     bond = np.zeros((2,NSYS,NSYS),dtype=np.complex128)
-    chi = np.zeros((NSYS,NSYS),dtype=np.complex128)
     
     # field params
     M = np.zeros((2,NSYS,3),dtype=np.float64)
-    B = np.zeros((NSYS,3),dtype=np.float64)
 
     # occupancy and chemical potential
-    fnum = np.zeros(NSYS,dtype=np.float64)
-    lmult = np.zeros(NSYS,dtype=np.float64)
+    lmult = np.zeros((2,NSYS),dtype=np.float64)
 
     # the hamiltonian matrix and coupling
     J = np.zeros((NSYS,NSYS),dtype=np.float64)
@@ -68,68 +65,73 @@ def main(const):
     for i in range(0,ITERDISD):
 
         # fixing the coupling matrix
-        tool.init_cpl(NSYS,nbr,
-                ZCO,XPAR,
-                DELTA,ALPHA,J)
+        tool.init_cpl(NSYS,nbr,ZCO,XPAR,DELTA,ALPHA,J)
 
         # looping over bootstrapped initialisations
         for g in range(0,BOOTNUM): 
 
             # initiating parameters
-            tool.init_param(NSYS,nbr,
-                    ZCO,XPAR,
-                    DELTA,ALPHA,
-                    ANGVAR,BONDVAR,
-                    J,bond,chi,
-                    M,B,fnum,lmult)
-            
+            tool.init_param(NSYS,nbr,ZCO,XPAR,
+                    DELTA,ALPHA,ANGVAR,BONDVAR,
+                    J,bond,M,lmult)
 
             # classical algorithm to get the magnetic
             # ground state
-            # algo.classic_zmc(CLNUM,NSYS,nbr,J,M,GTOL)
+            algo.classic_zmc(CLNUM,NSYS,nbr,J,M,GTOL)
 
             # rubbish tolerance
             TOL = 100.0
+            PVTOL = 100.0
             # rubbish reference energies
             EN = 100.0
             EN_M = 0.0
             # iterations for mean-field solution convergence
             # with number conservation for fermions
             ###
+            dj = (UPAR[1][1] - UPAR[1][0])/(2*SIMSZE+2)
+            print "init"
+            print bond[1]
+            print "init"
             for j in range(0,SIMSZE):
 
                 # checking the tolerance
                 if TOL > MFTOL:
 
+                    lmult[0] = lmult[1].copy()
                     M[0] = M[1].copy()
                     bond[0] = bond[1].copy()
 
                     # creating the mean-field hamiltonian
-                    gen_ham.mfmatrix(NSYS,chi,
-                            B,lmult,ham)
+                    gen_ham.mfmatrix(NSYS,XPAR,nbr,J,
+                            bond,M,lmult,ham)
 
                     # diagonalising the hamiltonian
-                    en_mf, v_mf = np.linalg.eigh(ham)
+                    eigen, vec = np.linalg.eigh(ham)
 
                     # calculating the mean-field parameters
-                    mfp.paramset(NSYS,j,nbr,
-                            XPAR,UPAR,TEMP,
-                            J,en_mf,v_mf,
-                            bond,chi,
-                            M,B,
-                            fnum,lmult)
-                    
+                    mfp.paramset(NSYS,nbr,UPAR,TEMP,
+                            eigen,vec,bond,M,lmult)                    
+
                     # differences in the update step
                     # norm difference
                     # individual difference
-                    TOL = np.amax([np.linalg.norm(bond[1]-bond[0]),
-                        np.linalg.norm(M[1]-M[0]),
-                        np.linalg.norm(fnum[1])])/LSYS
+                    TOL1 = (1-XPAR)*np.amax(np.abs(bond[1]-bond[0]))
+                    TOL2 = XPAR*np.amax(np.abs(M[1]-M[0]))
+                    TOL3 = np.amax(np.abs(lmult[1]-lmult[0]))
+                    TOL = np.amax([TOL1,TOL2,TOL3])
+                    if TOL < PVTOL:
+                        UPAR[1][0] += dj
+                        UPAR[1][1] -= dj
                     
                 else:
                     break
-
-
+                print "STEP", j
+                print "mu"
+                print lmult
+                print "bond"
+                print bond[1]
+                print "TOL"
+                print TOL1, TOL2, TOL3
 
             ## output data ##
 
@@ -145,8 +147,8 @@ def main(const):
                     J=J,
                     inum=j,
                     err=TOL,
-                    ensys=en_mf,
-                    vsys=v_mf,
+                    ensys=eigen,
+                    vsys=vec,
                     bond=bond[1],
                     spin=M[1],
                     lmult=lmult)

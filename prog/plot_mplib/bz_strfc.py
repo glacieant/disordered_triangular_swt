@@ -4,7 +4,10 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-os.chdir("../out/data")
+#folder = "sharp_wall"
+#folder = "single_impurity"
+folder = "zero_field_classical"
+os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
 import re
@@ -17,13 +20,13 @@ from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
 
 ## The tex style commands
-#plt.rc('text',usetex=True)
-#plt.rc('font',family='serif')
+plt.rc('text',usetex=True)
+plt.rc('font',family='serif')
 
 # the font styleset
-from matplotlib import rcParams
-rcParams['font.serif'] = ['Times New Roman']
-rcParams['font.family'] = 'serif'
+# from matplotlib import rcParams
+# rcParams['font.serif'] = ['Times New Roman']
+# rcParams['font.family'] = 'serif'
 
 # setting MKL configuration to allways optimise 
 os.putenv("MKL_DYNAMIC","FALSE")
@@ -172,6 +175,21 @@ for i in range(0,HSHNUM):
         # safely bottoming out for log scale
         #sfc[i] += MINCLIP/(10.0**5)
         
+        # shearing the date into the BZ
+        LX = 200
+        sfx = np.zeros((LX,LX),dtype=np.float64)
+        
+        for m in range(0,LX):
+            for n in range(0,LX):
+                G1 = (1.0*m/LX)
+                G2 = (1.0*n/LX)
+                p = int(L*G1)
+                q = int(L*(G1+G2*3.0**0.5)/2)
+                if p >= 0 and p < L:
+                    if q >= 0 and q < L:
+                        sfx[n,m] = sfc[i][p,q]
+
+       
         """
         #plt.plot(sfc[i][0])
         #plt.show()
@@ -204,8 +222,10 @@ for i in range(0,HSHNUM):
                 norm=Normalize(vmin=MINCLIP,vmax=MAXCLIP,clip=False),
                 #norm=LogNorm(vmin=MINCLIP,vmax=MAXCLIP,clip=False),
                 interpolation='nearest',
-                extent=(0.0,1.0,0.0,1.0),
+                #extent=(0.0,1.0,0.0,1.0),
                 cmap=cm.jet,aspect='auto')
+
+        print sfc[i][8,16]
         cbar = fig.colorbar(cax,shrink=0.5,format='%.0e')
 
         plt.suptitle(r"Static Structure Factor, $\chi (q)/L^{2}$", 
@@ -219,23 +239,49 @@ for i in range(0,HSHNUM):
                 r'$\chi^{\mathrm{max}}/L^{2}$ = '+str("%.2e" % smax),
                 fontsize=12)
         plt.xlabel('L = '+STR_L,fontsize=16)
-        fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)
-        fig.savefig("../plot/stsc_"+
+        fig.savefig("../plot/strfc"+
+                "_L_"+
                 STR_L+
+                "_DLT_"+
                 STR_DELTA+
+                "_ALP_"+
                 STR_ALPHA+
-                ".pdf"
+                "_DNM"+
+                ".pdf",
+                bbox_inches='tight',
+                transparent=True
                 )
-
         plt.close('all')
 
-for L in zip(*hshchar)[0]:
-    subprocess.call('pdftk ../plot/stsc_'+
-            L+
-            '* '+
-            'cat output ../plot/STRFC_L_'+
-            L+
-            '.pdf',shell=True)
 
-# removing split files
-subprocess.call('rm ../plot/stsc_*',shell=True)
+for L in set(zip(*hshchar)[0]):
+    for DLT in set(zip(*hshchar)[1]):
+        for ALP in set(zip(*hshchar)[2]):
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/STRFC_L_'+
+                L+
+                '_DELTA_'+
+                DLT+
+                '_ALPHA_'+
+                ALP+
+                '.pdf '+
+                '../plot/strfc'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM"+
+                '* ',shell=True)
+            subprocess.call('rm ../plot/strfc'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM"+
+                '*',shell=True)
+

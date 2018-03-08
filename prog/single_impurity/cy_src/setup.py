@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/opt/intel/intelpython2/bin/python
 
 from distutils.core import setup
 from Cython.Build import cythonize

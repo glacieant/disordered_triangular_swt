@@ -6,7 +6,7 @@
 ##################################################
 
 # system size
-LSYS = [9] 
+LSYS = [6] 
 # disorder iteration number 
 ITERDISD = [1]
 # initial angle fluctuation
@@ -16,10 +16,10 @@ BOOTNUM = [1]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [0.0] 
+DELTA = [0.9] 
 # the ratio between nearest and next 
 # nearest couplings
-ALPHA = [0.5] 
+ALPHA = [0] 
 # maximum iteration for classical algorithm
 CLNUM = 10**7
 
