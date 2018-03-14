@@ -233,49 +233,17 @@ for i in range(0,HSHNUM):
                 r'$\chi^{\mathrm{max}}/L^{2}$ = '+str("%.2e" % smax),
                 fontsize=12)
         plt.xlabel('L = '+STR_L,fontsize=16)
-        fig.savefig("../plot/strfc"+
+        fig.savefig("../plot/STRFC_L_"+
                 "_L_"+
                 STR_L+
                 "_DLT_"+
                 STR_DELTA+
                 "_ALP_"+
                 STR_ALPHA+
-                "_DNM"+
+                "_DNM_"+
                 ".pdf",
                 bbox_inches='tight',
                 transparent=True
                 )
         plt.close('all')
-
-
-for L in set(zip(*hshchar)[0]):
-    for DLT in set(zip(*hshchar)[1]):
-        for ALP in set(zip(*hshchar)[2]):
-            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
-                    '-dPDSETTINGS=/prepress -sOutputFile='+
-                '../plot/STRFC_L_'+
-                L+
-                '_DELTA_'+
-                DLT+
-                '_ALPHA_'+
-                ALP+
-                '.pdf '+
-                '../plot/strfc'+
-                "_L_"+
-                L+
-                "_DLT_"+
-                DLT+
-                "_ALP_"+
-                ALP+
-                "_DNM"+
-                '* ',shell=True)
-            subprocess.call('rm ../plot/strfc'+
-                "_L_"+
-                L+
-                "_DLT_"+
-                DLT+
-                "_ALP_"+
-                ALP+
-                "_DNM"+
-                '*',shell=True)
 

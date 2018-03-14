@@ -5,7 +5,7 @@
 
 import os
 folder = "cubic_classical"
-os.chdir("../"+folder+"/out/data")
+os.chdir("../"+folder+"/out/data_bk")
 import sys
 import subprocess
 import re
@@ -58,6 +58,11 @@ hshchar = [0]*HSHNUM
 sfc = [0]*HSHNUM
 n_sfc = np.zeros(HSHNUM)
 en = np.zeros(HSHNUM)
+
+# importing lattice geometry system
+import lattice_map as lmap
+ZCO = 12
+
 
 X = np.zeros(1)
 Y = np.zeros(1)
@@ -131,15 +136,52 @@ for fname in glob.iglob('*.npz'):
 
         spin0 = td_spin0[ix:jx]
 
-        spin0[15] = [0,0,0]
+        #spin0[15] = [0,0,0]
 
         U0 = (3.0*a/4)*np.einsum('ij,j->i',spin0,e1).reshape((L,L)).transpose()
         V0 = (3.0*a/4)*np.einsum('ij,j->i',spin0,e2).reshape((L,L)).transpose()
 
+        RSU = np.zeros((L,L),dtype=np.float)
+        RSV = np.zeros((L,L),dtype=np.float)
+        GSU = np.zeros((L,L),dtype=np.float)
+        GSV = np.zeros((L,L),dtype=np.float)
+        BSU = np.zeros((L,L),dtype=np.float)
+        BSV = np.zeros((L,L),dtype=np.float)
+        
+        SU0 = np.zeros((L,L),dtype=np.float)
+        SV0 = np.zeros((L,L),dtype=np.float)
 
-        for i in range(0,L):
+        SX = np.zeros((L,L),dtype=np.float)
+        SY = np.zeros((L,L),dtype=np.float)
+        
+        sub = np.zeros(L*L,dtype=np.int)
+        lmap.sublattice_map(L,sub)
 
-            for j in range(0,L):
+        for i in range(0,L*L):
+
+            x = i%L
+            y = i/L
+
+            if ( x>=a and x <= 7*a ) \
+                    and ( y>=a and y <= 7*a):
+                
+                SX[x,y] = X[x,y]
+                SY[x,y] = Y[x,y]
+                SU0[x,y] = U0[x,y]
+                SV0[x,y] = V0[x,y]
+                if sub[i] == 0:
+                    RSU[x,y] = U[x,y]
+                    RSV[x,y] = V[x,y]
+                elif sub[i] == 1:
+                    GSU[x,y] = U[x,y]
+                    GSV[x,y] = V[x,y]
+                else:
+                    BSU[x,y] = U[x,y]
+                    BSV[x,y] = V[x,y]
+                    
+        for i in range(1,L-1):
+
+            for j in range(1,L-1):
 
                 for NN in [-1,1]:
 
@@ -186,36 +228,61 @@ for fname in glob.iglob('*.npz'):
         width=0.008
         headwidth=5
         headlength=6
-        
-        """
-        Q=ax.quiver(X,Y,U,V,
-                color='blue',
-                width=width,
-                headwidth=headwidth,
-                headlength=headlength,
-                pivot=pivot,
-                angles='xy',
-                scale=1,
-                scale_units='xy',
-                alpha=1.0,
-                zorder=3
-                )
-        """
-        Q0=ax.quiver(X,Y,U0,V0,
+
+        LT = ax.scatter(SX,SY,
+                color='k',
+                zorder=3)
+
+        RQ=ax.quiver(SX,SY,RSU,RSV,
                 color='red',
                 width=width,
                 headwidth=headwidth,
                 headlength=headlength,
                 pivot=pivot,
-                angles='xy',
+                #angles='xy',
                 scale=1,
                 scale_units='xy',
-                #alpha = 0.75,
-                alpha=1,
+                zorder=2
+                )
+        GQ=ax.quiver(SX,SY,GSU,GSV,
+                color='limegreen',
+                width=width,
+                headwidth=headwidth,
+                headlength=headlength,
+                pivot=pivot,
+                #angles='xy',
+                scale=1,
+                scale_units='xy',
+                zorder=2
+                )
+        BQ=ax.quiver(SX,SY,BSU,BSV,
+                color='royalblue',
+                width=width,
+                headwidth=headwidth,
+                headlength=headlength,
+                pivot=pivot,
+                #angles='xy',
+                scale=1,
+                scale_units='xy',
                 zorder=2
                 )
 
+        Q0=ax.quiver(SX,SY,SU0,SV0,
+                color='black',
+                linewidth=1,
+                facecolor='none',
+                edgecolor='k',
+                width=width,
+                headwidth=headwidth,
+                headlength=headlength,
+                pivot=pivot,
+                #angles='xy',
+                scale=1,
+                scale_units='xy',
+                zorder=1)
 
+        plt.axis(([a/2,15*a/2,a/2,15*a/2]))
+     
         ax.axis('off')
 
         fig.savefig("../plot/cubic_spin_config"+

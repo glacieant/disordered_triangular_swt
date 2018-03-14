@@ -81,6 +81,11 @@ def gaussian(x,a,b,c):
     
     return a*np.exp(-(x-b)**2/(2.0*c**2))
 
+def parabola(x,a,b,c):
+    
+    return a*(x**2)+b*x+c
+
+
 def skew_gauss(x,alpha,a,b,c):
 
     return a*skewnorm.pdf(x,alpha,b,np.sqrt(2.0)*c)
@@ -164,69 +169,71 @@ for i in range(0,HSHNUM):
         YDATA = SFC_CUT
         XDATA = np.linspace(0.0,XMAXMO*(2.0*np.pi),YDATA.size)
         ax.plot(XDATA,YDATA,'b.',label='Data')
-        
+
+        # finding the parabolic fit
+
+        MAX_N = np.argmax(YDATA)
+        Y_VAL = YDATA[MAX_N-1:MAX_N+2]
+        X_VAL = XDATA[MAX_N-1:MAX_N+2]
+
+        popt, pcov = curve_fit(parabola,X_VAL,Y_VAL)
+
+        sigma_p = -1/(2*popt[0])
+
+        PDATA = np.linspace(X_VAL.min(),
+                X_VAL.max(),
+                200)
+        #sigma = np.absolute(popt[3])
+        ax.plot(PDATA,parabola(PDATA, *popt),'k-',
+        #ax.plot(XDATA,skew_gauss(XDATA, *popt),'r-',
+                label=
+                #r'Gaussian fit ~ $e^{-\frac{(x-\mu)^2}{2\sigma^2}}$ ,'
+                #label=r'Skew-normal fit around'+'\n'+r'($\frac{x-\mu}{\sqrt{2}\sigma}$) with,'
+                #+r' $\sigma$ = '
+                #+str("%.4f" % sigma)
+                #+"\n"
+                r'Parabolic fit, $ax^2+bx+c$,'
+                +r' $\sigma_p=-\frac{1}{2a}=$'
+                +str("%.4f" % sigma_p)
+                )
+
         # finding the fit
-        popt, pcov = curve_fit(gaussian, XDATA, YDATA,p0=[np.amax(YDATA),-1.5,0.1])
+        popt, pcov = curve_fit(gaussian, XDATA, YDATA)
         #popt, pcov = curve_fit(skew_gauss, XDATA, YDATA,p0=[-1.25,np.amax(YDATA),-1.25,0.05])
         sigma = np.absolute(popt[2])
+        LXDATA = np.linspace(0.0,XMAXMO*(2.0*np.pi),200)
         #sigma = np.absolute(popt[3])
-        ax.plot(XDATA,gaussian(XDATA, *popt),'r-',
+        ax.plot(LXDATA,gaussian(LXDATA, *popt),'r-',
         #ax.plot(XDATA,skew_gauss(XDATA, *popt),'r-',
-                #label=r'Gaussian fit ~ $e^{-\frac{(x-\mu)^2}{2\sigma^2}}$ ,'
-                label=r'Skew-normal fit around'+'\n'+r'($\frac{x-\mu}{\sqrt{2}\sigma}$) with,'
-                +' $\sigma$ = '
-                +str("%.4f" % sigma))
+                label=
+                r'Gaussian fit ~ $e^{-\frac{(x-\mu)^2}{2\sigma^2}}$ ,'
+                #label=r'Skew-normal fit around'+'\n'+r'($\frac{x-\mu}{\sqrt{2}\sigma}$) with,'
+                +r' $\sigma$ = '
+                +str("%.4f" % sigma)
+                #+"\n"
+                #r'Parabolic fit, $ax^2+bx+c$,'
+                #+r' $\sigma_p=-\frac{1}{2a}=$'
+                #+str("%.4f" % sigma_p)
+                )
         #plt.ylim([0,SFC_MAX])
         #plt.ylabel(r'$S_{\Gamma}/L^2$', fontsize=18)
         #plt.xlabel(r'$\omega$/J', fontsize=18)
-        #plt.legend(loc='best')
+        plt.legend(loc='best')
         #plt.title(r'$S_{\Gamma}(\omega)$ at $\Delta$='
         #        +str("%.3f" % DELTA[d])+r', $\alpha$='+str("%.3f" % ALPHA[a]), 
         #        fontsize=20,y=1.09)
  
-        fig.savefig("../plot/xistrfc"+
+        fig.savefig("../plot/XI_STRFC"+
                 "_L_"+
                 STR_L+
                 "_DLT_"+
                 STR_DELTA+
                 "_ALP_"+
                 STR_ALPHA+
-                "_DNM"+
+                "_DNM_"+
                 ".pdf",
                 bbox_inches='tight',
                 transparent=True
                 )
         plt.close('all')
-
-
-for L in set(zip(*hshchar)[0]):
-    for DLT in set(zip(*hshchar)[1]):
-        for ALP in set(zip(*hshchar)[2]):
-            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
-                    '-dPDSETTINGS=/prepress -sOutputFile='+
-                '../plot/XI_STRFC_L_'+
-                L+
-                '_DELTA_'+
-                DLT+
-                '_ALPHA_'+
-                ALP+
-                '.pdf '+
-                '../plot/xistrfc'+
-                "_L_"+
-                L+
-                "_DLT_"+
-                DLT+
-                "_ALP_"+
-                ALP+
-                "_DNM"+
-                '* ',shell=True)
-            subprocess.call('rm ../plot/xistrfc'+
-                "_L_"+
-                L+
-                "_DLT_"+
-                DLT+
-                "_ALP_"+
-                ALP+
-                "_DNM"+
-                '*',shell=True)
 

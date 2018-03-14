@@ -151,7 +151,7 @@ def gauss(x,sigma):
 
 # gaussian parameters
 
-SIGMA = 4
+SIGMA = 10
 
 for fname in glob.iglob('*.npz'):
 
@@ -221,6 +221,7 @@ for fname in glob.iglob('*.npz'):
                 )
 
         US[i], VS[i] = SOL.x
+        """
         if np.abs(SOL.fun) > 1.0:
             print SOL.fun
             print SOL.x
@@ -230,11 +231,11 @@ for fname in glob.iglob('*.npz'):
             raw_input()
 
         ERR.append(SOL.fun)
-
+        """
         #QSOLX = US[i]
         #QSOLY = VS[i]
 
-    print STR_DELTA,'-',STR_ALPHA,'-',max(ERR)
+    #print STR_DELTA,'-',STR_ALPHA,'-',max(ERR)
     U = np.reshape(US,(LTR,LTR)).transpose()
     V = np.reshape(VS,(LTR,LTR)).transpose()
     
@@ -248,9 +249,8 @@ for fname in glob.iglob('*.npz'):
                 for m in range(-SIGMA,SIGMA+1):
                     x = (i + k)%LTR
                     y = (j + m)%LTR
-                    DIST = np.sqrt((X[x,y]-X[i,j])**2 
-                            + (Y[x,y]-Y[i,j])**2)
-                    if (DIST <= SIGMA*a) or (DIST > np.sqrt(2)*SIGMA*a):
+                    DIST = np.linalg.norm(np.array(k*dvec[0]+m*dvec[1]))
+                    if (DIST <= 2*SIGMA*a):
                         Qx[i,j] += U[x,y]*gauss(DIST,SIGMA*a)
                         Qy[i,j] += V[x,y]*gauss(DIST,SIGMA*a)
                         NUM += gauss(DIST,SIGMA*a)
@@ -356,6 +356,7 @@ for fname in glob.iglob('*.npz'):
             alpha=1.0,
             zorder = 1.0
             )
+    """
     DELTA = float(STR_DELTA)
     ax.text(X.min(),Y.max(),
             r'$\frac{\delta J}{J}$='
@@ -366,10 +367,9 @@ for fname in glob.iglob('*.npz'):
     QMAX = np.amax(UVNORM)
     ax.text(X.min(),Y.max(),
             r'$\Delta Q_{\textrm{max}}$='
-            +str("%.1f" % QMAX),
-            fontsize=14
+            +str("%.4f" % QMAX),
+            fontsize=20
             )
-    """
     ax.axis('off')
 
     fig.savefig("../plot/qdom"+

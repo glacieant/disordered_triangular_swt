@@ -54,8 +54,6 @@ def main(const):
 
             algo.classic_zmc(CLNUM,LSYS,J,M0,GTOL)
 
-            """
-
             M[1,:] = M0[1,:]
             
             impsite = (((LSYS+1)/2)*(LSYS**2) 
@@ -63,7 +61,6 @@ def main(const):
 
             J[impsite-1,impsite] = 0.0
             J[impsite,impsite-1] = 0.0
-            """
 
             algo.classic_zmc(CLNUM,LSYS,J,M,GTOL)
 

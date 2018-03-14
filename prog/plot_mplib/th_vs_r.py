@@ -246,8 +246,9 @@ for i in range(0,HSHNUM):
         ax.loglog(lp,invd(lp, *popt),
                 color='royalblue',
                 linestyle='--',
+                dashes=(2,2),
                 lw=4,
-                label=r'Power law fit, $\delta\theta\sim1/r$',
+                #label=r'Power law fit, $\delta\theta\sim1/r$',
                 #label=r'Exponential fit fit, $\delta\theta\sim e^{-r}$'
                 basex=10,basey=10,
                 zorder=2
@@ -262,7 +263,10 @@ for i in range(0,HSHNUM):
         plt.ylim([10.0**(-3),1.0])
         plt.ylabel(r'$|\delta\Theta|$',fontsize=30)
         plt.xlabel(r'$r$',fontsize=30)
-        plt.tick_params(which='both',width=2,labelsize=30)
+        plt.tick_params(which='both',width=2,
+                labelsize=30,direction='in',
+                bottom=True,top=True,
+                left=True,right=True)
         plt.tick_params(which='major',length=20)
         plt.tick_params(which='minor',length=10)
         #fig.tight_layout(pad=2.5,h_pad=2.5,w_pad=2.5)

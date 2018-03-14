@@ -97,22 +97,10 @@ for fname in glob.iglob('*.npz'):
     IDISD = int(match.group(4))
     BTNUM = int(match.group(5))
    
-    J = FNDATA['J']
     td_spin = FNDATA['spin']
     td_spin0 = FNDATA['spin0']
 
     N = L**3
-
-    # laying out the lattice skeleton
-    if len(X) != N:
-
-        X = np.zeros((L,L))
-        Y = np.zeros((L,L))
-        for i in range(0,L):
-            for j in range(0,L):
-                X[i,j]= i*a
-                Y[i,j]= j*a
-
 
     for zix in range((L+1)/2,(L+1)/2+1):
  
@@ -168,53 +156,50 @@ for fname in glob.iglob('*.npz'):
         ax.loglog(lp,invd(lp, *popt),
                 color='royalblue',
                 linestyle='--',
+                dashes=(2,2),
                 lw=4,
                 #label=r'Power law fit, $\delta\theta\sim1/r$',
+                #label=r'Exponential fit fit, $\delta\theta\sim e^{-r}$'
                 basex=10,basey=10,
                 zorder=2
+                #+' $n$ = '
+                #+str("%.4f" % n)
                 )
 
         plt.xlim([0.5,20])
         plt.ylim([10.0**(-4),1.0])
-        plt.ylabel(r'$\delta\theta(r)$',fontsize=30)
+        plt.ylabel(r'$|\delta\Theta|$',fontsize=30)
         plt.xlabel(r'$r$',fontsize=30)
-        plt.tick_params(which='both',width=2,labelsize=30)
+        plt.tick_params(which='both',width=2,
+                labelsize=30,direction='in',
+                bottom=True,top=True,
+                left=True,right=True)
         plt.tick_params(which='major',length=20)
         plt.tick_params(which='minor',length=10)
-
-        fig.savefig("../plot/cubic_th_r_"+
+        
+        fig.savefig("../plot/cubic_tht_"+
                 STR_L+
                 STR_DELTA+
                 STR_ALPHA+
-                "DNMR"+
-                str("%06d" % IDISD)+
-                str("%06d" % BTNUM)+
-                str("%06d" % zix)+
-                ".pdf"
-                ,bbox_inches='tight'
+                ".pdf",
+                bbox_inches='tight'
                 )
+        
+        
         plt.close('all')
 
 for L in set(zip(*hshchar)[0]):
     for DLT in set(zip(*hshchar)[1]):
         for ALP in set(zip(*hshchar)[2]):
-            subprocess.call('pdftk ../plot/cubic_th_r_'+
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/CUBIC_THT_L_'+
                 L+
-                DLT+
-                ALP+
-                "DNMR"+
-                '* '+
-                'cat output ../plot/CUBIC_TH_VS_L_'+
+                '.pdf '+
+                '../plot/cubic_tht_'+
                 L+
-                '_DELTA_'+
-                DLT+
-                '_ALPHA_'+
-                ALP+
-                '.pdf',shell=True)
-            subprocess.call('rm ../plot/cubic_th_r_'+
-                L+
-                DLT+
-                ALP+
-                "DNMR"+
                 '* ',shell=True)
+            subprocess.call('rm ../plot/cubic_tht_'+
+                L+
+                '*',shell=True)
 

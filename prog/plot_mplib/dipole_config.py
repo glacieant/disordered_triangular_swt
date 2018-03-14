@@ -249,7 +249,7 @@ for fname in glob.iglob('*.npz'):
             color='black',
             linewidth=1,
             facecolor='none',
-            #edgecolor='k',
+            edgecolor='k',
             width=width,
             headwidth=headwidth,
             headlength=headlength,
@@ -268,36 +268,51 @@ for fname in glob.iglob('*.npz'):
         impcor[1]-9*dy/10,impcor[1]+dy+3*a/4])
     ax.axis('off')
 
-    fig.savefig("../plot/esbc_"+
+    fig.savefig("../plot/dipole"+
+            "_L_"+
             STR_L+
+            "_DLT_"+
             STR_DELTA+
+            "_ALP_"+
             STR_ALPHA+
-            '_DNMR_'+
+            "_DNM_"+
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
             ".pdf",
-            #bbox_inches='tight'
+            bbox_inches='tight',
+            transparent=True
             )
     plt.close('all')
+
 
 for L in set(zip(*hshchar)[0]):
     for DLT in set(zip(*hshchar)[1]):
         for ALP in set(zip(*hshchar)[2]):
-            subprocess.call('pdftk ../plot/esbc_'+
-                L+
-                DLT+
-                ALP+
-                '_DNMR_'+
-                '* '+
-                'cat output ../plot/CONFIG_L_'+
+            subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
+                    '-dPDSETTINGS=/prepress -sOutputFile='+
+                '../plot/DIPOLE_CONFIG_L_'+
                 L+
                 '_DELTA_'+
                 DLT+
                 '_ALPHA_'+
                 ALP+
-                '.pdf',shell=True)
-
-# removing split files
-subprocess.call('rm ../plot/esbc_*',shell=True)
-
+                '.pdf '+
+                '../plot/dipole'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '* ',shell=True)
+            subprocess.call('rm ../plot/dipole'+
+                "_L_"+
+                L+
+                "_DLT_"+
+                DLT+
+                "_ALP_"+
+                ALP+
+                "_DNM_"+
+                '*',shell=True)
 
