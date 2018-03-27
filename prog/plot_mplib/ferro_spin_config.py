@@ -4,10 +4,10 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-#folder = "sharp_wall"
+folder = "sharp_wall"
 #folder = "single_impurity"
 #folder = "zero_field_classical"
-folder = "zero_field_dilution"
+#folder = "zero_field_dilution"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -121,8 +121,8 @@ for fname in glob.iglob('*.npz'):
     lmap.lattice_map(L,nbr)
     lmap.sublattice_map(L,sub)
 
-    ax = a*(3.0**0.5)/2.0
-    ay = a/2.0
+    a_x = a*(3.0**0.5)/2.0
+    a_y = a/2.0
 
     # laying out the lattice skeleton
     if len(X) != N:
@@ -132,11 +132,11 @@ for fname in glob.iglob('*.npz'):
         for i in range(0,L):
             for j in range(0,L):
                 # the rhombus lattice
-                #X[i,j] = (i+j)*ax+3*ax
-                #Y[i,j] = (j-i)*ay
+                #X[i,j] = (i+j)*a_x+3*a_x
+                #Y[i,j] = (j-i)*a_y
                 # the slanted lattice
-                X[i,j] = i*a + j*ay
-                Y[i,j] = j*ax 
+                X[i,j] = i*a + j*a_y
+                Y[i,j] = j*a_x 
 
     # plotting the configuration
 
@@ -145,14 +145,9 @@ for fname in glob.iglob('*.npz'):
     fig = plt.figure(figsize=(w,h))
     ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
     #ax = fig.add_axes([0,0,1,1])
-    ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
+    #ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
+    
     # defining the plane for the spins
-
-    #R1 = np.array([[-1.0,0.0],[0.0,1.0]])
-    #phx = -np.pi/6
-    #R2 = np.array([[np.cos(phx),-np.sin(phx)],[np.sin(phx),np.cos(phx)]])
-    #R = np.dot(R1,R2)
-
     e1 = spin[0]
     if np.linalg.norm(e1) > 10.0**(-5):
         e1 = e1/np.linalg.norm(e1)
@@ -162,22 +157,26 @@ for fname in glob.iglob('*.npz'):
         e1 = np.array([1.0,0.0,0.0])
         e2 = np.array([0.0,1.0,0.0])
 
-    U = np.einsum('ij,j->i',spin,e1).reshape((L,L)).transpose()
-    V = np.einsum('ij,j->i',spin,e2).reshape((L,L)).transpose()
+    spin_x = np.einsum('ij,j->i',spin,e1)
+    spin_y = np.einsum('ij,j->i',spin,e2)
 
-    #U = np.reshape(R[0,0]*UP + R[0,1]*VP,(L,L)).transpose()
-    #V = np.reshape(R[1,0]*UP + R[1,1]*VP,(L,L)).transpose()
+    spin_2d = np.column_stack((spin_x,spin_y))
+    chir = np.sign(spin_2d[0,0]*spin_2d[1,1]-spin_2d[0,1]*spin_2d[1,0])
+    
+    for i in range(0,N):
 
-    SX = np.zeros((L,L),dtype=np.float)
-    SY = np.zeros((L,L),dtype=np.float)
+        x = i%L
+        y = i/L
 
-    SU = np.zeros((L,L),dtype=np.float)
-    SV = np.zeros((L,L),dtype=np.float)
-    LSU = np.zeros((L,L),dtype=np.float)
-    LSV = np.zeros((L,L),dtype=np.float)
-    RSU = np.zeros((L,L),dtype=np.float)
-    RSV = np.zeros((L,L),dtype=np.float)
+        phx = chir*(x-y)*(4*np.pi/3)
+        ROT = np.array([[np.cos(phx),-np.sin(phx)],
+            [np.sin(phx),np.cos(phx)]])
+        spin_2d[i] = ROT.dot(spin_2d[i])
 
+    U = spin_2d[:,0].reshape((L,L)).transpose()
+    V = spin_2d[:,1].reshape((L,L)).transpose()
+    
+    """
     VMIN = 0.0
     VMAX = 1.0
     VGRID = 10
@@ -200,7 +199,7 @@ for fname in glob.iglob('*.npz'):
     
     # fixing colormap for line plotting
 
-    cmstyle = cm.Greys
+    cmstyle = cm.viridis
 
     Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
     scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
@@ -218,37 +217,8 @@ for fname in glob.iglob('*.npz'):
     cbar.set_label(r'$J$',
             fontsize=12,
             labelpad=-45)
-    """
-    cbar.set_ticklabels([r'$\pi/2$',
-        r'$3\pi/4$',
-        r'$\pi$',
-        r'$5\pi/4$',
-        r'$3\pi/2$',
-        ])
-    """
+    
     for i in range(0,N):
-
-        x = i/L
-        y = i%L
-
-        cor = np.array([X[x,y],Y[x,y]])
-
-        SX[x,y] = X[x,y]
-        SY[x,y] = Y[x,y]
-
-        #SU0[x,y] = U0[x,y]
-        #SV0[x,y] = V0[x,y]
-        
-        if sub[i]==0:
-            LSU[x,y] = U[x,y]
-            LSV[x,y] = V[x,y]
-        elif sub[i]==1:
-            RSU[x,y] = U[x,y]
-            RSV[x,y] = V[x,y]
-        else:
-            SU[x,y] = U[x,y]
-            SV[x,y] = V[x,y]
-
 
         for p in range(0,6):
 
@@ -264,19 +234,21 @@ for fname in glob.iglob('*.npz'):
                     color=cval,
                     alpha=1,
                     ls='solid',
-                    lw=0.5,
+                    lw=0.25,
                     #lw=0.5*J[i,j],
                     zorder = 0
                     )
             ax.add_line(line)
+    
+    """
 
     # picturing the spin orientation
     pivot="mid"
-    width=0.002
-    headwidth=5
-    headlength=6
+    width=0.001
+    headwidth=4
+    headlength=5
 
-    LQ=ax.quiver(SX,SY,LSU,LSV,
+    Q=ax.quiver(X,Y,V,U,
             color='red',
             width=width,
             headwidth=headwidth,
@@ -287,34 +259,25 @@ for fname in glob.iglob('*.npz'):
             scale_units='xy',
             zorder=2
             )
-    RQ=ax.quiver(SX,SY,RSU,RSV,
-            color='limegreen',
-            width=width,
-            headwidth=headwidth,
-            headlength=headlength,
-            pivot=pivot,
-            angles='xy',
-            scale=1,
-            scale_units='xy',
-            zorder=2
-            )
-    Q=ax.quiver(SX,SY,SU,SV,
-            color='royalblue',
-            width=width,
-            headwidth=headwidth,
-            headlength=headlength,
-            pivot=pivot,
-            angles='xy',
-            scale=1,
-            scale_units='xy',
-            zorder=2
-            )
-
+    
     #plt.axis([X.min()-2.0*a,X.max()+2.0*a,
     #    Y.min()-2.0*a,Y.max()+2.0*a])
     ax.axis('off')
 
-    fig.savefig("../plot/spin_config"+
+    EN = 0.0
+    for i in range(0,N):
+
+        for j in nbr[i]:
+
+            EN += J[i,j]*np.dot(spin[i],spin[j])
+
+    ax.text(X.min(),Y.max(),
+            r'$E$='
+            +str("%.4f" % EN),
+            fontsize=20
+            )
+
+    fig.savefig("../plot/ferro_spin_config"+
             "_L_"+
             STR_L+
             "_DLT_"+
@@ -334,14 +297,14 @@ for L in set(zip(*hshchar)[0]):
         for ALP in set(zip(*hshchar)[2]):
             subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
                     '-dPDSETTINGS=/prepress -sOutputFile='+
-                '../plot/SPIN_CONFIG_L_'+
+                '../plot/FERRO_SPIN_CONFIG_L_'+
                 L+
                 '_DELTA_'+
                 DLT+
                 '_ALPHA_'+
                 ALP+
                 '.pdf '+
-                '../plot/spin_config'+
+                '../plot/ferro_spin_config'+
                 "_L_"+
                 L+
                 "_DLT_"+
@@ -350,7 +313,7 @@ for L in set(zip(*hshchar)[0]):
                 ALP+
                 "_DNM_"+
                 '* ',shell=True)
-            subprocess.call('rm ../plot/spin_config'+
+            subprocess.call('rm ../plot/ferro_spin_config'+
                 "_L_"+
                 L+
                 "_DLT_"+

@@ -71,13 +71,14 @@ def main(const):
             HSYS = LSYS*(LSYS+1)/2
             for site in range(0,HSYS):
                 for p in [3]:
-                    J[site,nbr[site,p]] = 0.25
-                    J[nbr[site,p],site] = 0.25
+                    J[site,nbr[site,p]] = 0.8
+                    J[nbr[site,p],site] = 0.8
+            """
             for site in range(HSYS,NSYS):
                 for p in [1]:
                     J[site,nbr[site,p]] = 0.75
                     J[nbr[site,p],site] = 0.75
-
+            """
             algo.classic_zmc(CLNUM,NSYS,nbr,J,M,GTOL)
 
             ## output data ##

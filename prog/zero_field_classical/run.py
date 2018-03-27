@@ -6,19 +6,19 @@
 ##################################################
 
 # system size
-LSYS = [60] 
+LSYS = [30] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [10]
+ITERDISD = [1]
 # initial angle fluctuation
 ANGVAR = [1.0]
 # number of bootstrapping
-BOOTNUM = [1]
+BOOTNUM = [10]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9] 
+DELTA = [0.8] 
 # the ratio between nearest and next 
 # nearest couplings
 ALPHA = [0.0] 
@@ -94,3 +94,4 @@ for i in range(0,isize):
 
             tmi.main(const)
             DNMR += 1
+

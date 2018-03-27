@@ -6,7 +6,7 @@
 ##################################################
 
 # system size
-LSYS = [21] 
+LSYS = [60] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 

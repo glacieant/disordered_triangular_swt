@@ -49,7 +49,6 @@ def init_param(NSYS,nbr,
     
     M[:] = 0.0
     
-    
     M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
     M[1] = np.einsum('i,ij->ij',np.einsum('ij,ij->i',M[1],M[1])**(-0.5),M[1])
 
@@ -65,7 +64,7 @@ def init_param(NSYS,nbr,
             fleet=0.0
             M[0,i] = np.array([np.cos(fleet),np.sin(fleet),0])
             if ANGVAR != 0.0:
-                phi = np.random_intel.uniform(-ANGVAR,ANGVAR)
+                phi = np.random.uniform(-ANGVAR,ANGVAR)
             else:
                 phi =0.0
             M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
@@ -74,7 +73,7 @@ def init_param(NSYS,nbr,
         elif i!=0 and i%LSYS!=0:
             M[0,i] = np.einsum('ab,b->a',ROT,M[0,i-1])
             if ANGVAR != 0.0:
-                phi = np.random_intel.uniform(-ANGVAR,ANGVAR)
+                phi = np.random.uniform(-ANGVAR,ANGVAR)
             else:
                 phi =0.0
             M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
@@ -83,10 +82,11 @@ def init_param(NSYS,nbr,
         elif i!=0 and i%LSYS==0:
             M[0,i] = M[0,i-1]
             if ANGVAR != 0.0:
-                phi = np.random_intel.uniform(-ANGVAR,ANGVAR)
+                phi = np.random.uniform(-ANGVAR,ANGVAR)
             else:
                 phi =0.0
             M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
                 [np.sin(phi),np.cos(phi),0],[0,0,1]],
                 M[0,i])
+
     """

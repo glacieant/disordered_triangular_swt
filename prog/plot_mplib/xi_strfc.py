@@ -107,8 +107,22 @@ for fname in glob.iglob('*.npz'):
     n_sfc[INDX] += 1
 
     spin = FNDATA['spin']
+    J = FNDATA['J']
 
     N = L**2
+
+    import lattice_map as lmap
+    nbr = np.zeros((N,12),dtype=np.int)
+    lmap.lattice_map(L,nbr)
+
+    EN = 0.0
+    for i in range(0,N):
+
+        for j in nbr[i]:
+
+            EN += J[i,j]*np.dot(spin[i],spin[j])
+
+    print DELTA, EN/N
 
     spin_X = spin[:,0].reshape((L,L))
     spin_Y = spin[:,1].reshape((L,L))
@@ -136,6 +150,8 @@ for i in range(0,HSHNUM):
         sfc[i] *= (1.0/(n_sfc[i]*N))
         en[i] *= (1.0/n_sfc[i])
 
+        """
+
         # processing the BZ cut
         HCUT = 1
         VCUT = 2
@@ -159,6 +175,13 @@ for i in range(0,HSHNUM):
         for k in range(0,RMAX):
             SFC_CUT[k] = sfc[i][k*VCUT,k*HCUT]
 
+        """
+
+        SFC_CUT = np.zeros(L)
+
+        KMAX_X, KMAX_Y = np.unravel_index(sfc[i].argmax(),sfc[i].shape)
+        SFC_CUT = sfc[i][KMAX_X,:]
+
         #fitting a gaussian to extract a pattern along the high symmetry points
 
         # GAMMA point
@@ -167,7 +190,7 @@ for i in range(0,HSHNUM):
 
         # data for gaussian fitting
         YDATA = SFC_CUT
-        XDATA = np.linspace(0.0,XMAXMO*(2.0*np.pi),YDATA.size)
+        XDATA = np.linspace(0.0,(2.0*np.pi),YDATA.size)
         ax.plot(XDATA,YDATA,'b.',label='Data')
 
         # finding the parabolic fit
@@ -201,7 +224,7 @@ for i in range(0,HSHNUM):
         popt, pcov = curve_fit(gaussian, XDATA, YDATA)
         #popt, pcov = curve_fit(skew_gauss, XDATA, YDATA,p0=[-1.25,np.amax(YDATA),-1.25,0.05])
         sigma = np.absolute(popt[2])
-        LXDATA = np.linspace(0.0,XMAXMO*(2.0*np.pi),200)
+        LXDATA = np.linspace(0.0,(2.0*np.pi),200)
         #sigma = np.absolute(popt[3])
         ax.plot(LXDATA,gaussian(LXDATA, *popt),'r-',
         #ax.plot(XDATA,skew_gauss(XDATA, *popt),'r-',
@@ -230,7 +253,6 @@ for i in range(0,HSHNUM):
                 STR_DELTA+
                 "_ALP_"+
                 STR_ALPHA+
-                "_DNM_"+
                 ".pdf",
                 bbox_inches='tight',
                 transparent=True

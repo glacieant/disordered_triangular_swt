@@ -5,6 +5,7 @@
 
 import sys
 import numpy as np
+#from numpy import random_intel
 import lattice_map as lmap
 import algo
 import tool
@@ -38,59 +39,62 @@ def main(const):
     
     # field params
     M = np.zeros((2,NSYS,3),dtype=np.float64)
-    M0 = np.zeros((2,NSYS,3),dtype=np.float64)
-    
+    M_PURE = np.zeros((2,NSYS,3),dtype=np.float64)
+
     # the hamiltonian matrix and coupling
     J = np.zeros((NSYS,NSYS),dtype=np.float64)
-    
+
     # iteration loop for disorder
     for i in range(0,ITERDISD):
 
         # fixing the coupling matrix
         tool.init_cpl(NSYS,nbr,
-                    ZCO,DELTA,ALPHA,J)
-        
-        ENMIN = 1000.0
+                ZCO,0.0,0.0,J)
+
         # looping over bootstrapped initialisations
-        for g in range(0,BOOTNUM):
+        for g in range(0,BOOTNUM): 
 
             # initiating parameters
-            if g%2 == 0:
-                tool.init_param_rand(NSYS,nbr,
-                        ZCO,
-                        DELTA,ALPHA,
-                        ANGVAR,M0)
-            else:
-                 tool.init_param_ord(NSYS,nbr,
-                        ZCO,
-                        DELTA,ALPHA,
-                        ANGVAR,M0)
+            tool.init_param(NSYS,nbr,
+                    ZCO,
+                    0.0,0.0,
+                    ANGVAR,M)
            
+            
+            #introducing dilution
+            NDL = int(DELTA*NSYS)
+            DLARRAY = np.random.randint(0,NSYS,size=NDL)
+
+            for X in DLARRAY:
+                for NP in range(0,6):
+                    Y = nbr[X,NP]
+                    J[X][Y] = 1.0 - ALPHA
+                    J[Y][X] = 1.0 - ALPHA
+
+            """
+            #introducing single dilution in the middle
+            impsite = (LSYS*(LSYS-1))/2-1
+            for p in range(0,6):
+                J[impsite][nbr[impsite][p]] = 1.0-ALPHA
+                J[nbr[impsite][p]][impsite] = 1.0-ALPHA
+            """            
             # classical algorithm to get the magnetic
             # ground state of impurity system
 
-            algo.classic_zmc(CLNUM,NSYS,nbr,J,M0,GTOL)
+            algo.classic_zmc(CLNUM,NSYS,nbr,J,M,GTOL)
 
-            ENTEMP = tool.en_calc(NSYS,nbr,J,M0[1])
+            ## output data ##
 
-            if ENTEMP < ENMIN:
-
-                ENMIN = ENTEMP
-
-                np.copyto(M,M0)
-
-
-        ## output data ##
-
-        # saving the final output data
-        np.savez_compressed("out/data/FNL"+
-                "_L_"+str(LSYS)+
-                "_DLT_"+str(DELTA)+
-                "_ALP_"+str(ALPHA)+
-                "_DISD_"+str(i)+
-                "_BOOT_"+str(0)+
-                ".npz",
-                J=J,
-                spin=M[1],
-                )
+            # saving the final output data
+            np.savez_compressed("out/data/FNL"+
+                    "_L_"+str(LSYS)+
+                    "_DLT_"+str(DELTA)+
+                    "_ALP_"+str(ALPHA)+
+                    "_DISD_"+str(i)+
+                    "_BOOT_"+str(g)+
+                    ".npz",
+                    J=J,
+                    spin=M[1],
+                    spin0=M_PURE[1]
+                    )
 

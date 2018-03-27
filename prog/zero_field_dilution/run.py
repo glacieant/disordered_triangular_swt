@@ -6,22 +6,22 @@
 ##################################################
 
 # system size
-LSYS = [300] 
+LSYS = [60] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
 ITERDISD = [1]
 # initial angle fluctuation
-ANGVAR = [1.0]
+ANGVAR = [0.0]
 # number of bootstrapping
 BOOTNUM = [1]
 # a global tolerance value
 GTOL = 10.0**(-12) 
 # the disorder amplitude
-DELTA = [1.0] 
+DELTA = [0.001] 
 # the ratio between nearest and next 
 # nearest couplings
-ALPHA = [0.0] 
+ALPHA = [0.99] 
 # maximum iteration for classical algorithm
 CLNUM = 10**7
 

@@ -4,9 +4,9 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
-folder = "sharp_wall"
+#folder = "sharp_wall"
 #folder = "single_impurity"
-#folder = "zero_field_classical"
+folder = "zero_field_classical"
 #folder = "zero_field_dilution"
 os.chdir("../"+folder+"/out/data")
 import sys
@@ -72,7 +72,7 @@ X = np.zeros(1)
 Y = np.zeros(1)
 Z = np.zeros(1)
 
-a = np.pi
+a = 6*np.pi
 #a = np.pi/64
 
 # three diffrent translation vector
@@ -174,7 +174,6 @@ for fname in glob.iglob('*.npz'):
    
     J = FNDATA['J']
     spin = FNDATA['spin']
-    spin0 = FNDATA['spin0']
 
     N = L**2
 
@@ -204,68 +203,30 @@ for fname in glob.iglob('*.npz'):
                 X[i,j] = i*a + j*ay
                 Y[i,j] = j*ax 
    
-    US = np.zeros(NTR,dtype=np.float)
-    VS = np.zeros(NTR,dtype=np.float)
+    chir = np.zeros((NTR,3),dtype=np.float) 
 
-    ERR = []
-    QSOLX = 4.0*np.pi/3.0
-    QSOLY = 0.0
-    RHS = np.zeros(3,dtype=np.float)
     for i in range(0,NTR):
-        RHS[0] = np.dot(spin[elt[i,0]],spin[elt[i,1]])
-        RHS[1] = np.dot(spin[elt[i,0]],spin[elt[i,2]])
-        RHS[2] = np.dot(spin[elt[i,1]],spin[elt[i,2]])
-        SOL = minimize(qval,[QSOLX,QSOLY],
-                args=(RHS),
-                #bounds=((0,2*np.pi),(0,2*np.pi)),
-                method='Powell',
-                tol=1e-6
-                )
+        chir[i] = np.cross(spin[elt[i,0]],
+                spin[elt[i,1]])
+        chir[i] += np.cross(spin[elt[i,1]],
+                spin[elt[i,2]])
+        chir[i] += np.cross(spin[elt[i,2]],
+                spin[elt[i,0]])
 
-        US[i], VS[i] = SOL.x
-        """
-        if np.abs(SOL.fun) > 1.0:
-            print SOL.fun
-            print SOL.x
-            print spin[i]
-            for m in range(0,6):
-                print spin[nbr[i,m]], np.dot(spin[i],spin[nbr[i,m]])
-            raw_input()
-
-        ERR.append(SOL.fun)
-        """
-        #QSOLX = US[i]
-        #QSOLY = VS[i]
-
-    #print STR_DELTA,'-',STR_ALPHA,'-',max(ERR)
-    U = np.reshape(US,(LTR,LTR)).transpose()
-    V = np.reshape(VS,(LTR,LTR)).transpose()
-        
+    e1 = chir[0]
     """
-    # reprocessing to make data non-local
-    Qx = np.zeros((LTR,LTR),dtype=np.float)
-    Qy = np.zeros((LTR,LTR),dtype=np.float)
-    for i in range(0,LTR):
-        for j in range(0,LTR):
-            NUM = 0
-            for k in range(-SIGMA,SIGMA+1):
-                for m in range(-SIGMA,SIGMA+1):
-                    x = (i + k)%LTR
-                    y = (j + m)%LTR
-                    DIST = np.linalg.norm(np.array(k*dvec[0]+m*dvec[1]))
-                    if (DIST <= 2*SIGMA):
-                        Qx[i,j] += U[x,y]*gauss(DIST,SIGMA)
-                        Qy[i,j] += V[x,y]*gauss(DIST,SIGMA)
-                        NUM += gauss(DIST,SIGMA)
-           
-            Qx[i,j] *= 1.0/NUM
-            Qy[i,j] *= 1.0/NUM
-
-    U = Qx
-    V = Qy
+    if np.linalg.norm(e1) > 10.0**(-5):
+        e1 = e1/np.linalg.norm(e1)
+        e2 = np.cross(e1,np.cross(e1,chir[1]))
+        e2 = e2/np.linalg.norm(e2)
+    else:
     """
-    U = (U - UZ)
-    V = (V - VZ)
+    e1 = e1/np.linalg.norm(e1)
+    e2 = np.cross(e1,np.cross(e1,[0.0,0.0,1.0]))
+
+    U = np.einsum('ij,j->i',chir,e1).reshape((LTR,LTR)).transpose()
+    V = np.einsum('ij,j->i',chir,e2).reshape((LTR,LTR)).transpose()
+
     eta = 0.0000001
     #eU = U/np.sqrt(U*U+V*V+eta)
     #eV = V/np.sqrt(U*U+V*V+eta)
@@ -374,7 +335,7 @@ for fname in glob.iglob('*.npz'):
             )
     ax.axis('off')
 
-    fig.savefig("../plot/qdom"+
+    fig.savefig("../plot/chirdom"+
             "_L_"+
             STR_L+
             "_DLT_"+
@@ -396,14 +357,14 @@ for L in set(zip(*hshchar)[0]):
         for ALP in set(zip(*hshchar)[2]):
             subprocess.call('gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite '+
                     '-dPDSETTINGS=/prepress -sOutputFile='+
-                '../plot/QDOMAIN_L_'+
+                '../plot/CHIRDOMAIN_L_'+
                 L+
                 '_DELTA_'+
                 DLT+
                 '_ALPHA_'+
                 ALP+
                 '.pdf '+
-                '../plot/qdom'+
+                '../plot/chirdom'+
                 "_L_"+
                 L+
                 "_DLT_"+
@@ -412,7 +373,7 @@ for L in set(zip(*hshchar)[0]):
                 ALP+
                 "_DNM_"+
                 '* ',shell=True)
-            subprocess.call('rm ../plot/qdom'+
+            subprocess.call('rm ../plot/chirdom'+
                 "_L_"+
                 L+
                 "_DLT_"+

@@ -220,16 +220,19 @@ np.savez_compressed("../plot/QHIST.npz",
         UX=UX,
         VX=VX)
 
-
 QSIGMA = np.zeros(HSHNUM,dtype=np.float)
 
 for i in range(0,HSHNUM):
-
+    
+    """
     STR_L = hshchar[i][0]
     STR_DELTA = hshchar[i][1]
     STR_ALPHA = hshchar[i][2]
     L = int(STR_L)
     N = L**2
+    """
+    
+    DLT = DELTA[i]
 
     # plotting the histogram
 
@@ -240,13 +243,13 @@ for i in range(0,HSHNUM):
     # best fit of data
     (mu, sigma) = norm.fit(UX[i])
 
-    DELTA[i] = float(STR_DELTA)
     QSIGMA[i] = sigma
 
     # the histogram of the data
     ax.hist(UX[i],bins=50,normed=1,facecolor='royalblue')
 
     plt.title(r'Histogram of $\Delta Q_x$')
+    """
     fig.savefig("../plot/QXHIST_L_"+
             "_L_"+
             STR_L+
@@ -259,12 +262,21 @@ for i in range(0,HSHNUM):
             bbox_inches='tight',
             transparent=True
             )
+    """
+    fig.savefig("../plot/QXHIST"+
+            "_DLT_"+
+            str("%.2f" % DLT)+
+            "_DNM_"+
+            ".pdf",
+            bbox_inches='tight',
+            transparent=True
+            )
     plt.close('all')
 
 # fit function
 def power(x,a):
 
-    return a*(x**2)
+    return a*x
 
 # plotting the histogram
 
@@ -274,22 +286,22 @@ ax = fig.add_axes([0,0,1,1])
 
 # the histogram of the data
 
-ax.loglog(DELTA,QSIGMA,
+ax.plot(DELTA,QSIGMA,
         ls='None',
         marker='s',
         ms=12,
         mew=2,
         mfc='None',
         mec='red',
-        basex=10,basey=10,
+        #basex=10,basey=10,
         zorder=1
         )
 
-popt, pcov = curve_fit(power,DELTA,QSIGMA)
+popt, pcov = curve_fit(power,DELTA[:3],QSIGMA[:3])
 
 DELTAX = np.linspace(np.amin(DELTA),np.amax(DELTA),num=200)
 
-ax.loglog(DELTAX,power(DELTAX, *popt),
+ax.plot(DELTAX,power(DELTAX, *popt),
         color='royalblue',
         linestyle='--',
         lw=4,
