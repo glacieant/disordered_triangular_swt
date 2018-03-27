@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import multiprocessing as mp
 
 ##################################################
 # This is the wrapper for the computation of the #
@@ -6,15 +7,15 @@
 ##################################################
 
 # system size
-LSYS = [30] 
+LSYS = [30,36] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [1]
+ITERDISD = [10,10]
 # initial angle fluctuation
-ANGVAR = [1.0]
+ANGVAR = [0.5,0.5]
 # number of bootstrapping
-BOOTNUM = [10]
+BOOTNUM = [10,10]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
@@ -69,29 +70,39 @@ ivar = collections.namedtuple('ivar',
                 GTOL DELTA ALPHA \
                 CLNUM DNMR')
 
+# generate paramter range
+
 isize = len(LSYS)
 dsize = len(DELTA)
 asize = len(ALPHA)
 
-# denominator descriptor
-DNMR = 0
-for i in range(0,isize):
+# the parameter function
 
-    for j in range(0,dsize):
+def const(DNMR):
 
-        for k in range(0,asize):
+    carray = range(len(DNMR))
+    for DNM in DNMR:
+        i = (DNM%(isize*dsize))%isize 
+        j = (DNM%(isize*dsize))/isize 
+        k = DNM/(isize*dsize)
 
-            const = ivar(LSYS = LSYS[i],
-                    ZCO = ZCO,
-                    ITERDISD = ITERDISD[i],
-                    ANGVAR = ANGVAR[i],
-                    BOOTNUM = BOOTNUM[i],
-                    GTOL = GTOL,
-                    DELTA = DELTA[j],
-                    ALPHA = ALPHA[k],
-                    CLNUM = CLNUM,
-                    DNMR = DNMR)
+        carray[DNM] = ivar(LSYS = LSYS[i],
+                ZCO = ZCO,
+                ITERDISD = ITERDISD[i],
+                ANGVAR = ANGVAR[i],
+                BOOTNUM = BOOTNUM[i],
+                GTOL = GTOL,
+                DELTA = DELTA[j],
+                ALPHA = ALPHA[k],
+                CLNUM = CLNUM,
+                DNMR = DNM)
 
-            tmi.main(const)
-            DNMR += 1
+    return carray
 
+DNX = range(isize*dsize*asize)
+
+NUM_CORES = mp.cpu_count()
+
+# batch processing
+pool = mp.Pool(processes=NUM_CORES)
+pool.map(tmi.main,const(DNX))

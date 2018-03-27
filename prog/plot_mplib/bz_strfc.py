@@ -157,7 +157,6 @@ for i in range(0,HSHNUM):
 
         fig, ax = plt.subplots()
 
-
         STR_L = hshchar[i][0]
         STR_DELTA = hshchar[i][1]
         STR_ALPHA = hshchar[i][2]
