@@ -89,6 +89,7 @@ def main(const):
                 "_ALP_"+str(ALPHA)+
                 "_DISD_"+str(i)+
                 "_BOOT_"+str(0)+
+                "_DNM_"+str(DNMR)+
                 ".npz",
                 J=J,
                 spin=M[1],
