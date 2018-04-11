@@ -11,7 +11,7 @@ LSYS = [12,18,24,30,36,42,48]
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [200,200,200,200,100,100,100]
+ITERDISD = [200,200,200,200,160,160,80]
 # initial angle fluctuation
 ANGVAR = [0.5,0.5,0.5,0.5,0.5,0.5,0.5]
 # number of bootstrapping
@@ -75,6 +75,7 @@ ivar = collections.namedtuple('ivar',
 isize = len(LSYS)
 dsize = len(DELTA)
 asize = len(ALPHA)
+tdisd = sum(ITERDISD)
 
 # the parameter function
 
@@ -82,27 +83,29 @@ def const(DNMR):
 
     carray = range(len(DNMR))
     for DNM in DNMR:
-        i = (DNM%(isize*dsize))%isize 
-        j = (DNM%(isize*dsize))/isize 
-        k = DNM/(isize*dsize)
+        DLT = (DNM%(asize*dsize))%dsize 
+        ALP = (DNM%(asize*dsize))/dsize
+        SIM = (DNM/(asize*dsize))
 
-        carray[DNM] = ivar(LSYS = LSYS[i],
-                ZCO = ZCO,
-                ITERDISD = ITERDISD[i],
-                ANGVAR = ANGVAR[i],
-                BOOTNUM = BOOTNUM[i],
-                GTOL = GTOL,
-                DELTA = DELTA[j],
-                ALPHA = ALPHA[k],
-                CLNUM = CLNUM,
-                DNMR = DNM)
+        for LI in range(isize):
+
+            SIMX = sum(ITERDISD[:(LI+1)])
+            if SIMX/(SIM+1) >= 1:
+                  
+                carray[DNM] = ivar(LSYS = LSYS[LI],
+                        ZCO = ZCO,
+                        ITERDISD = 1,
+                        ANGVAR = ANGVAR[LI],
+                        BOOTNUM = BOOTNUM[LI],
+                        GTOL = GTOL,
+                        DELTA = DELTA[DLT],
+                        ALPHA = ALPHA[ALP],
+                        CLNUM = CLNUM,
+                        DNMR = DNM)
 
     return carray
 
-DNX = range(isize*dsize*asize)
-
-print const(DNX)
-raw_input()
+DNX = range(dsize*asize*tdisd)
 
 # batch processing
 pool = mp.Pool()
