@@ -7,24 +7,24 @@ import multiprocessing as mp
 ##################################################
 
 # system size
-LSYS = [18,24,36] 
+LSYS = [12,18,24,30,36,42,48] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [1,1,1]
+ITERDISD = [200,200,200,200,100,100,100]
 # initial angle fluctuation
-ANGVAR = [0.5,0.5,0.5]
+ANGVAR = [0.5,0.5,0.5,0.5,0.5,0.5,0.5]
 # number of bootstrapping
-BOOTNUM = [10,10,10]
+BOOTNUM = [5000,5000,5000,5000,5000,5000,5000]
 # a global tolerance value
-GTOL = 10.0**(-10) 
+GTOL = 10.0**(-6) 
 # the disorder amplitude
-DELTA = [0.700,0.725,0.750,0.775,0.800] 
+DELTA = [0.6,0.65] 
 # the ratio between nearest and next 
 # nearest couplings
 ALPHA = [0.0] 
 # maximum iteration for classical algorithm
-CLNUM = 10**7
+CLNUM = 10**6
 
 # checking the lengths of simulation arrays #
 
@@ -101,8 +101,9 @@ def const(DNMR):
 
 DNX = range(isize*dsize*asize)
 
-NUM_CORES = mp.cpu_count()
+print const(DNX)
+raw_input()
 
 # batch processing
-pool = mp.Pool(processes=NUM_CORES)
+pool = mp.Pool()
 pool.map(tmi.main,const(DNX))
