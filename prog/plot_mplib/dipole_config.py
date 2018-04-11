@@ -244,7 +244,7 @@ for fname in glob.iglob('*.npz'):
             scale_units='xy',
             zorder=2
             )
-
+    """
     Q0=ax.quiver(SX,SY,SU0,SV0,
             color='black',
             linewidth=1,
@@ -264,6 +264,7 @@ for fname in glob.iglob('*.npz'):
             edgecolor='navajowhite',facecolor='navajowhite',
             zorder=0)
     ax.add_patch(ellipse)
+    """
     plt.axis([impcor[0]-dx,impcor[0]+dx,
         impcor[1]-9*dy/10,impcor[1]+dy+3*a/4])
     ax.axis('off')

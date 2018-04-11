@@ -6,7 +6,7 @@
 ##################################################
 
 # system size
-LSYS = [300] 
+LSYS = [30] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
@@ -18,7 +18,7 @@ BOOTNUM = [1]
 # a global tolerance value
 GTOL = 10.0**(-12) 
 # the disorder amplitude
-DELTA = [1.0] 
+DELTA = [0.0] 
 # the ratio between nearest and next 
 # nearest couplings
 ALPHA = [0.0] 

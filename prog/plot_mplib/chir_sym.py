@@ -4,6 +4,7 @@
 ### the disordered triangular lattice heisenberg model     ###
 
 import os
+import multiprocessing as mp
 #folder = "sharp_wall"
 #folder = "single_impurity"
 folder = "zero_field_classical"
@@ -17,23 +18,15 @@ import numpy as np
 import matplotlib.colorbar as colorbar
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import matplotlib.patches as mpatches
-import matplotlib.patheffects as path_effects
 import matplotlib.figure as figure
 from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
-from scipy.optimize import minimize
-from scipy.optimize import fsolve
-from scipy.optimize import root
 
 ## The tex style commands
 plt.rc('text',usetex=True)
 plt.rc('font',family='serif')
+plt.rcParams['text.latex.preamble']=[r"\usepackage{amsmath}"]
 
-# the font styleset
-#from matplotlib import rcParams
-#rcParams['font.serif'] = ['Times New Roman']
-#rcParams['font.family'] = 'serif'
 
 ## picturing the output data
 
@@ -72,88 +65,9 @@ X = np.zeros(1)
 Y = np.zeros(1)
 Z = np.zeros(1)
 
-a = 6*np.pi
+a = 1.0
 #a = np.pi/64
 
-# three diffrent translation vector
-
-"""
-avec = np.array([[-0.5,((3.0)**0.5)/2],
-    [0.5,((3.0)**0.5)/2],
-    [1.0,0.0],
-    [-1.5,((3.0)**0.5)/2],
-    [0.0,(3.0**0.5)],
-    [1.5,((3.0)**0.5)/2]])*a
-"""
-
-evec = np.array([
-    [-((3.0)**0.5)/2,0.5],
-    [0.0,1.0],
-    [((3.0)**0.5)/2,0.5],
-    [((3.0)**0.5)/2,-0.5],
-    [0.0,-1.0],
-    [-((3.0)**0.5)/2,-0.5],
-    ])
-
-avec = evec*a/2
-"""
-dvec = np.array([
-    [-1.0,0.0],
-    [-0.5,(3.0**0.5)/2],
-    [0.5,(3.0**0.5)/2],
-    [1.0,0.0],
-    [0.5,-(3.0**0.5)/2],
-    [-0.5,-(3.0**0.5)/2],
-    ])
-"""
-dvec = np.array([
-    [1.0,0.0],
-    [0.5,(3.0**0.5)/2],
-    [-0.5,(3.0**0.5)/2]
-    ])
-# defining the optimizing function
-
-"""
-def qval(Q,D):
-    val = ((np.cos(np.dot(Q,dvec[0]))-D[0])**2
-            +(np.cos(np.dot(Q,dvec[1]))-D[1])**2
-            +(np.cos(np.dot(Q,dvec[2]))-D[2])**2
-            +(np.cos(np.dot(Q,dvec[3]))-D[3])**2
-            +(np.cos(np.dot(Q,dvec[4]))-D[4])**2
-            +(np.cos(np.dot(Q,dvec[5]))-D[5])**2
-            )
-    return val
-"""
-
-def qval(Q,D):
-    val = ((np.cos(np.dot(Q,dvec[0]))-D[0])**2
-            +(np.cos(np.dot(Q,dvec[1]))-D[1])**2
-            +(np.cos(np.dot(Q,dvec[2]))-D[2])**2
-            )
-    return val
-
-
-# reference 120 degree Q        
-RHS = np.zeros(6,dtype=np.float)
-for j in range(0,6):
-    RHS[j] = -0.5
-
-UZ, VZ = minimize(qval,
-        [4.0*np.pi/3,0.0],
-        args=(RHS),
-        method='Powell'
-        ).x
-
-# gaussian envelope
-
-def gauss(x,sigma):
-
-    return ((1.0/(sigma*np.sqrt(2*np.pi)))
-            *np.exp(-(x**2)/(2*(sigma**2))))
-
-# gaussian parameters
-
-SIGMA = 10
 
 for fname in glob.iglob('*.npz'):
 
@@ -190,28 +104,35 @@ for fname in glob.iglob('*.npz'):
     ay = 0.5*a
 
     if len(X) != NTR:
-        
+
         # laying out the lattice skeleton
-        X = np.zeros((LTR,LTR))
-        Y = np.zeros((LTR,LTR))
+        X = np.zeros(NTR)
+        Y = np.zeros(NTR)
         for i in range(0,LTR):
             for j in range(0,LTR):
                 # the rhombus lattice
-                # X[i,j] = (i+j)*ax+3*ax
-                # Y[i,j] = (j-i)*ay
+                X[i+j*LTR] = (i+j)*ax+3*ax
+                Y[i+j*LTR] = (j-i)*ay
                 # the slanted lattice
-                X[i,j] = i*a + j*ay
-                Y[i,j] = j*ax 
-   
-    chir = np.zeros((NTR,3),dtype=np.float) 
+                # X[i,j] = i*a + j*ay
+                # Y[i,j] = j*ax 
 
-    for i in range(0,NTR):
-        chir[i] = np.cross(spin[elt[i,0]],
+    def calc_chir(i):
+
+        CHX = np.cross(spin[elt[i,0]],
                 spin[elt[i,1]])
-        chir[i] += np.cross(spin[elt[i,1]],
+        CHX += np.cross(spin[elt[i,1]],
                 spin[elt[i,2]])
-        chir[i] += np.cross(spin[elt[i,2]],
+        CHX += np.cross(spin[elt[i,2]],
                 spin[elt[i,0]])
+
+        return CHX
+
+
+    INX = range(NTR)
+    pool = mp.Pool()
+    chir_lst = pool.map(calc_chir,INX)
+    chir = np.array(chir_lst)
 
     e1 = chir[0]
     """
@@ -224,16 +145,13 @@ for fname in glob.iglob('*.npz'):
     e1 = e1/np.linalg.norm(e1)
     e2 = np.cross(e1,np.cross(e1,[0.0,0.0,1.0]))
 
-    U = np.einsum('ij,j->i',chir,e1).reshape((LTR,LTR)).transpose()
-    V = np.einsum('ij,j->i',chir,e2).reshape((LTR,LTR)).transpose()
+    U = np.einsum('ij,j->i',chir,e1)
+    V = np.einsum('ij,j->i',chir,e2)
 
     eta = 0.0000001
-    #eU = U/np.sqrt(U*U+V*V+eta)
-    #eV = V/np.sqrt(U*U+V*V+eta)
     UVNORM = np.sqrt(U*U+V*V)
-    eU = U
-    eV = V
-    UVA = np.arctan2(eV+eta,eU+eta)
+    UVNORM *= (4*a/np.amax(UVNORM))
+    UVA = np.arctan2(V+eta,U+eta)
    
 
     # fixing colormap for line plotting
@@ -253,7 +171,6 @@ for fname in glob.iglob('*.npz'):
     w,h = figure.figaspect(1.0)
     fig = plt.figure(figsize=(w,h))
     ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
-    #ax = fig.add_axes([0,0,1,1])
     ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
 
     cbar = colorbar.ColorbarBase(ax1,cmap=cmstyle,
@@ -266,10 +183,9 @@ for fname in glob.iglob('*.npz'):
             orientation='horizontal') 
    
     
-    #cbar.set_label(r'$|\vec{Q}_i-\vec{Q}_0|$',
-    #        fontsize=12,
-    #        labelpad=-45)
-    cbar.set_label(r'$\tan^{-1}\left(\frac{\Delta Q^y}{\Delta Q^x}\right)$',
+    cbar.set_label(
+            r'$\tan^{-1}\left(\frac{\boldsymbol{\chi}_y}'
+            +r'{\boldsymbol{\chi}_x}\right)$',
             fontsize=12,
             labelpad=-45)
 
@@ -280,50 +196,21 @@ for fname in glob.iglob('*.npz'):
         r'$\pi$',
         ])
     
-    """
-    for i in range(0,N):
-
-        for p in range(0,6):
-
-            j = nbr[i,p]
-
-            cor_x = [X[i%L,i/L],X[i%L,i/L]+avec[p,0]]
-            cor_y = [Y[i%L,i/L],Y[i%L,i/L]+avec[p,1]]
-
-            #cval = scalarMap.to_rgba(
-            #        np.arccos(np.dot(spin[i],spin[j])))
-
-            #cval = scalarMap.to_rgba(i)
-            # plotting the couplings
-            line = plt.Line2D(cor_x,cor_y,
-                    color='gray',
-                    alpha=1,
-                    ls='solid',
-                    #lw=JLW[i,j],
-                    lw=J[i,j],
-                    zorder = 0
-                    )
-            ax.add_line(line)
-    """
-
-    Q=ax.quiver(X,Y,eU,eV,UVA,
+    Q=ax.scatter(X,Y,
+            s=UVNORM,
+            c=UVA,
             cmap=cmstyle,
             norm=Norm,
-            pivot='mid',
-            angles='xy',
-            scale=0.1,
-            scale_units='xy',
-            width=0.002,
-            headwidth=4,
-            headlength=5,
+            edgecolors='none',
             alpha=1.0,
             zorder = 1.0
             )
-    """
+
+
     DELTA = float(STR_DELTA)
     ax.text(X.min(),Y.max(),
             r'$\frac{\delta J}{J}$='
-            +str("%.1f" % DELTA),
+            +str("%.3f" % DELTA),
             fontsize=20
             )
     """
@@ -333,6 +220,7 @@ for fname in glob.iglob('*.npz'):
             +str("%.4f" % QMAX),
             fontsize=20
             )
+    """
     ax.axis('off')
 
     fig.savefig("../plot/chirdom"+

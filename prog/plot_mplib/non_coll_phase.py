@@ -47,7 +47,7 @@ ax.text(0.9,0.625,r'$\delta J/J$',
 ax.text(0.245,0.625,r'$0$',
         fontsize=ffs)
 
-ax.text(-0.05,0.75-0.025/2,r'(a) classical',
+ax.text(-0.05,0.75-0.025/2,r'classical',
         fontsize=ffs)
 
 ax.text(0.2125,0.85,r'LRO',
@@ -103,7 +103,7 @@ ax.text(0.9,0.125,r'$\delta J/J$',
 ax.text(0.245,0.125,r'$0$',
         fontsize=ffs)
 
-ax.text(-0.05,0.25,r'(b) quantum',
+ax.text(-0.05,0.25,r'quantum',
         fontsize=ffs)
 
 ax.text(0.2125,0.35,r'LRO',
