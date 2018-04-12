@@ -9,9 +9,6 @@ import lattice_map as lmap
 import algo
 import tool
 
-# seeding the random number generators
-np.random.seed(0)
-
 # defining the main function block
 
 def main(const):
@@ -29,6 +26,9 @@ def main(const):
     GTOL = const.GTOL # a global tolerance for the code
     CLNUM = const.CLNUM # the maximum number of iteration for the classical routine
     DNMR = const.DNMR # denominator for batch execution
+
+    # seeding the random number generators
+    np.random.seed([LSYS,DNMR])
 
     ## creating the nearest and next nearest neighbour map for ##
     ## the triangular lattice                                  ##
