@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import print_function
 import multiprocessing as mp
 
 ##################################################
@@ -45,10 +44,10 @@ import collections
 # checking if the directory is intact #
 
 if not os.path.exists("src"):
-    #print "Executables could not be found"
+    print "Executables could not be found"
     quit()
 if not os.path.exists("src/tri_imp.py"):
-    #print "Main executables could not be found"
+    print "Main executables could not be found"
     quit()
 if not os.path.exists("out"):
     os.makedirs("out")
@@ -112,5 +111,4 @@ DNX = range(dsize*asize*tdisd)
 
 # batch processing
 pool = mp.Pool()
-#pool.map(tmi.main,const(DNX))
-pool.map(print,const(DNX))
+pool.map(tmi.main,const(DNX))
