@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import multiprocessing as mp
 
 ##################################################
@@ -32,7 +33,7 @@ if len(LSYS) == len(ITERDISD) \
         == len(ANGVAR) == len(BOOTNUM):
             pass
 else:
-    print "System size/simulation array length wrong"
+    #print "System size/simulation array length wrong"
     quit()
 
 # importing processing tools #
@@ -44,10 +45,10 @@ import collections
 # checking if the directory is intact #
 
 if not os.path.exists("src"):
-    print "Executables could not be found"
+    #print "Executables could not be found"
     quit()
 if not os.path.exists("src/tri_imp.py"):
-    print "Main executables could not be found"
+    #print "Main executables could not be found"
     quit()
 if not os.path.exists("out"):
     os.makedirs("out")
@@ -90,7 +91,7 @@ def const(DNMR):
         for LI in range(isize):
 
             SIMX = sum(ITERDISD[:(LI+1)])
-            if SIMX/(SIM+1) >= 1:
+            if SIMX-SIM > 0:
                   
                 carray[DNM] = ivar(LSYS = LSYS[LI],
                         ZCO = ZCO,
@@ -103,10 +104,13 @@ def const(DNMR):
                         CLNUM = CLNUM,
                         DNMR = DNM)
 
+                break
+
     return carray
 
 DNX = range(dsize*asize*tdisd)
 
 # batch processing
 pool = mp.Pool()
-pool.map(tmi.main,const(DNX))
+#pool.map(tmi.main,const(DNX))
+pool.map(print,const(DNX))
