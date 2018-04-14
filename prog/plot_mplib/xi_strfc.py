@@ -247,8 +247,6 @@ for i in range(0,HSHNUM):
 
     """
 
-CLR=['black','royalblue','dimgray','gold','limegreen','red','deeppink']
-
 for AN in range(0,ANUM):
 
     w,h = figure.figaspect(1.0)
@@ -267,7 +265,6 @@ for AN in range(0,ANUM):
         line1 = ax.errorbar(LRAY,
                 SFC_MAX[:,DN,AN][LORD],
                 yerr=SFC_MAX_ERR[:,DN,AN][LORD],
-                color=CLR[DN],
                 lw=2,
                 marker='.',
                 ms=10,
@@ -277,7 +274,6 @@ for AN in range(0,ANUM):
         line2 = bx.errorbar(LRAY,
                 XI_EST[:,DN,AN][LORD]*LRAY,
                 yerr=XI_EST_ERR[:,DN,AN][LORD]*LRAY,
-                color=CLR[DN],
                 lw=2,
                 marker='.',
                 ms=10,

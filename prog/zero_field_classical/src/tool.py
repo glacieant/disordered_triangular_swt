@@ -88,27 +88,42 @@ def init_param_ord(NSYS,nbr,
             M[0,i] = np.array([np.cos(fleet),np.sin(fleet),0])
             if ANGVAR != 0.0:
                 phi = np.random.uniform(-ANGVAR,ANGVAR)
+                th = np.random.uniform(-ANGVAR,ANGVAR)
             else:
-                phi =0.0
-            M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
-                [np.sin(phi),np.cos(phi),0],[0,0,1]],
+                phi = 0.0
+                th = 0.0
+            M[1,i] = np.einsum('ab,b->a',[
+                [np.cos(th)*np.cos(phi),-np.sin(phi),np.sin(th)*np.cos(ph)],
+                [np.cos(th)*np.sin(phi),np.cos(phi),np.sin(th)*np.sin(ph)],
+                [-np.sin(th),0,np.cos(th)]
+                ],
                 M[0,i])
         elif i!=0 and i%LSYS!=0:
             M[0,i] = np.einsum('ab,b->a',ROT,M[0,i-1])
             if ANGVAR != 0.0:
                 phi = np.random.uniform(-ANGVAR,ANGVAR)
+                th = np.random.uniform(-ANGVAR,ANGVAR)
             else:
-                phi =0.0
-            M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
-                [np.sin(phi),np.cos(phi),0],[0,0,1]],
+                phi = 0.0
+                th = 0.0
+            M[1,i] = np.einsum('ab,b->a',[
+                [np.cos(th)*np.cos(phi),-np.sin(phi),np.sin(th)*np.cos(ph)],
+                [np.cos(th)*np.sin(phi),np.cos(phi),np.sin(th)*np.sin(ph)],
+                [-np.sin(th),0,np.cos(th)]
+                ],
                 M[0,i])
         elif i!=0 and i%LSYS==0:
             M[0,i] = M[0,i-1]
             if ANGVAR != 0.0:
                 phi = np.random.uniform(-ANGVAR,ANGVAR)
+                th = np.random.uniform(-ANGVAR,ANGVAR)
             else:
-                phi =0.0
-            M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
-                [np.sin(phi),np.cos(phi),0],[0,0,1]],
+                phi = 0.0
+                th = 0.0
+            M[1,i] = np.einsum('ab,b->a',[
+                [np.cos(th)*np.cos(phi),-np.sin(phi),np.sin(th)*np.cos(ph)],
+                [np.cos(th)*np.sin(phi),np.cos(phi),np.sin(th)*np.sin(ph)],
+                [-np.sin(th),0,np.cos(th)]
+                ],
                 M[0,i])
 
