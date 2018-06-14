@@ -6,8 +6,8 @@
 import os
 #folder = "sharp_wall"
 #folder = "single_impurity"
-#folder = "zero_field_classical"
-folder = "zero_field_dilution"
+folder = "zero_field_classical"
+#folder = "zero_field_dilution"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -37,7 +37,7 @@ rcParams['font.family'] = 'serif'
 
 # file name pattern
 
-fpat = re.compile('FNL_L_([^/]*)_DLT_([^/]*)_ALP_([^/]*)_DISD_([^/]*)_BOOT_([^/]*).npz')
+fpat = re.compile('FNL_L_([^/]*)_DLT_([^/]*)_ALP_([^/]*)_DISD_([^/]*)_BOOT_([^/]*)_DNM_([^/]*).npz')
 
 if not os.path.isdir("../plot"):
     os.mkdir("../plot")
@@ -109,10 +109,11 @@ for fname in glob.iglob('*.npz'):
 
     IDISD = int(match.group(4))
     BTNUM = int(match.group(5))
+    DTNUM = int(match.group(5))
    
     J = FNDATA['J']
     spin = FNDATA['spin']
-    spin0 = FNDATA['spin0']
+    #spin0 = FNDATA['spin0']
 
     N = L**2
 
@@ -120,7 +121,7 @@ for fname in glob.iglob('*.npz'):
     sub = np.zeros(N,dtype=np.int)
     lmap.lattice_map(L,nbr)
     lmap.sublattice_map(L,sub)
-
+    
     ax = a*(3.0**0.5)/2.0
     ay = a/2.0
 
@@ -137,7 +138,7 @@ for fname in glob.iglob('*.npz'):
                 # the slanted lattice
                 X[i,j] = i*a + j*ay
                 Y[i,j] = j*ax 
-
+    
     # plotting the configuration
 
     #fig, ax = plt.subplots()
@@ -145,7 +146,7 @@ for fname in glob.iglob('*.npz'):
     fig = plt.figure(figsize=(w,h))
     ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
     #ax = fig.add_axes([0,0,1,1])
-    ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
+    #ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
     # defining the plane for the spins
 
     #R1 = np.array([[-1.0,0.0],[0.0,1.0]])
@@ -178,10 +179,10 @@ for fname in glob.iglob('*.npz'):
     RSU = np.zeros((L,L),dtype=np.float)
     RSV = np.zeros((L,L),dtype=np.float)
 
+    """
     VMIN = 0.0
     VMAX = 1.0
     VGRID = 10
-    
     JMIN = np.amin(J)
     JMAX = np.amax(J)
 
@@ -218,7 +219,7 @@ for fname in glob.iglob('*.npz'):
     cbar.set_label(r'$J$',
             fontsize=12,
             labelpad=-45)
-    """
+    
     cbar.set_ticklabels([r'$\pi/2$',
         r'$3\pi/4$',
         r'$\pi$',
@@ -249,7 +250,7 @@ for fname in glob.iglob('*.npz'):
             SU[x,y] = U[x,y]
             SV[x,y] = V[x,y]
 
-
+        """
         for p in range(0,6):
 
             j = nbr[i,p]
@@ -269,7 +270,7 @@ for fname in glob.iglob('*.npz'):
                     zorder = 0
                     )
             ax.add_line(line)
-
+        """
     # picturing the spin orientation
     pivot="mid"
     width=0.002
@@ -310,8 +311,8 @@ for fname in glob.iglob('*.npz'):
             zorder=2
             )
 
-    #plt.axis([X.min()-2.0*a,X.max()+2.0*a,
-    #    Y.min()-2.0*a,Y.max()+2.0*a])
+    plt.axis([X.min()-a,X.max()+a,
+        Y.min()-a,Y.max()+a])
     ax.axis('off')
 
     fig.savefig("../plot/spin_config"+
@@ -324,6 +325,7 @@ for fname in glob.iglob('*.npz'):
             "_DNM_"+
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
+            str("%06d" % DTNUM)+
             ".pdf"
             ,bbox_inches='tight'
             )

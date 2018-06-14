@@ -9,7 +9,7 @@ import multiprocessing as mp
 #folder = "single_impurity"
 folder = "zero_field_classical"
 #folder = "zero_field_dilution"
-os.chdir("../"+folder+"/out/data_subsampled")
+os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
 import re
@@ -18,6 +18,7 @@ import numpy as np
 import matplotlib.colorbar as colorbar
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import matplotlib.colors as mcol
 import matplotlib.figure as figure
 from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
@@ -118,46 +119,37 @@ for fname in glob.iglob('*.npz'):
                 # X[i,j] = i*a + j*ay
                 # Y[i,j] = j*ax 
 
-    tsr_spin = spin[elt]
+    def calc_chir(i):
 
-    epsilon = np.zeros((3,3,3),dtype=np.float)
-    epsilon[0,1,2] = epsilon[1,2,0] = epsilon[2,0,1] = 1.0
-    epsilon[0,2,1] = epsilon[2,1,0] = epsilon[1,0,2] = -1.0
+        CHX = np.cross(spin[elt[i,0]],
+                spin[elt[i,1]])
+        CHX += np.cross(spin[elt[i,1]],
+                spin[elt[i,2]])
+        CHX += np.cross(spin[elt[i,2]],
+                spin[elt[i,0]])
 
-    alt = np.zeros((3,3),dtype=np.float)
-    alt[0,1] = alt[1,2] = alt[2,0] = 1.0
-    
-    chir = 2.0*np.einsum('iab,icd,ac,kbd->ik',
-            tsr_spin,tsr_spin,alt,epsilon)/(3.0*np.sqrt(3.0))
+        return CHX
 
-    e1 = chir[0]
-    """
-    if np.linalg.norm(e1) > 10.0**(-5):
-        e1 = e1/np.linalg.norm(e1)
-        e2 = np.cross(e1,np.cross(e1,chir[1]))
-        e2 = e2/np.linalg.norm(e2)
-    else:
-    """
-    e1 = e1/np.linalg.norm(e1)
-    e2 = np.cross(e1,np.cross(e1,[0.0,0.0,1.0]))
 
-    U = np.einsum('ij,j->i',chir,e1)
-    V = np.einsum('ij,j->i',chir,e2)
+    INX = range(NTR)
+    pool = mp.Pool()
+    chir_lst = pool.map(calc_chir,INX)
+    chir = np.array(chir_lst)
 
-    eta = 0.0000001
-    UVNORM = np.sqrt(U*U+V*V)
-    UVNORM *= (4*a/np.amax(UVNORM))
-    UVA = np.arctan2(V+eta,U+eta)
-   
+    e1 = np.array([0.0,0.0,1.0])
+
+    U = np.sign(np.einsum('ij,j->i',chir,e1))
+
 
     # fixing colormap for line plotting
 
-    cmstyle = cm.hsv
-    VMIN = -np.pi
-    VMAX = np.pi
+    l_cols = ['red','lawngreen']
+    cmstyle = mcol.ListedColormap(l_cols)
+    VMIN = -1.0
+    VMAX = 1.0
 
     Norm = Normalize(vmin=VMIN,vmax=VMAX,clip=False)
-    scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
+    #scalarMap = cm.ScalarMappable(norm=Norm,cmap=cmstyle)
     
     # getting some colorbar
 
@@ -167,6 +159,7 @@ for fname in glob.iglob('*.npz'):
     w,h = figure.figaspect(1.0)
     fig = plt.figure(figsize=(w,h))
     ax = fig.add_axes([0,0,1,1.0/(3.0)**(0.5)])
+    """
     ax1 = fig.add_axes([0.6,0.05,0.35,0.02])
 
     cbar = colorbar.ColorbarBase(ax1,cmap=cmstyle,
@@ -191,10 +184,9 @@ for fname in glob.iglob('*.npz'):
         r'$\pi/2$',
         r'$\pi$',
         ])
-    
+    """
     Q=ax.scatter(X,Y,
-            s=UVNORM,
-            c=UVA,
+            c=U,
             cmap=cmstyle,
             norm=Norm,
             edgecolors='none',

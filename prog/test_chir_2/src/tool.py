@@ -4,6 +4,7 @@
 ### useful for the main computation    ###
 
 import numpy as np
+import lattice_map as lmap
 
 # the finite temperature fermi function
 def fermi(E,T):
@@ -66,7 +67,35 @@ def init_param_rand(NSYS,nbr,
     
     M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
     M[1] = np.einsum('i,ij->ij',np.einsum('ij,ij->i',M[1],M[1])**(-0.5),M[1])
-    
+
+def axisangle(u,th):
+
+    epsilon = np.zeros((3,3,3),dtype=np.float)
+    epsilon[0,1,2] = epsilon[1,2,0] = epsilon[2,0,1] = 1.0
+    epsilon[0,2,1] = epsilon[2,1,0] = epsilon[1,0,2] = -1.0
+
+    R = np.zeros((3,3),dtype=np.float)
+
+    for i in range(3):
+
+        for j in range(3):
+
+            if i == j:
+
+                R[i,j] = (
+                        (np.cos(th/2)**2)+
+                        (np.sin(th/2)**2)*(2*(u[j]**2)-1)
+                        )
+
+            else:
+                R[i,j] = (
+                        2*u[i]*u[j]*(np.sin(th/2)**2) 
+                        - np.dot(epsilon[i,j],u)*np.sin(th)
+                        )
+
+    return R
+
+
 def init_param_ord(NSYS,nbr,
         ZCO,
         DELTA,ALPHA,
@@ -86,44 +115,22 @@ def init_param_ord(NSYS,nbr,
         if i==0:
             fleet=0.0
             M[0,i] = np.array([np.cos(fleet),np.sin(fleet),0])
-            if ANGVAR != 0.0:
-                ph = np.random.uniform(-ANGVAR,ANGVAR)
-                th = np.random.uniform(-ANGVAR,ANGVAR)
-            else:
-                ph = 0.0
-                th = 0.0
-            M[1,i] = np.einsum('ab,b->a',[
-                [np.cos(th)*np.cos(ph),-np.sin(ph),np.sin(th)*np.cos(ph)],
-                [np.cos(th)*np.sin(ph),np.cos(ph),np.sin(th)*np.sin(ph)],
-                [-np.sin(th),0,np.cos(th)]
-                ],
-                M[0,i])
+            M[1,i] = M[0,i]
         elif i!=0 and i%LSYS!=0:
             M[0,i] = np.einsum('ab,b->a',ROT,M[0,i-1])
-            if ANGVAR != 0.0:
-                ph = np.random.uniform(-ANGVAR,ANGVAR)
-                th = np.random.uniform(-ANGVAR,ANGVAR)
-            else:
-                ph = 0.0
-                th = 0.0
-            M[1,i] = np.einsum('ab,b->a',[
-                [np.cos(th)*np.cos(ph),-np.sin(ph),np.sin(th)*np.cos(ph)],
-                [np.cos(th)*np.sin(ph),np.cos(ph),np.sin(th)*np.sin(ph)],
-                [-np.sin(th),0,np.cos(th)]
-                ],
-                M[0,i])
+            M[1,i] = M[0,i]
         elif i!=0 and i%LSYS==0:
             M[0,i] = M[0,i-1]
-            if ANGVAR != 0.0:
-                ph = np.random.uniform(-ANGVAR,ANGVAR)
-                th = np.random.uniform(-ANGVAR,ANGVAR)
-            else:
-                ph = 0.0
-                th = 0.0
-            M[1,i] = np.einsum('ab,b->a',[
-                [np.cos(th)*np.cos(ph),-np.sin(ph),np.sin(th)*np.cos(ph)],
-                [np.cos(th)*np.sin(ph),np.cos(ph),np.sin(th)*np.sin(ph)],
-                [-np.sin(th),0,np.cos(th)]
-                ],
-                M[0,i])
+            M[1,i] = M[0,i]
 
+    NTR = (LSYS-1)**2
+
+    elt = np.zeros((NTR,3),dtype=np.int)
+    lmap.eltriangle(LSYS,elt)
+
+    for i in range(NTR):
+
+        th = np.random.uniform(-ANGVAR,ANGVAR)
+        ROT = axisangle(M[1,elt[i,0]],th*np.pi)
+        for j in range(3):
+            M[1,elt[i,j]] = np.einsum('ab,b->a',ROT,M[1,elt[i,j]])

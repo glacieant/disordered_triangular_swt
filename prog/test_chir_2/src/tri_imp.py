@@ -55,21 +55,22 @@ def main(const):
         for g in range(0,BOOTNUM):
 
             # initiating parameters
-            if g%2 == 0:
-                tool.init_param_ord(NSYS,nbr,
+            #if g%2 == 0:
+            tool.init_param_ord(NSYS,nbr,
                         ZCO,
                         DELTA,ALPHA,
                         ANGVAR,M0)
-            else:
-                 tool.init_param_rand(NSYS,nbr,
-                        ZCO,
-                        DELTA,ALPHA,
-                        ANGVAR,M0)
+            #else:
+            
+            #tool.init_param_rand(NSYS,nbr,
+            #        ZCO,
+            #        DELTA,ALPHA,
+            #        ANGVAR,M0)
            
             # classical algorithm to get the magnetic
             # ground state of impurity system
 
-            algo.classic_zmc(CLNUM,NSYS,nbr,J,M0,GTOL)
+            #algo.classic_zmc(CLNUM,NSYS,nbr,J,M0,GTOL)
 
             ENTEMP = tool.en_calc(NSYS,nbr,J,M0[1])
 
@@ -78,6 +79,7 @@ def main(const):
                 ENMIN = ENTEMP
 
                 np.copyto(M,M0)
+
 
 
         ## output data ##

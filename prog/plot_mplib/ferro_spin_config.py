@@ -6,9 +6,9 @@
 import os
 folder = "sharp_wall"
 #folder = "single_impurity"
-#folder = "zero_field_classical"
+folder = "zero_field_classical"
 #folder = "zero_field_dilution"
-os.chdir("../"+folder+"/out/data")
+os.chdir("../"+folder+"/out/data_subsampled")
 import sys
 import subprocess
 import re
@@ -37,7 +37,7 @@ rcParams['font.family'] = 'serif'
 
 # file name pattern
 
-fpat = re.compile('FNL_L_([^/]*)_DLT_([^/]*)_ALP_([^/]*)_DISD_([^/]*)_BOOT_([^/]*).npz')
+fpat = re.compile('FNL_L_([^/]*)_DLT_([^/]*)_ALP_([^/]*)_DISD_([^/]*)_BOOT_([^/]*)_DNM_([^/]*).npz')
 
 if not os.path.isdir("../plot"):
     os.mkdir("../plot")
@@ -109,10 +109,10 @@ for fname in glob.iglob('*.npz'):
 
     IDISD = int(match.group(4))
     BTNUM = int(match.group(5))
+    DTNUM = int(match.group(6))
    
     J = FNDATA['J']
     spin = FNDATA['spin']
-    spin0 = FNDATA['spin0']
 
     N = L**2
 
@@ -287,6 +287,7 @@ for fname in glob.iglob('*.npz'):
             "_DNM_"+
             str("%06d" % IDISD)+
             str("%06d" % BTNUM)+
+            str("%06d" % DTNUM)+
             ".pdf"
             ,bbox_inches='tight'
             )
