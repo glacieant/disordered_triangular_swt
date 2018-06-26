@@ -1,0 +1,498 @@
+\documentclass[notitlepage,onecolumn,showpacs,11pt]{revtex4-1}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{epstopdf}
+\usepackage{times}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{setspace}
+\usepackage{bm}% bold math
+
+\newcommand{\bsym}[1]{\boldsymbol{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\grad}{\boldsymbol{\nabla}}
+\newcommand{\Tr}{\text{Tr}}
+
+\begin{document}
+
+\title{Bond-disordered non-collinear magnets: Stability of the goldstone modes}
+
+\maketitle
+
+Much like temperature, in some systems quenched disorder prevents spontaneous 
+symmetry breaking below a certain lower critical dimension \cite{imry-ma-75}. 
+For continuous symmetries, break down of a long ranged order is signalled by 
+the infrared catastrophe of the Goldstone mode fluctuations of the ordered state. 
+This argument, attributed to Mermin and Wagner \cite{mermin-wagner-66}, has a 
+straightforward parallel in magnetically ordered systems coupled with random 
+fields \cite{aharony-78}.  In the following we shall show that the random 
+exchange couplings also become crucial to the fate of a certain class of magnetic 
+order, the non-collinear antiferromagnets.
+
+\section{The goldstone mode theory of collinear and non-collinear magnets}
+
+\subsection{Goldstone modes in collinear magnets}
+
+\subsubsection{The model}
+
+Massless goldstone modes are generated when the continuous symmetry of a hamiltonian
+is spontaneously broken. The classic example is an exchange coupled ferromagnet with 
+a global spin rotation invariance. The continuum approximation for the hamiltonian 
+for such a system is given by, 
+\begin{equation}
+    \begin{aligned}
+        H = \frac{\rho}{2}\int d^dx 
+        \left(\nabla\mbf{S}(x)\right)^2
+    \end{aligned}
+\end{equation}
+where $\rho$ is the spin-stiffness parameter. At zero temperature the ground state 
+breaks the full $O(3)$ rotational symmetry of the model and assumes a configuration 
+with all spins parallel to each other in a collinear pattern. The ground state 
+therefore has a reduced $O(2)$ symmetry related to the rotation around the magnetization 
+axis. In a generic model with a symmetry breaking from $O(N)$ to $O(N-1)$, the elementary 
+excitations are the goldstone modes linked with the generators of the quotient group 
+$O(N)/O(N-1)$, also called, the broken generators. Let us consider a symmetry broken 
+ground state for an $O(N)$ ferromagnet, $\mbf{S}_0 = \left(0 ... 0, 1\right)^T $. It is
+immediately apparent that there is a degenerate continuum of states related to the 
+residual $O(N-1)$ rotational symmetry spanning the $N-1$ dimensional subspace orthogonal 
+to the magnetization axis.
+
+Any symmetry operation that goes beyond this subspace would generate massless 
+goldstone modes. We can make a particular gauge choice,
+
+\begin{equation}
+    \begin{aligned}
+        U =  \begin{pmatrix}
+            \sqrt{I_{N-1}-\bsym{\pi}^T\bsym{\pi}} 
+            & \bsym{\pi}\\
+            -\bsym{\pi}^T
+            & \sqrt{1-\bsym{\pi}\bsym{\pi}^T} 
+        \end{pmatrix}
+    \end{aligned}
+\end{equation}
+where, $U\in O(N)/O(N-1)$ and find, $\mbf{S}=U\mbf{S}_0=(\bsym{\pi},
+\sqrt{1-\bsym{\pi}\bsym{\pi}^T})^T$. By pluggin this back to the hamiltonian
+we immediately arrive at the familiar $O(N)$ NL$\sigma$-model hamiltonian.
+\begin{equation}
+    \begin{aligned}
+        H &= \frac{\rho}{2}\int d^dx\left(\grad\pi_i\cdot\grad\pi_i
+        +\frac{(\pi_i\grad\pi_i)^2}{1-\pi_i\pi_i}\right)\\
+        &= \int d^dx g_{ij}(\bsym{\pi})\grad\pi_i\cdot\grad\pi_j
+    \end{aligned}
+\end{equation}
+For classical spins, this model is renormalizable around the lower critical
+dimension $d=2+\epsilon$ with dimensional regularization. The metric $\beta g_{ij}$ 
+effectively plays the role of an inverse temperature and the perturbative
+expansion can be organized as a low temperature expansion. For quantum spins
+the action takes up the form,
+\begin{equation}
+    \begin{aligned}
+        S = \int d\tau\int d^dx g_{ij}(\bsym{\pi})
+        \partial_\mu\pi_i\partial^\mu\pi_j
+    \end{aligned}
+\end{equation}
+and a similar renormalization scheme follows at $d=1+\epsilon$. Although, in this
+case the metric is understood to be the stiffness parameter for the spins. 
+
+The $O(N)$ NL$\sigma$-model is however special because although the expansion of the 
+metric coefficient gives rise to infinite number of vertices, there is only one coupling 
+that flows (here, $\rho$). Yet, NL$\sigma$-model is renormalizable at $D=d+z=2$ and upto
+one-loop order one can find the renormalized value of the stiffness parameter or 
+temperature by considering the perturbative correction to the propagator alone. Given
+the model is massless, in a wilsonian treatment the only non-trivial element turns out 
+to be the field strength renormalization. A standard technique to resolve this
+problem is to consider a trivial renormalization of an external field coupled to the
+spin or alternatively ensuring that both the massless $\bsym{\pi}$ goldstone modes and
+the massive $\sigma=\sqrt{1-\bsym{\pi}\bsym{\pi}^T}$ mode have the same scaling. Both
+of these schemes are manifestation of the fact that one has to consider the fully symmetric 
+model to find the scaling parameters.
+
+\subsubsection{Renormalization at D = 2}
+
+\subsection{NL$\sigma$-model in a symmetric coset space}
+
+\subsubsection{The model}
+
+Although, the goldstone mode effective action of the $O(N)$ symmetric ferromagnet
+followed quite naturally by considering a particular gauge choice for the broken generators
+in the preceeding section, in the following we shall consider a more generic approach
+to arrive at a NL$\sigma$-model effective action of a spontaneous symmetry breaking 
+$G/H$. This will be useful for the particular case of our interest, the non-collinear 
+antiferromagnets. In the context of the following discussion, e.g. $G/H=O(N)/O(N-1)$ shall 
+describe what is known as a symmetric coset space but the extension to the non-collinear case
+will be more complicated than that.
+
+\subsubsection{The renormalization}
+
+\subsection{NL$\sigma$-model for non-collinear antiferromagnets}
+
+\subsubsection{The model}
+
+As we saw in the preceeding section, the $O(N)/O(N-1)$ spontaneous symmetry breaking of 
+simple ferromagnets can be understood in the context of symmetric coset space and a 
+single coupling parameter, identified as either the the spin-stiffness or the termperature
+depending on whether one considers quantum spins or finite temperature classical spins. The
+situation is slightly different with the non-collinear magnets, e.g. the triangular lattice 
+heisenberg antiferromagneti where the original symmetry of the spins are fully broken 
+with $O(3)/Z_2\simeq SO(3)$ but there is still a residual $C_{3v}$ symmetry of the lattice
+left in the problem. In a continuum description, this leads to a symmetry breakinig pattern
+of $O(3)\times O(2)/O(2)$, where the $O(2)$ is not a physical symmetry of the goldstone
+bosons but the extension of the lattice symmetry \cite{azaria-93}. As we show below, it is
+possible to arrive at this conclusion from a microscopic analysis \cite{dombre-88}. 
+
+We consider the antiferromagnetic heisenberg hamilonian in a triangular lattice and consider 
+an expansion around the $120^\circ$ ordered state. The goldstone modes shall be excited by
+the generators of the broken symmetry group, $SO(3)$. Our microscopic to continuum modelling 
+would involve considering plaquettes of elementary upward triangles, finding the low energy
+contributions of a departure from the $120^\circ$ order and ultimately coarse-graining within 
+each elementary triangle. We start by denoting the three sublattice orientaions of the 
+$120^\circ$ order, $\mbf{n}_A,\mbf{n}_B$ and $\mbf{n}_C = -(\mbf{n}_A+\mbf{n}_B)$ with a
+spin-excitation given by $\mbf{S}_\alpha=U\mbf{n}_\alpha$, where $U\in SO(3)$. We consider the
+hamiltonian within an elementary triangular plaquette.
+\begin{equation}
+    \begin{aligned}
+        H = J \left(\mbf{S}_A(\mbf{x}_A)\cdot\mbf{S}_B(\mbf{x}_B)
+        +\mbf{S}_B(\mbf{x}_B)\cdot\mbf{S}_C(\mbf{x}_C)
+        +\mbf{S}_C(\mbf{x}_C)\cdot\mbf{S}_A(\mbf{x}_A)
+        \right) 
+    \end{aligned}
+\end{equation}
+By performing a gradient expansion coupled with a coarse-graining of the spatial co-ordinate to 
+capture the low energy pieces, we arrive at the following expression.
+\begin{equation}
+    \begin{aligned}
+        H &= JS^2a^2 \left(\mbf{n}_A U^{-1}\cdot\grad^2U\mbf{n}_B
+        -\mbf{n}_B U^{-1}\cdot\grad^2U(\mbf{n}_A+\mbf{n}_B)
+        -\mbf{n}_A U^{-1}\cdot\grad^2U(\mbf{n}_A+\mbf{n}_B)
+        \right)\\
+        &= JS^2a^2 \left(\mbf{n}_A U^{-1}\cdot\grad^2U\mbf{n}_B
+        -(\mbf{n}_A+\mbf{n}_B)U^{-1}\cdot\grad^2U(\mbf{n}_A+\mbf{n}_B)
+        \right) 
+    \end{aligned}
+\end{equation}
+The single gradient term has been dropped from the expansion as it can be easily shown to have
+no contribution at all from the analysis that follows. Now, a transformation to the orthonormal basis, 
+$\mbf{e}_1=\sqrt{\frac{3}{2}}\left(\mbf{n}_A+\mbf{n}_B\right)$ and 
+$\mbf{e}_2=\sqrt{\frac{1}{2}}\left(\mbf{n}_A-\mbf{n}_B\right)$ re-arranges the terms of the 
+hamiltonian in a convenient form.
+\begin{equation}
+    \begin{aligned}
+        H &= -\frac{JS^2a^2}{2} \left(\mbf{e}_1 U^{-1}\cdot\grad^2U\mbf{e}_1
+        +\mbf{e}_2 U^{-1}\cdot\grad^2U\mbf{e}_2
+        \right)
+    \end{aligned}
+\end{equation}
+An extra $O(2)$ symmetry within the $(\mbf{e}_1,\mbf{e}_2)$ vector space is immediately apparent.
+Defining $S_0=(\mbf{e}_1,\mbf{e}_2)$ and performing a gauge transformation $U = US_0$ we can re-write,
+\begin{equation}
+    \begin{aligned}
+        H &= -\frac{JS^2a^2}{2} \Tr\left(S_0^{-1} U^{-1}\grad^2U S_0\right)\\
+        &= -\frac{JS^2a^2}{2} \Tr\left(U^{-1}\grad^2U\right)
+    \end{aligned}
+\end{equation}
+However, it has been shown that for a complete renormalization of the problem one has to consider a
+third unit vector $\mbf{e}_3=\mbf{e}_1\times\mbf{e}_{2}$ \cite{azaria-93}. This introduces a second
+coupling to the problem with the complete hamiltonian now given by,
+\begin{equation}
+    \begin{aligned}
+        H &= p_1\left(\mbf{e}_1 U^{-1}\cdot\grad^2U\mbf{e}_1
+        +\mbf{e}_2 U^{-1}\cdot\grad^2U\mbf{e}_2
+        \right)
+        +p_2\left(\mbf{e}_3 U^{-1}\cdot\grad^2U\mbf{e}_3\right)\\
+        &=\Tr\left(P(U^{-1}\grad U)^2\right)
+    \end{aligned}
+\end{equation}
+with gauge transformation $U = U (\mbf{e}_1,\mbf{e}_2,\mbf{e}_3)$ generating the full $SO(3)$
+goldstone modes and the diagonal coupling matrix $P=\text{diag}(p_1,p_1,p_2)$ ensuring the 
+$O(3)\times O(2)/O(2)$ nature of the exciatations. Given $\pi_1(SO(3))=Z_2$, the order parameter 
+$U$ can have $Z_2$ point defects which are gapped out at zero temperature. With this knowledge we 
+can immediately write down the quantum action of the full goldstone mode problem 
+\cite{dombre-88,azaria-92}.
+\begin{equation}
+    \begin{aligned}
+        S &=\int d\tau\int d^dx 
+        \left[
+        \Tr\left(P_\tau(U^{-1}\partial_\tau U)^2\right)
+        +
+        \Tr\left(P_x(U^{-1}\grad U)^2\right)
+        \right]
+    \end{aligned}
+\end{equation}
+where the two distinct diagonal matrices, $P_\tau$ and $P_x$ presupposes the existence of
+three different spin-wave velocities of the problem as obtained from a spin-wave expansion
+around the ordered state.
+
+
+
+\subsubsection{Multi-parameter RG}
+
+\section{Bond-disordered non-collinear antiferromagnet}
+
+\subsubsection{Random field systems and the replica approach}
+
+\subsubsection{Goldstone bosons and bond disorder}
+
+In our discussion, we closely follow the case of the triangular lattice heisenberg 
+antiferromagnet with bond disorder. However, the treatment is in principle easily extensible 
+to other spin-models with classicnl non-collinear ordering. We first start by considering 
+the effect of an isolated bond impurity. On a non-collinear order this immidiately leads to
+local reduction of frustration amongst the spins attached to the bond and therefore, as a 
+result, spins reorient. A simple spin-wave expansion around the $120^\circ$ classically
+ordered state of the triangular lattice heisenberg antiferromagnet with an isolated bond
+impurity leads to the addition of a local perturbing term in the hamiltonian.
+
+\begin{equation}
+    \begin{aligned}
+        \delta H_i = w c \left(\frac{\delta J\mbf{e}_{\bsym{\delta}}}{J\sqrt{S}a}\right)
+        \cdot\grad S_i^\perp
+    \end{aligned}
+\end{equation}
+Where $c = JSa^2$ is the spin-wave velocity, $w$ is a numerical prefactor, 
+$\mathbf{e}_{\bsym{\delta}}$ is an unit vector directed across the defective bond and $S^\perp$
+is the transverse component of the spin in the body frame of the original spin configuration
+and projected onto the ordering plane. The three goldstone modes of the problem emerges
+once we expand the term around the three momenta, $Q=(0,0)$ and $Q=(\pm4\pi/3,0)$. It is 
+easy to verify that this particular impurity term is most strongly coupled to the in-plane
+$Q=(0,0)$ goldstone mode. If a spatial distribution of such impurities are considered we 
+arrive at the scenario of bond disorder. With the effect of a single impurity clearly 
+understood we can immediately write down a simple free goldstone mode action for the 
+disordered case.
+
+\begin{equation}
+    \begin{aligned}
+        S = \int d\tau\int d^d x\rho\left[\frac{1}{2}\left(\partial_\mu\varphi\right)^2 
+        + \mbf{h}\cdot\grad\varphi\right]
+    \end{aligned}
+\end{equation}
+Here $\mbf{h}(\mbf{x})$ are three-component uncorrelated random fields, 
+$\overline{\mbf{h}(\mbf{x})}=0$ and $\overline{h_i(\mbf{x})
+h_j(\mbf{x}')}=\Delta^2\delta_{ij}\delta^{(d)}(\mbf{x}-\mbf{x}')$. The effect of bond disorder
+is therefore to introduce a random field disorder which couples to one of the goldstone 
+modes of the symmetry broken phase. Another point to note is that the overall sign of this
+additional term is fixed by the chirality symmetry breaking of the ground state. The breakdown
+of time reversal symmetry, chirality and the global spin rotation symmetry all conspires
+together to generate this random dipolar term. Given, we have a theory of non-interacting
+bosons coupled to a random dipolar field, we are still in a position to treat the effect of
+disorder exactly. In momentum space the action takes up the following form.
+
+\begin{equation}
+    \begin{aligned}
+        S =& \rho\int \frac{d\omega}{2\pi}\int \frac{d^dk}{(2\pi)^d}
+        \Big[\frac{1}{2}\varphi(-\omega,-\mbf{k})\left(\omega^2+\mbf{k}^2\right)
+        \varphi(\omega,\mbf{k})\\
+        &+
+        2\pi i\delta(\omega)
+        \frac{\mbf{h}(-\mbf{k})\cdot\mbf{k}\phi(\omega,\mbf{k})
+        -\mbf{h}(\mbf{k})\cdot\mbf{k}\phi(-\omega,-\mbf{k})
+        }{2}
+        \Big]
+    \end{aligned}
+\end{equation}
+It is easily brought in to a gaussian form by performing the transformation,
+
+\begin{equation}
+    \begin{aligned}
+        \varphi(\omega,\mbf{k})=\eta(\omega,\mbf{k})-
+        2\pi i\delta(\omega)\frac{\mbf{h}(-\mbf{k})\cdot\mbf{k}}{\omega^2+\mbf{k}^2}
+    \end{aligned}
+\end{equation}
+with the action sans an unimportant constant given by, $S =\rho\int \frac{d\omega}{2\pi}
+\int \frac{d^dk}{(2\pi)^d}\eta(-\omega,-\mbf{k})\left(\omega^2+\mbf{k}^2\right)
+\eta(\omega,\mbf{k})$. The disorder averaged fluctuation for the goldstone modes therefore
+reads,
+\begin{equation}
+    \begin{aligned}
+        \overline{\langle\varphi(\tau,\mbf{x})\varphi(\tau',\mbf{x}')\rangle}
+        =&\int \frac{d\omega}{2\pi}\int \frac{d^dk}{(2\pi)^d}
+        e^{-i\left(\omega(\tau-\tau')+\mbf{k}\cdot(\mbf{x}-\mbf{x}')\right)}
+        \langle\eta(-\omega,-\mbf{k})\eta(\omega,\mbf{k})\rangle \\
+        &-\Delta^2\int \frac{d^dk}{(2\pi)^d}\frac{1}{\mbf{k}^2}
+        e^{-i\left(\mbf{k}\cdot(\mbf{x}-\mbf{x}')\right)}\\
+        &=\int \frac{d^Dk}{(2\pi)^D}
+        e^{-i\left(k(x-x')\right)}
+        \frac{1}{k^2}-\Delta^2\int \frac{d^dk}{(2\pi)^d}\frac{1}{\mbf{k}^2}
+        e^{-i\left(\mbf{k}\cdot(\mbf{x}-\mbf{x}')\right)}\\
+    \end{aligned}
+\end{equation}
+with $D=d+1$. Evidently, we see that for non-zero disorder strength $\Delta$, the correlation
+funtion has an infrared divergence at $d=2$. This would imply that the goldstone 
+modes associated with the non-collinearly ordered triangular lattice antiferromagnet is 
+unstable against even very small bond disorder at $d = 2$. In other words, below or at the
+critical dimension $d=2$ bond disorder prevents spontaneous symmetry breaking in this
+particular antiferromagnet at $T=0$.
+
+Although this argument for bond disorder destroying long range order is very robust, it is 
+indeed based on the fluctuation estimates for free goldstone bosons. However, interactions
+are important ingradients for an effective theory at low dimensions and they may in 
+principle renormalize the disorder coupling of the problem to irrelevancy. Therefore, in 
+the following we reconsider the interacting goldstone boson theory for the ground state
+of a non-collinear magnet and this time extend it to include the effects of random
+exchange couplings.
+
+\subsubsection{Interacting goldstone modes coupled to a random dipolar field}
+
+In order to find the appropriate goldstone mode action in the presence of bond-disorder in a 
+non-collinear magnet we have to go back to the microscopic expression for such a term. 
+Considering an isolated impurity within one of the elementary plaquettes and between two
+particular sublattices we find that the additional contribution from a bond impurity 
+$J_{AB} = J + \delta J$ is given by,
+\begin{equation}
+    \begin{aligned}
+        \delta H &= \delta J \ \mbf{S}_A(\mbf{x}_A)\cdot\mbf{S}_B(\mbf{x}_B)
+    \end{aligned}
+\end{equation}
+. Unlike the scenario involving the bulk, the first non-trivial energy contribution from
+goldstone mode excitations would now come from the single gradient term along the directed
+unit vector $\mbf{u}_{AB}$ along the bond. Like before, we use the convenient orthonormal 
+basis transformation and find the impurity contribution to be of the following form.
+\begin{equation}
+    \begin{aligned}
+        \delta H &= \delta JS^2a \ \mbf{n}_AU^{-1}\cdot(\mbf{u}_{AB}\cdot\grad)U\mbf{n}_B\\
+        &= -\frac{\delta JS^2a}{\sqrt{12}}\left(
+        \mbf{e}_2 U^{-1}\cdot(\mbf{u}_{AB}\cdot\grad)U \mbf{e}_1
+        -\mbf{e}_1 U^{-1}\cdot(\mbf{u}_{AB}\cdot\grad)U\mbf{e}_2
+        \right)
+    \end{aligned}
+\end{equation}
+where we have exploited the orthonormality of the basis to drop the terms $\mbf{e}_1U^{-1}\grad U
+\mbf{e}_1$ and $\mbf{e}_2 U^{-1}\grad U\mbf{e}_2$ which are zero. Similar considerations for bond 
+impurity across the other two bond direction reveals that we have the same form of the impurity 
+coupling once expressed in terms of the orthonormal basis. Now we introduce a local dipolar field,
+$\mbf{h}=\frac{\delta J}{\sqrt{3}Ja}\mbf{u}_{AB}$ and the impurity term assumes the form,
+\begin{equation}
+    \begin{aligned}
+        \delta H &= \mbf{h}\cdot\Tr\left(
+        Pt^{3}
+        \begin{pmatrix}
+            \mbf{e}_1^T\\
+            \mbf{e}_2^T\\
+            \mbf{e}_3^T
+        \end{pmatrix}
+        U^{-1}
+        \grad
+        U
+        (\mbf{e}_1,\mbf{e}_2,\mbf{e}_3)\right) \\
+        &= \mbf{h}\cdot\Tr\left(Pt^3 U^{-1}\grad U\right)
+    \end{aligned}
+\end{equation}
+where the same gauge choice from the bulk action was adopted and it is to be noticed that the 
+$SO(3)$ generator corresponding to in plane rotation 
+$t^3=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&0\end{pmatrix}$ makes an appearance. The latter has to do 
+with the fact that in the triangular lattice the local dipolar field arising due to bond disorder 
+couples directly with the goldstone mode associated with the in plane rotation. Now, it is 
+straightforward to generalize to the case of spatially distributed bond impurities i.e. disordered
+bonds. For a generic scenario involving the emergent random dipolar field coupled with multiple 
+goldstone modes the hamiltonian shall take up the following form.
+\begin{equation}
+    \begin{aligned}
+        H = \int d^dx\left[
+            \Tr\left(P(U^{-1}\grad U)^2\right)
+            +\mbf{h}\cdot\Tr\left(P(c_a t^a)(U^{-1}\grad U)\right)
+        \right]
+    \end{aligned}
+\end{equation}
+As before the interacting nature of the goldstone modes are apparent once we perform an expansion
+of the form $U^{-1}\partial_\mu U$ in terms of the $G/H$ generators with 
+$U=e^{\bsym{\xi}\cdot\mbf{t}}$.
+\begin{equation}
+    \begin{aligned}
+        U^{-1}\partial_\mu U = t^a\omega^\mu_a(\bsym{\xi})
+        = t^a\left[
+            \partial_\mu\xi_a
+            -\frac{1}{2}f_{abc}\xi_b\partial_\mu\xi_c
+            +\frac{1}{6}f_{abc}f_{cde}\xi_b\xi_d\partial_\mu\xi_e
+            +O(\xi^4)
+            \right]
+    \end{aligned}
+\end{equation}
+Since, we shall not be concerned with the critical point of the ordered phase we can ignore the 
+differences between various spin-wave velocities and obtain a simpler goldstone mode action.
+\begin{equation}
+    \begin{aligned}
+        S &= \frac{1}{2}\int d\tau\int d^dx\left[
+            \rho_a\omega^\mu_a(\tau,\mbf{x})\omega^\mu_a(\tau,\mbf{x})
+            +c_a\rho_ah_i(\mbf{x})\omega^i_a(\tau,\mbf{x})
+        \right]
+    \end{aligned}
+\end{equation}
+where we used the normalization $\Tr(Pt^at^b)=(\rho_a/2)\delta^{ab}$ and $f_{abc}$ are the 
+structure constants of the broken symmetry $G/H$,
+\begin{equation}
+    \begin{aligned}
+        \left[t^a,t^b\right]=f_{abc}t^c
+    \end{aligned}
+\end{equation}
+. In the case of triangular lattice we have $ G/H = SO(3)$ so $f_{abc}=\epsilon_{abc}$, i.e. 
+the levi-civita tensor.
+
+With random bond disorder we may consider a gaussian distribution for the inhomogeneous dipolar 
+fields,
+\begin{equation}
+    \begin{aligned}
+        P\left[\mbf{h}\right]=\int\mathcal{D}\mbf{h} \ 
+        e^{-\frac{1}{2\Delta^2}\int d^dx\mbf{h}(\mbf{x})^2}
+    \end{aligned}
+\end{equation}
+and this leads to the homogeneous replica action of our interest.
+\begin{equation}
+    \begin{aligned}
+        S =& \frac{1}{2}\Big[
+            \rho_a
+            \sum_{r}\int d\tau\int d^dx\
+            \omega^{r,\mu}_a(\tau,\mbf{x})\omega^{r,\mu}_a(\tau,\mbf{x})\\
+            &-
+            c^2_a\rho^2_a\Delta^2
+            \sum_{r,s}
+            \int d\tau\int d\tau'\int d^dx\
+            \omega^{r,i}_a(\tau,\mbf{x})
+            \omega^{s,i}_a(\tau',\mbf{x})
+            \Big]
+    \end{aligned}
+\end{equation}
+
+There are two different types of couplings of the problem, $\rho_a$ and $\Delta$ and their mass 
+dimensions are the following.
+\begin{equation}
+    \begin{aligned}
+        \left[\rho_a\right] &= d - 1\\
+        \left[\Delta\right] &= (2-d)/2
+    \end{aligned}
+\end{equation}
+This immediately tells us that disorder is marginal in $d=2$ and relevant at $d<2$. This
+result is consistent with the dimensionality of the infrared catastrophe related to the
+goldstone mode fluctuation. However, at the same time we face the problem that our
+homogeneous couplings and the disorder coupling do not have a well defined perturbative 
+expansion at the same spatial dimension for $T=0$. Around $d=1$ the homogeneous couplings
+$\rho_a$ are marginal but the disorder coupling $\Delta$ is strongly relevant and flows to
+infinity. Unfortunately this does not tell us anything about what happens close to spatial 
+dimension $d=2$ when the disorder is marginal. Therefore, in the following we consider the 
+alternate scenario with an expansion at $d=2-\epsilon$. The homogeneous coupling is relevant 
+now but we shall only be concerned with the independent flow of the disorder coupling.
+
+\subsubsection{Renormalization of the disorder coupling $\Delta$ at $d=2-\epsilon$}
+
+\begin{thebibliography}{99}
+
+    \bibitem{imry-ma-75}
+        Imry and Ma, 75
+
+    \bibitem{mermin-wagner-66}
+        Mermin and Wagner, 66
+
+    \bibitem{aharony-78}
+        Aharony, 78
+
+    \bibitem{azaria-92}
+        Azaria, Delamotte and Mouhanna, 92
+
+    \bibitem{azaria-93}
+        Azaria, Delamotte, Delduc and Jolicoeur, 93
+
+    \bibitem{dombre-88}
+        Dombre and Read, 88
+
+\end{thebibliography}
+
+\end{document}
