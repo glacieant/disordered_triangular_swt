@@ -80,27 +80,27 @@ then
 fi
 
 sed -e "s|#CITER#|${iter_CL}|g" INC/gen_trilattice_sw.hx > INC/trilattice_sw.h;
-sed -i "s|#IMIN#|${IPRMIN}|g" INC/trilattice_sw.h;
-sed -i "s|#IMAX#|${IPRMAX}|g" INC/trilattice_sw.h;
-sed -i "s|#IGRID#|${IPRGRID}|g" INC/trilattice_sw.h;
-sed -i "s|#MINF#|${MINF}|g" INC/trilattice_sw.h;
-sed -i "s|#MAXF#|${MAXF}|g" INC/trilattice_sw.h;
-sed -i "s|#FREQNUM#|${FREQNUM}|g" INC/trilattice_sw.h;
-sed -i "s|#XMOMNUM#|${XMOMNUM}|g" INC/trilattice_sw.h;
-sed -i "s|#YMOMNUM#|${YMOMNUM}|g" INC/trilattice_sw.h;
-sed -i "s|#LISTCALC#|${LSTSW}|g" INC/trilattice_sw.h;
-sed -i "s|#SFACTCALC#|${STRSW}|g" INC/trilattice_sw.h;
-sed -i "s|#GTOL#|${GTOL}|g" INC/trilattice_sw.h;
-sed -i "s|#ANGDWIDTH#|${ANGDWIDTH}|g" INC/trilattice_sw.h;
-sed -i "s|#ECOUNT#|${EIGNUM}|g" INC/trilattice_sw.h;
-sed -i "s|#QQX#|${QMX}|g" INC/trilattice_sw.h;
-sed -i "s|#QQY#|${QMY}|g" INC/trilattice_sw.h;
-sed -i "s|#WW#|${WM}|g" INC/trilattice_sw.h;
-sed -i "s|#GW#|${GWDTH}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#IMIN#|${IPRMIN}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#IMAX#|${IPRMAX}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#IGRID#|${IPRGRID}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#MINF#|${MINF}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#MAXF#|${MAXF}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#FREQNUM#|${FREQNUM}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#XMOMNUM#|${XMOMNUM}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#YMOMNUM#|${YMOMNUM}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#LISTCALC#|${LSTSW}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#SFACTCALC#|${STRSW}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#GTOL#|${GTOL}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#ANGDWIDTH#|${ANGDWIDTH}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#ECOUNT#|${EIGNUM}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#QQX#|${QMX}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#QQY#|${QMY}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#WW#|${WM}|g" INC/trilattice_sw.h;
+sed -i "" -e "s|#GW#|${GWDTH}|g" INC/trilattice_sw.h;
 
 sed -e "s|#EXEC#|${EXEC}|g" gen_Makefile > Makefile;
 
-source /opt/intel/bin/compilervars.sh intel64;
+#source /opt/intel/bin/compilervars.sh intel64;
 
 #export MKL_NUM_THREADS="40";
 #export MKL_DOMAIN_NUM_THREADS="MKL_BLAS=40";

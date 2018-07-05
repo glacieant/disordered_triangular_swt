@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import multiprocessing as mp
 
 ##################################################
 # This is the wrapper for the computation of the #
@@ -6,24 +7,24 @@
 ##################################################
 
 # system size
-LSYS = [300] 
+LSYS = [12,18,24,30,36] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [1]
+ITERDISD = [10,10,10,10,10]
 # initial angle fluctuation
-ANGVAR = [0.0]
+ANGVAR = [1.0,1.0,1.0,1.0,1.0]
 # number of bootstrapping
-BOOTNUM = [1]
+BOOTNUM = [10,10,10,10,10]
 # a global tolerance value
-GTOL = 10.0**(-12) 
+GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [0.0] 
+DELTA = [0.2,0.3,0.4,0.5,0.6,0.7,0.8] 
 # the ratio between nearest and next 
 # nearest couplings
 ALPHA = [0.0] 
 # maximum iteration for classical algorithm
-CLNUM = 10**7
+CLNUM = 10**8
 
 # checking the lengths of simulation arrays #
 
@@ -45,7 +46,7 @@ import collections
 if not os.path.exists("src"):
     print "Executables could not be found"
     quit()
-if not os.path.exists("src/tri_imp.py"):
+if not os.path.exists("src/xy_imp.py"):
     print "Main executables could not be found"
     quit()
 if not os.path.exists("out"):
@@ -59,7 +60,7 @@ os.putenv("MKL_DYNAMIC","FALSE")
 
 # Importing the main script
 
-import src.tri_imp as tmi
+import src.xy_imp as xmi
 
 # fixing the simulation parameter tuple #
 
@@ -69,28 +70,45 @@ ivar = collections.namedtuple('ivar',
                 GTOL DELTA ALPHA \
                 CLNUM DNMR')
 
+# generate paramter range
+
 isize = len(LSYS)
 dsize = len(DELTA)
 asize = len(ALPHA)
+tdisd = sum(ITERDISD)
 
-# denominator descriptor
-DNMR = 0
-for i in range(0,isize):
+# the parameter function
 
-    for j in range(0,dsize):
+def const(DNMR):
 
-        for k in range(0,asize):
+    carray = range(len(DNMR))
+    for DNM in DNMR:
+        DLT = (DNM%(asize*dsize))%dsize 
+        ALP = (DNM%(asize*dsize))/dsize
+        SIM = (DNM/(asize*dsize))
 
-            const = ivar(LSYS = LSYS[i],
-                    ZCO = ZCO,
-                    ITERDISD = ITERDISD[i],
-                    ANGVAR = ANGVAR[i],
-                    BOOTNUM = BOOTNUM[i],
-                    GTOL = GTOL,
-                    DELTA = DELTA[j],
-                    ALPHA = ALPHA[k],
-                    CLNUM = CLNUM,
-                    DNMR = DNMR)
+        for LI in range(isize):
 
-            tmi.main(const)
-            DNMR += 1
+            SIMX = sum(ITERDISD[:(LI+1)])
+            if SIMX-SIM > 0:
+                  
+                carray[DNM] = ivar(LSYS = LSYS[LI],
+                        ZCO = ZCO,
+                        ITERDISD = 1,
+                        ANGVAR = ANGVAR[LI],
+                        BOOTNUM = BOOTNUM[LI],
+                        GTOL = GTOL,
+                        DELTA = DELTA[DLT],
+                        ALPHA = ALPHA[ALP],
+                        CLNUM = CLNUM,
+                        DNMR = DNM)
+
+                break
+
+    return carray
+
+DNX = range(dsize*asize*tdisd)
+
+# batch processing
+pool = mp.Pool()
+pool.map(xmi.main,const(DNX))

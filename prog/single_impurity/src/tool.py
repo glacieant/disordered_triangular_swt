@@ -48,12 +48,11 @@ def init_param(NSYS,nbr,
     
     
     M[:] = 0.0
-    
-    
-    M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
-    M[1] = np.einsum('i,ij->ij',np.einsum('ij,ij->i',M[1],M[1])**(-0.5),M[1])
+      
+    #M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
+    #M[1] = np.einsum('i,ij->ij',np.einsum('ij,ij->i',M[1],M[1])**(-0.5),M[1])
 
-    """
+    
     # setting up the spin and field matrices
     phx = 2.0*np.pi/3.0
     ROT = np.array([[np.cos(phx),-np.sin(phx),0],
@@ -90,4 +89,3 @@ def init_param(NSYS,nbr,
             M[1,i] = np.einsum('ab,b->a',[[np.cos(phi),-np.sin(phi),0],
                 [np.sin(phi),np.cos(phi),0],[0,0,1]],
                 M[0,i])
-    """

@@ -37,8 +37,8 @@ def main(const):
     lmap.lattice_map(LSYS,nbr)
     
     # field params
-    M = np.zeros((2,NSYS,3),dtype=np.float64)
-    M0 = np.zeros((2,NSYS,3),dtype=np.float64)
+    M = np.zeros((2,NSYS,2),dtype=np.float64)
+    M0 = np.zeros((2,NSYS,2),dtype=np.float64)
     
     # the hamiltonian matrix and coupling
     J = np.zeros((NSYS,NSYS),dtype=np.float64)
@@ -55,16 +55,16 @@ def main(const):
         for g in range(0,BOOTNUM):
 
             # initiating parameters
-            #if g%2 == 0:
-            tool.init_param_ord(NSYS,nbr,
+            if g%2 == 0:
+                tool.init_param_ord(NSYS,nbr,
                     ZCO,
                     DELTA,ALPHA,
                     ANGVAR,M0)
-            #else:
-            #     tool.init_param_rand(NSYS,nbr,
-            #            ZCO,
-            #            DELTA,ALPHA,
-            #            ANGVAR,M0)
+            else:
+                 tool.init_param_rand(NSYS,nbr,
+                        ZCO,
+                        DELTA,ALPHA,
+                        ANGVAR,M0)
            
             # classical algorithm to get the magnetic
             # ground state of impurity system

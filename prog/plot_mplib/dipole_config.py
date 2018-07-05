@@ -23,6 +23,7 @@ from matplotlib.colors import LogNorm
 ## The tex style commands
 plt.rc('text',usetex=True)
 plt.rc('font',family='serif')
+plt.rcParams['text.latex.preamble']=[r"\usepackage{amsmath}"]
 
 # the font styleset
 #from matplotlib import rcParams

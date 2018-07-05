@@ -3,7 +3,7 @@
 import os
 import datetime
 import multiprocessing as mp
-folder = "weak_disorder"
+folder = "xy_disorder"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -98,6 +98,10 @@ def res_log(invL,c1,c2,c3):
 
     return c1 + c2*invL + c3*invL*np.log(invL)
 
+def power_law(x,a,b):
+
+    return a*(x**b)
+
 for fname in glob.iglob('*.npz'):
 
     match = fpat.match(fname)
@@ -119,12 +123,10 @@ for fname in glob.iglob('*.npz'):
     
     spin_X = spin[:,0].reshape((L,L))
     spin_Y = spin[:,1].reshape((L,L))
-    spin_Z = spin[:,2].reshape((L,L))
     SFC_X = np.abs(np.fft.fft2(spin_X,norm='ortho'))**2
     SFC_Y = np.abs(np.fft.fft2(spin_Y,norm='ortho'))**2
-    SFC_Z = np.abs(np.fft.fft2(spin_Z,norm='ortho'))**2
 
-    SFC = (SFC_X + SFC_Y + SFC_Z)
+    SFC = (SFC_X + SFC_Y)
     
     # Only considering Q = (4*pi/3,0)
     KMAX_X = L/3 
@@ -175,20 +177,14 @@ for AN in range(0,ANUM):
 
         INVNRAY = INVLRAY**2
 
-        popt, pcov = curve_fit(res_log,
+        popt, pcov = curve_fit(power_law,
                 INVLRAY,
                 SFC_MAX[:,DN,AN][LORD]
                 )
 
-        YDATA = np.abs(SFC_MAX[:,DN,AN][LORD]-popt[0]-popt[1]*INVLRAY)/INVLRAY
-        #YDATA = SFC_MAX[:,DN,AN][LORD]
-        YDATA_ERR = (SFC_MAX_ERR[:,DN,AN][LORD]
-                +np.sqrt(pcov[0,0])
-                +np.sqrt(pcov[1,1])*INVLRAY)/INVLRAY
-        #YDATA_ERR = SFC_MAX_ERR[:,DN,AN][LORD]
-        XDATA = np.abs(np.log(INVLRAY))
-        #XDATA = INVNRAY
-        #XDATA = (1.0/INVLRAY)*np.abs(np.log(INVLRAY))
+        YDATA = SFC_MAX[:,DN,AN][LORD]
+        YDATA_ERR = SFC_MAX_ERR[:,DN,AN][LORD]
+        XDATA = INVLRAY
 
         ax.errorbar(XDATA,
                 YDATA,
@@ -208,7 +204,7 @@ for AN in range(0,ANUM):
                 ls='--',
                 lw=2,
                 color=color,
-                label=r'$\Delta=$'+DHASH[DN]
+                label=r'$\Delta=$'+DHASH[DN]+r' $\alpha=$'+str(popt[1])
                 )
 
     DHLIST = [float(DHASH[i]) for i in range(0,DNUM)]
@@ -217,7 +213,7 @@ for AN in range(0,ANUM):
     tup = sorted(zip(DHLIST,handles,labels))
     DHLIST, handles, labels = zip(*tup)
     
-
+    """
     legend = ax.legend(handles,labels,
             loc='best',
             fontsize=12,
@@ -225,14 +221,15 @@ for AN in range(0,ANUM):
             facecolor='w',
             edgecolor='k',
             framealpha=1)
-
+            
+    """
 
     #ax.set_xlim(left=0.0,right=0.25)
     #ax.set_ylim(bottom=0.0,top=0.01)
  
     #ax.set_title(r'$\alpha=$'+str("%.2f" % float(AHASH[AN])))
-    ax.set_ylabel(r'$|S(Q)_L-c_1-c_2/L|\times L$',fontsize=20)
-    ax.set_xlabel(r'$\log(1/L)$',fontsize=20)
+    ax.set_ylabel(r'$S(Q)/L^2$',fontsize=20)
+    ax.set_xlabel(r'$1/L$',fontsize=20)
     #ax.set_xlabel(r'$1/L$',fontsize=20)
     #ax.set_xlabel(r'$|(1/L)\log(1/L)|$',fontsize=20)
 

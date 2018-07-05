@@ -3,10 +3,7 @@
 import os
 import datetime
 import multiprocessing as mp
-#folder = "sharp_wall"
-#folder = "single_impurity"
-folder = "weak_disorder"
-#folder = "test_chir_2"
+folder = "xy_disorder"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -157,12 +154,10 @@ for fname in glob.iglob('*.npz'):
 
     spin_X = spin[:,0].reshape((L,L))
     spin_Y = spin[:,1].reshape((L,L))
-    spin_Z = spin[:,2].reshape((L,L))
     SFC_X = np.abs(np.fft.fft2(spin_X,norm='ortho'))**2
     SFC_Y = np.abs(np.fft.fft2(spin_Y,norm='ortho'))**2
-    SFC_Z = np.abs(np.fft.fft2(spin_Z,norm='ortho'))**2
 
-    SFC = (SFC_X + SFC_Y + SFC_Z)
+    SFC = (SFC_X + SFC_Y)
     
     # Only considering Q = (4*pi/3,0)
     KMAX_X = L/3 
@@ -188,24 +183,20 @@ for fname in glob.iglob('*.npz'):
 
     tsr_spin = spin[elt]
 
-    epsilon = np.zeros((3,3,3),dtype=np.float)
-    epsilon[0,1,2] = epsilon[1,2,0] = epsilon[2,0,1] = 1.0
-    epsilon[0,2,1] = epsilon[2,1,0] = epsilon[1,0,2] = -1.0
+    epsilon = np.zeros((2,2),dtype=np.float)
+    epsilon[0,1] =  1.0
+    epsilon[1,0] = -1.0
 
     alt = np.zeros((3,3),dtype=np.float)
     alt[0,1] = alt[1,2] = alt[2,0] = 1.0
     
-    chir = 2.0*np.einsum('iab,icd,ac,kbd->ik',
+    chir = 2.0*np.einsum('iab,icd,ac,bd->i',
             tsr_spin,tsr_spin,alt,epsilon)/(3.0*np.sqrt(3.0))
 
-    chir_X = chir[:,0].reshape((LTR,LTR))
-    chir_Y = chir[:,1].reshape((LTR,LTR))
-    chir_Z = chir[:,2].reshape((LTR,LTR))
-    fchir_X = np.abs(np.fft.fft2(chir_X,norm='ortho'))**2
-    fchir_Y = np.abs(np.fft.fft2(chir_Y,norm='ortho'))**2
-    fchir_Z = np.abs(np.fft.fft2(chir_Z,norm='ortho'))**2
+    chir = chir.reshape((LTR,LTR))
+    fchir = np.abs(np.fft.fft2(chir,norm='ortho'))**2
 
-    fchir = fchir_X + fchir_Y + fchir_Z
+    fchir = fchir
 
     KMAX_X = 0
     KMAX_Y = 0
@@ -466,11 +457,11 @@ for AN in range(0,ANUM):
     bx.set_xlim(left=0.0)
     b2x.set_xlim(left=0.0)
   
-    #ax.set_ylim(bottom=0.0)
+    ax.set_ylim(bottom=0.0)
     a2x.set_ylim(bottom=0.0)
     a3x.set_ylim(bottom=0.0)
-    bx.set_ylim(bottom=0.0,top=100)
-    b2x.set_ylim(bottom=0.0,top=100)
+    bx.set_ylim(bottom=0.0)#,top=100)
+    b2x.set_ylim(bottom=0.0)#,top=100)
     #b2x.set_ylim(bottom=0.0,top=15)
 
     ax.set_ylabel(r'$S(Q)$',fontsize=20)
