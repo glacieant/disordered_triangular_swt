@@ -1,7 +1,5 @@
 *DS_Store
 *.npz
-*DATA*
-*out/data*
 *.aux
 *.log
 *temp*
