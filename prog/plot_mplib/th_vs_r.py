@@ -6,7 +6,7 @@
 import os
 #folder = raw_input("Name of the target folder? ")
 folder = "single_impurity"
-os.chdir("../"+folder+"/out/data_bk")
+os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
 import re
@@ -25,6 +25,17 @@ from scipy.optimize import curve_fit
 ## The tex style commands
 plt.rc('text',usetex=True)
 plt.rc('font',family='serif')
+
+## TU colors
+
+tu_dunkelblau = '#07284A'
+tu_grau = '#5F6967'
+tu_blau = '#0067A5'
+tu_cyan = '#00A3DA'
+tu_dunkelgruen = '#008644'
+tu_gruen = '#5EB245'
+tu_rot = '#DE4A39'
+tu_dunkelrot = '#BD252C'
 
 # the font styleset
 #from matplotlib import rcParams
@@ -220,7 +231,7 @@ for i in range(0,HSHNUM):
                 ms=12,
                 mew=2,
                 mfc='None',
-                mec='red',
+                mec=tu_rot,
                 basex=10,basey=10,
                 zorder=1
                 )
@@ -244,7 +255,7 @@ for i in range(0,HSHNUM):
         #plotting the fit
         lp = np.linspace(0.5,(L+1.0)/2.0-1.0+0.5,num=200)
         ax.loglog(lp,invd(lp, *popt),
-                color='royalblue',
+                color=tu_blau,
                 linestyle='--',
                 dashes=(2,2),
                 lw=4,

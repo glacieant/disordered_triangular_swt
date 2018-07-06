@@ -20,6 +20,18 @@ from matplotlib.patches import Ellipse
 from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
 
+# TU colors
+
+tu_dunkelblau = '#07284A'
+tu_grau = '#5F6967'
+tu_blau = '#0067A5'
+tu_cyan = '#00A3DA'
+tu_dunkelgruen = '#008644'
+tu_gruen = '#5EB245'
+tu_rot = '#DE4A39'
+tu_dunkelrot = '#BD252C'
+
+
 ## The tex style commands
 plt.rc('text',usetex=True)
 plt.rc('font',family='serif')
@@ -213,7 +225,7 @@ for fname in glob.iglob('*.npz'):
             zorder=3)
 
     LQ=ax.quiver(SX,SY,LSU,LSV,
-            color='red',
+            color=tu_rot,
             width=width,
             headwidth=headwidth,
             headlength=headlength,
@@ -224,7 +236,7 @@ for fname in glob.iglob('*.npz'):
             zorder=2
             )
     RQ=ax.quiver(SX,SY,RSU,RSV,
-            color='limegreen',
+            color=tu_gruen,
             width=width,
             headwidth=headwidth,
             headlength=headlength,
@@ -235,7 +247,7 @@ for fname in glob.iglob('*.npz'):
             zorder=2
             )
     Q=ax.quiver(SX,SY,SU,SV,
-            color='royalblue',
+            color=tu_blau,
             width=width,
             headwidth=headwidth,
             headlength=headlength,
@@ -245,7 +257,7 @@ for fname in glob.iglob('*.npz'):
             scale_units='xy',
             zorder=2
             )
-    """
+    
     Q0=ax.quiver(SX,SY,SU0,SV0,
             color='black',
             linewidth=1,
@@ -262,10 +274,10 @@ for fname in glob.iglob('*.npz'):
             )
     
     ellipse = Ellipse(xy=(impcor[0],impcor[1]),width=1.75*a,height=0.4*a,
-            edgecolor='navajowhite',facecolor='navajowhite',
+            edgecolor=tu_grau,facecolor=tu_grau,alpha=0.5,
             zorder=0)
     ax.add_patch(ellipse)
-    """
+    
     plt.axis([impcor[0]-dx,impcor[0]+dx,
         impcor[1]-9*dy/10,impcor[1]+dy+3*a/4])
     ax.axis('off')

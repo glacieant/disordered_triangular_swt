@@ -19,6 +19,17 @@ from matplotlib.colors import LogNorm
 from scipy.optimize import curve_fit
 from scipy.stats import skewnorm
 
+# TU colors
+
+tu_dunkelblau = '#07284A'
+tu_grau = '#5F6967'
+tu_blau = '#0067A5'
+tu_cyan = '#00A3DA'
+tu_dunkelgruen = '#008644'
+tu_gruen = '#5EB245'
+tu_rot = '#DE4A39'
+tu_dunkelrot = '#BD252C'
+
 ## The tex style commands
 plt.rc('text',usetex=True)
 plt.rc('font',family='serif')
@@ -44,6 +55,8 @@ HASH = set([])
 LHASH = set([])
 DHASH =set([])
 AHASH = set([])
+
+CLR = [tu_rot,tu_blau,tu_gruen]
 
 for fname in glob.iglob('*.npz'):
 
@@ -167,7 +180,7 @@ for i in range(0,HSHNUM):
 
 for AN in range(0,ANUM):
 
-    w,h = figure.figaspect(1.0)
+    w,h = figure.figaspect(0.5)
     afig = plt.figure(figsize=(w,h))
     ax = afig.add_axes([0.26,0.15,0.685,0.8])
 
@@ -192,6 +205,7 @@ for AN in range(0,ANUM):
 
         ax.errorbar(XDATA,
                 YDATA,
+                color=CLR[DN],
                 yerr=YDATA_ERR,
                 ls='None',
                 marker='.',
@@ -231,10 +245,16 @@ for AN in range(0,ANUM):
     #ax.set_ylim(bottom=0.0,top=0.01)
  
     #ax.set_title(r'$\alpha=$'+str("%.2f" % float(AHASH[AN])))
-    ax.set_ylabel(r'$|S(Q)_L-c_1-c_2/L|\times L$',fontsize=20)
-    ax.set_xlabel(r'$\log(1/L)$',fontsize=20)
+    ax.set_ylabel(r'$|S(Q)_L-c_1-c_2/L|\times L$',fontsize=30)
+    ax.set_xlabel(r'$\log(1/L)$',fontsize=30)
     #ax.set_xlabel(r'$1/L$',fontsize=20)
     #ax.set_xlabel(r'$|(1/L)\log(1/L)|$',fontsize=20)
+    ax.tick_params(which='both',width=2,
+            labelsize=30,direction='in',
+            bottom=True,top=True,
+            left=True,right=True)
+    ax.tick_params(which='major',length=20)
+    ax.tick_params(which='minor',length=10)
 
     afig.savefig("../plot/SFC_DELTA"
             +"_ALPHA_"

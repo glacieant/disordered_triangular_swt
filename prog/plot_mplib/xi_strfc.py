@@ -22,6 +22,18 @@ from matplotlib.colors import LogNorm
 from scipy.optimize import curve_fit
 from scipy.stats import skewnorm
 
+# TU colors
+
+tu_dunkelblau = '#07284A'
+tu_grau = '#5F6967'
+tu_blau = '#0067A5'
+tu_cyan = '#00A3DA'
+tu_dunkelgruen = '#008644'
+tu_gruen = '#5EB245'
+tu_rot = '#DE4A39'
+tu_dunkelrot = '#BD252C'
+
+
 ## The tex style commands
 plt.rc('text',usetex=True)
 plt.rc('font',family='serif')
@@ -283,9 +295,11 @@ for i in range(0,HSHNUM):
             CSFX_ERR/NCSFX + CSFX*NCSFX_ERR/(NCSFX**2)
             )
 
+CLR = [tu_rot,tu_blau,tu_gruen]
+
 for AN in range(0,ANUM):
 
-    w,h = figure.figaspect(1.0)
+    w,h = figure.figaspect(0.5)
     afig = plt.figure(figsize=(w,h))
     ax = afig.add_axes([0.26,0.15,0.685,0.8])
     a2fig = plt.figure(figsize=(w,h))
@@ -315,7 +329,8 @@ for AN in range(0,ANUM):
                 lw=2,
                 marker='.',
                 ms=10,
-                label=r'$\Delta=$'+DHASH[DN]
+                label=r'$\Delta=$'+DHASH[DN],
+                color=CLR[DN]
                 )
 
         line2 = bx.errorbar(LRAY**2,
@@ -466,26 +481,34 @@ for AN in range(0,ANUM):
     bx.set_xlim(left=0.0)
     b2x.set_xlim(left=0.0)
   
-    #ax.set_ylim(bottom=0.0)
+    #ax.set_ylim(bottom=0.45,top=0.5)
     a2x.set_ylim(bottom=0.0)
     a3x.set_ylim(bottom=0.0)
     bx.set_ylim(bottom=0.0,top=100)
     b2x.set_ylim(bottom=0.0,top=100)
     #b2x.set_ylim(bottom=0.0,top=15)
 
-    ax.set_ylabel(r'$S(Q)$',fontsize=20)
+    ax.set_ylabel(r'$S(Q)$',fontsize=30)
     a2x.set_ylabel(r'$|\mathbf{\chi}|$',fontsize=20)
     a3x.set_ylabel(r'$S_\chi(0)/L^2$',fontsize=20)
     
     bx.set_ylabel(r'$\xi/L$',fontsize=20)
     b2x.set_ylabel(r'$\xi_\chi/L$',fontsize=20)
     
-    ax.set_xlabel(r'$1/L^2$',fontsize=20)
+    ax.set_xlabel(r'$1/L^2$',fontsize=30)
     a2x.set_xlabel(r'$1/L^2$',fontsize=20)
     a3x.set_xlabel(r'$1/L^2$',fontsize=20)
     
     bx.set_xlabel(r'$1/L^2$',fontsize=20)
     b2x.set_xlabel(r'$1/L^2$',fontsize=20)
+
+    ax.tick_params(which='both',width=2,
+            labelsize=30,direction='in',
+            bottom=True,top=True,
+            left=True,right=True)
+    ax.tick_params(which='major',length=20)
+    ax.tick_params(which='minor',length=10)
+
 
     afig.savefig("../plot/S_Q"
             +"_ALPHA_"
