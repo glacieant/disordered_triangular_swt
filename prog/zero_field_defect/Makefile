@@ -14,10 +14,10 @@ BINDIR = BIN
 CC = gcc
 CFLAGS = -O3 -std=c99
 #CFLAGS = -g -O0
-#LFLAGS = -lm -L/opt/intel/lib/intel64 -L/opt/intel/mkl/lib/intel64 \
+LFLAGS = -lm -L/opt/intel/lib/intel64 -L/opt/intel/mkl/lib/intel64 \
 	 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 \
 	 -lpthread -lfftw3 -lblas -fopenmp
-LFLAGS = -lm -llapack -lfftw3 -lblas
+#LFLAGS = -lm -llapack -lfftw3 -lblas -fopenmp
 INCDIRS = -I${INCDIR}
 
 
