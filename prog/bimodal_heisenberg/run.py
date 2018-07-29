@@ -7,19 +7,19 @@ import multiprocessing as mp
 ##################################################
 
 # system size
-LSYS = [60] 
+LSYS = [24] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [2]
+ITERDISD = [10]
 # initial angle fluctuation
 ANGVAR = [1.0]
 # number of bootstrapping
-BOOTNUM = [2]
+BOOTNUM = [10]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [0.2,0.3,0.4,0.5,0.6,0.7,0.8] 
+DELTA = [0.2,0.6,0.99] 
 # the ratio between nearest and next 
 # nearest couplings
 ALPHA = [0.0] 
@@ -46,7 +46,7 @@ import collections
 if not os.path.exists("src"):
     print "Executables could not be found"
     quit()
-if not os.path.exists("src/xy_imp.py"):
+if not os.path.exists("src/tri_imp.py"):
     print "Main executables could not be found"
     quit()
 if not os.path.exists("out"):
@@ -60,7 +60,7 @@ os.putenv("MKL_DYNAMIC","FALSE")
 
 # Importing the main script
 
-import src.xy_imp as xmi
+import src.tri_imp as tmi
 
 # fixing the simulation parameter tuple #
 
@@ -111,4 +111,4 @@ DNX = range(dsize*asize*tdisd)
 
 # batch processing
 pool = mp.Pool()
-pool.map(xmi.main,const(DNX))
+pool.map(tmi.main,const(DNX))

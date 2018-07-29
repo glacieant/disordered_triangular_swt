@@ -323,7 +323,7 @@ for AN in range(0,ANUM):
 
     for DN in range(0,DNUM):
 
-        line1 = ax.errorbar(LRAY**2,
+        line1 = ax.errorbar(LRAY,
                 SFC_MAX[:,DN,AN][LORD],
                 yerr=SFC_MAX_ERR[:,DN,AN][LORD],
                 lw=2,
@@ -333,7 +333,7 @@ for AN in range(0,ANUM):
                 color=CLR[DN]
                 )
 
-        line2 = bx.errorbar(LRAY**2,
+        line2 = bx.errorbar(LRAY,
                 XI_EST[:,DN,AN][LORD]*LRAY,
                 yerr=XI_EST_ERR[:,DN,AN][LORD]*LRAY,
                 lw=2,
@@ -342,7 +342,7 @@ for AN in range(0,ANUM):
                 label=r'$\delta J/J=$'+str("%.2f" % float(DHASH[DN]))
                 )
 
-        line3 = a2x.errorbar(LRAY**2,
+        line3 = a2x.errorbar(LRAY,
                 CFC[:,DN,AN][LORD],
                 yerr=CFC_ERR[:,DN,AN][LORD],
                 lw=2,
@@ -352,7 +352,7 @@ for AN in range(0,ANUM):
                 )
 
 
-        line4 = a3x.errorbar(LRAY**2,
+        line4 = a3x.errorbar(LRAY,
                 CSFC[:,DN,AN][LORD],
                 yerr=CSFC_ERR[:,DN,AN][LORD],
                 lw=2,
@@ -361,7 +361,7 @@ for AN in range(0,ANUM):
                 label=r'$\delta J/J=$'+str("%.2f" % float(DHASH[DN]))
                 )
 
-        line5 = b2x.errorbar(LRAY**2,
+        line5 = b2x.errorbar(LRAY,
                 CXI_EST[:,DN,AN][LORD]*LRAY,
                 yerr=CXI_EST_ERR[:,DN,AN][LORD]*LRAY,
                 lw=2,
@@ -370,12 +370,12 @@ for AN in range(0,ANUM):
                 label=r'$\delta J/J=$'+str("%.2f" % float(DHASH[DN]))
                 )
 
-        popt, pcov = curve_fit(linear,LRAY[0:3]**2,
+        popt, pcov = curve_fit(linear,LRAY[0:3],
                 XI_EST[:,DN,AN][LORD][0:3])
 
         XI_DELTA[DN,AN] = popt[0]
 
-        popt, pcov = curve_fit(linear,LRAY[0:3]**2,
+        popt, pcov = curve_fit(linear,LRAY[0:3],
                 CXI_EST[:,DN,AN][LORD][0:3])
 
         CXI_DELTA[DN,AN] = popt[0]
@@ -490,17 +490,17 @@ for AN in range(0,ANUM):
 
     ax.set_ylabel(r'$S(Q)$',fontsize=30)
     a2x.set_ylabel(r'$|\mathbf{\chi}|$',fontsize=20)
-    a3x.set_ylabel(r'$S_\chi(0)/L^2$',fontsize=20)
+    a3x.set_ylabel(r'$S_\chi(0)/L$',fontsize=20)
     
     bx.set_ylabel(r'$\xi/L$',fontsize=20)
     b2x.set_ylabel(r'$\xi_\chi/L$',fontsize=20)
     
-    ax.set_xlabel(r'$1/L^2$',fontsize=30)
-    a2x.set_xlabel(r'$1/L^2$',fontsize=20)
-    a3x.set_xlabel(r'$1/L^2$',fontsize=20)
+    ax.set_xlabel(r'$1/L$',fontsize=30)
+    a2x.set_xlabel(r'$1/L$',fontsize=20)
+    a3x.set_xlabel(r'$1/L$',fontsize=20)
     
-    bx.set_xlabel(r'$1/L^2$',fontsize=20)
-    b2x.set_xlabel(r'$1/L^2$',fontsize=20)
+    bx.set_xlabel(r'$1/L$',fontsize=20)
+    b2x.set_xlabel(r'$1/L$',fontsize=20)
 
     ax.tick_params(which='both',width=2,
             labelsize=30,direction='in',

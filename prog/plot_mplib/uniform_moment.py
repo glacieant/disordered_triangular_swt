@@ -12,13 +12,26 @@ import matplotlib.figure as figure
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-# The tex style commands
+# TU colors
+
+tu_dunkelblau = '#07284A'
+tu_grau = '#5F6967'
+tu_blau = '#0067A5'
+tu_cyan = '#00A3DA'
+tu_dunkelgruen = '#008644'
+tu_gruen = '#5EB245'
+tu_rot = '#DE4A39'
+tu_dunkelrot = '#BD252C'
+
+## The tex style commands
 plt.rc('text',usetex=True)
-plt.rc('font', family='serif')
+plt.rc('font',family='serif')
+plt.rcParams['text.latex.preamble']=[r"\usepackage{amsmath}"]
 
-############## the dataset range ################
+# setting MKL configuration to allways optimise 
+os.putenv("MKL_DYNAMIC","FALSE")
 
-CLR=['red','royalblue','lawngreen']
+CLR = [tu_rot,tu_blau,tu_gruen]
 
 # Loading data
 l, delta, alpx, s_x, s_y, s_z = np.loadtxt('LISTDATA.dat', usecols=(0,1,2,4,5,6), unpack=True)
@@ -43,7 +56,7 @@ data_Q = np.zeros((LSET,DSET,ASET),dtype=np.float)
 
 def power(x,a):
 
-    return a*x
+    return np.abs(a)*x
 
 def power_2(x,a,b):
 
@@ -103,7 +116,7 @@ print >> fyl3Q, "ALPHA", "m1/Delta"
 for an in range(0,ASET):
     for dn in range(0,DSET):
         
-        w,h = figure.figaspect(1.0)
+        w,h = figure.figaspect(0.5)
         afig = plt.figure(figsize=(w,h))
         ax = afig.add_axes([0.26,0.15,0.685,0.8])
         bfig = plt.figure(figsize=(w,h))
@@ -120,7 +133,7 @@ for an in range(0,ASET):
                 ms=12,
                 mew=2,
                 mfc='None',
-                mec='red',
+                mec=tu_rot,
                 zorder=1
                 )
 
@@ -130,7 +143,7 @@ for an in range(0,ASET):
                 ms=12,
                 mew=2,
                 mfc='None',
-                mec='red',
+                mec=tu_rot,
                 zorder=1
                 )
 
@@ -155,7 +168,7 @@ for an in range(0,ASET):
         invLP = np.linspace(0.0,0.1,num=200)
         
         ax.plot(invLP,power_3(invLP, *popt_C),
-                color='royalblue',
+                color=tu_blau,
                 linestyle='--',
                 lw=4,
                 label=r'$a^{(0)}+a^{(1)}/L+a^{(2)}/L^2$',
@@ -189,7 +202,7 @@ for an in range(0,ASET):
                 )
          
         bx.plot(invLP,power_3(invLP, *popt_Q),
-                color='royalblue',
+                color=tu_blau,
                 linestyle='--',
                 lw=4,
                 label=r'$a^{(0)}+a^{(1)}/L+a^{(2)}/L^2$',
@@ -226,12 +239,13 @@ for an in range(0,ASET):
 
         plt.close('all')
     
-    w,h = figure.figaspect(1.0)
+    w,h = figure.figaspect(0.5)
     afig = plt.figure(figsize=(w,h))
     ax = afig.add_axes([0.26,0.15,0.685,0.8])
     bfig = plt.figure(figsize=(w,h))
     bx = bfig.add_axes([0.26,0.15,0.685,0.8])
-
+    cfig = plt.figure(figsize=(w,h))
+    cx = cfig.add_axes([0.26,0.15,0.685,0.8])
 
     ax.plot(DELTA,DLALPHA_C[:,an],
             ls='None',
@@ -239,7 +253,7 @@ for an in range(0,ASET):
             ms=12,
             mew=2,
             mfc='None',
-            mec='red',
+            mec=tu_rot,
             zorder=1
             )
 
@@ -249,12 +263,24 @@ for an in range(0,ASET):
             ms=12,
             mew=2,
             mfc='None',
-            mec='red',
+            mec=tu_rot,
             zorder=1
             )
 
+    cx.plot(DELTA,DLALPHA_C[:,an]-DLALPHA_Q[:,an],
+            ls='None',
+            marker='s',
+            ms=12,
+            mew=2,
+            mfc='None',
+            mec=tu_rot,
+            zorder=1
+            )
+
+
     popt_C, pcov_C = curve_fit(power,DELTA[:3],DLALPHA_C[:3,an])
     popt_Q, pcov_Q = curve_fit(power,DELTA[:3],DLALPHA_Q[:3,an])
+    popt, pcov = curve_fit(power,DELTA[:3],DLALPHA_C[:3,an]-DLALPHA_Q[:3,an])
 
     DELTAX = np.linspace(np.amin(DELTA),np.amax(DELTA),num=200)
     
@@ -262,18 +288,21 @@ for an in range(0,ASET):
     print >> fyl3Q, ALPX[an], str("%.4f" % popt_Q[0])
 
     ax.plot(DELTAX,power(DELTAX, *popt_C),
-            color='royalblue',
+            color=tu_blau,
             linestyle='--',
             lw=4,
             zorder=2
             )
-    ax.set_ylabel(r'$\delta m^{(0)}$',fontsize=30)
+    
+    ax.set_ylabel(r'$m_{tot}/S$',fontsize=30)
     ax.set_xlabel(r'$\delta J/J$',fontsize=30)
-    ax.tick_params(which='both',width=2,labelsize=30,direction='in')
+    ax.tick_params(which='both',width=2,
+            labelsize=30,direction='in',
+            bottom=True,top=True,
+            left=True,right=True)
     ax.tick_params(which='major',length=20)
-    ax.tick_params(which='minor',length=20)
+    ax.tick_params(which='minor',length=10)
     ax.xaxis.set_major_locator(plt.FixedLocator(locs=[0.0,0.4,0.8]))
-    ax.yaxis.set_major_locator(plt.FixedLocator(locs=[0.0,0.2,0.4]))
 
     """
     legend=ax.legend(loc='best',
@@ -287,7 +316,7 @@ for an in range(0,ASET):
             )
  
     bx.plot(DELTAX,power(DELTAX, *popt_Q),
-            color='royalblue',
+            color=tu_blau,
             linestyle='--',
             lw=4,
             zorder=2
@@ -312,6 +341,35 @@ for an in range(0,ASET):
             bbox_inches='tight'
             )
     
-   
+  
+    cx.plot(DELTAX,power(DELTAX, *popt),
+            color=tu_blau,
+            linestyle='--',
+            lw=4,
+            zorder=2
+            )
+    
+    cx.set_ylabel(r'$m_{tot}/S$',fontsize=30)
+    cx.set_xlabel(r'$\delta J/J$',fontsize=30)
+    cx.tick_params(which='both',width=2,
+            labelsize=30,direction='in',
+            bottom=True,top=True,
+            left=True,right=True)
+    cx.tick_params(which='major',length=20)
+    cx.tick_params(which='minor',length=10)
+    cx.xaxis.set_major_locator(plt.FixedLocator(locs=[0.0,0.4,0.8]))
+    #bx.yaxis.set_major_locator(plt.FixedLocator(locs=[0.0,0.2,0.4]))
+
+    """
+    legend=ax.legend(loc='best',
+                fontsize=20,
+                markerscale=2,
+                shadow=True)
+    """
+    cfig.savefig("PLOT/UMOM_DELTA_VS_ALPHA"
+            +".pdf",
+            bbox_inches='tight'
+            )
+  
     plt.close('all')
 
