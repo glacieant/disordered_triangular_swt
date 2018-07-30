@@ -20,8 +20,8 @@ def init_cpl(NSYS,nbr,
     J[:] = 0.0
     
     if DELTA != 0.0:
-        XP = np.random.uniform(0.0,1.0,size=(NSYS*12))
-        JBANK = DELTA*np.heaviside(XP-0.5,1.0)
+        DXP = np.random.uniform(0.0,1.0,size=(NSYS*12))
+        JBANK = 1.0 - DELTA*np.heaviside(DXP-0.5,1.0)
     else:
         JBANK = np.full((NSYS*6),1.0)
     q = 0
@@ -83,7 +83,6 @@ def init_param_ord(NSYS,nbr,
 
     LSYS = int(NSYS**0.5)
 
-    #VAR = 0.0
     VAR = ANGVAR
 
     for i in range(0,NSYS):
