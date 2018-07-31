@@ -21,6 +21,7 @@ def main(const):
     ITERDISD = const.ITERDISD # disorder iteration number
     ANGVAR = const.ANGVAR # fluctuation of inital angle
     BOOTNUM = const.BOOTNUM # bootstrap sample number
+    PROB = const.PROB # magntitude of disorder
     DELTA = const.DELTA # magntitude of disorder
     ALPHA = const.ALPHA # magnititude of J'/J
     GTOL = const.GTOL # a global tolerance for the code
@@ -48,7 +49,7 @@ def main(const):
 
         # fixing the coupling matrix
         tool.init_cpl(NSYS,nbr,
-                    ZCO,DELTA,ALPHA,J)
+                    ZCO,PROB,DELTA,ALPHA,J)
         
         ENMIN = 1000.0
         # looping over bootstrapped initialisations
@@ -85,6 +86,7 @@ def main(const):
         # saving the final output data
         np.savez_compressed("out/data/FNL"+
                 "_L_"+str(LSYS)+
+                "_PRB_"+str(PROB)+
                 "_DLT_"+str(DELTA)+
                 "_ALP_"+str(ALPHA)+
                 "_DISD_"+str(i)+
