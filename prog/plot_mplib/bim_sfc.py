@@ -282,16 +282,16 @@ for i in range(0,HSHNUM):
     CFC[LN,DN,AN] = CFX
     CSFC[LN,DN,AN] = CSFX
 
-    XI_EST[LN,DN,AN] = np.sqrt(SFX/NSFX-1)/Q
-    CXI_EST[LN,DN,AN] = np.sqrt(CSFX/NCSFX-1)/QC
+    XI_EST[LN,DN,AN] = np.sqrt(np.abs(SFX/NSFX-1))/Q
+    CXI_EST[LN,DN,AN] = np.sqrt(np.abs(CSFX/NCSFX-1))/QC
     
     SFC_MAX_ERR[LN,DN,AN] = SFX_ERR
     CFC_ERR[LN,DN,AN] = CFX_ERR
     CSFC_ERR[LN,DN,AN] = CSFX_ERR
-    XI_EST_ERR[LN,DN,AN] = (1.0/(2*Q*np.sqrt(SFX/NSFX-1)))*(
+    XI_EST_ERR[LN,DN,AN] = (1.0/(2*Q*np.sqrt(np.abs(SFX/NSFX-1))))*(
             SFX_ERR/NSFX + SFX*NSFX_ERR/(NSFX**2)
             )
-    CXI_EST_ERR[LN,DN,AN] = (1.0/(2*QC*np.sqrt(CSFX/NCSFX-1)))*(
+    CXI_EST_ERR[LN,DN,AN] = (1.0/(2*QC*np.sqrt(np.abs(CSFX/NCSFX-1))))*(
             CSFX_ERR/NCSFX + CSFX*NCSFX_ERR/(NCSFX**2)
             )
 
@@ -299,7 +299,7 @@ CLR = [tu_rot,tu_blau,tu_gruen]
 
 for AN in range(0,ANUM):
 
-    w,h = figure.figaspect(0.5)
+    w,h = figure.figaspect(1.0)
     afig = plt.figure(figsize=(w,h))
     ax = afig.add_axes([0.26,0.15,0.685,0.8])
     a2fig = plt.figure(figsize=(w,h))
@@ -307,20 +307,6 @@ for AN in range(0,ANUM):
     a3fig = plt.figure(figsize=(w,h))
     a3x = a3fig.add_axes([0.26,0.15,0.685,0.8])
     
-    bfig = plt.figure(figsize=(w,h))
-    bx = bfig.add_axes([0.26,0.15,0.685,0.8])
-    cfig = plt.figure(figsize=(w,h))
-    cx = cfig.add_axes([0.26,0.15,0.685,0.8])
-    dfig = plt.figure(figsize=(w,h))
-    dx = dfig.add_axes([0.26,0.15,0.685,0.8])
-    
-    b2fig = plt.figure(figsize=(w,h))
-    b2x = b2fig.add_axes([0.26,0.15,0.685,0.8])
-    c2fig = plt.figure(figsize=(w,h))
-    c2x = c2fig.add_axes([0.26,0.15,0.685,0.8])
-    d2fig = plt.figure(figsize=(w,h))
-    d2x = d2fig.add_axes([0.26,0.15,0.685,0.8])
-
     for DN in range(0,DNUM):
 
         line1 = ax.errorbar(LRAY,
@@ -330,16 +316,6 @@ for AN in range(0,ANUM):
                 marker='.',
                 ms=10,
                 label=r'$\Delta=$'+DHASH[DN],
-                color=CLR[DN]
-                )
-
-        line2 = bx.errorbar(LRAY,
-                XI_EST[:,DN,AN][LORD]*LRAY,
-                yerr=XI_EST_ERR[:,DN,AN][LORD]*LRAY,
-                lw=2,
-                marker='.',
-                ms=10,
-                label=r'$\delta J/J=$'+str("%.2f" % float(DHASH[DN]))
                 )
 
         line3 = a2x.errorbar(LRAY,
@@ -351,7 +327,7 @@ for AN in range(0,ANUM):
                 label=r'$\delta J/J=$'+str("%.2f" % float(DHASH[DN]))
                 )
 
-
+        
         line4 = a3x.errorbar(LRAY,
                 CSFC[:,DN,AN][LORD],
                 yerr=CSFC_ERR[:,DN,AN][LORD],
@@ -360,34 +336,11 @@ for AN in range(0,ANUM):
                 ms=10,
                 label=r'$\delta J/J=$'+str("%.2f" % float(DHASH[DN]))
                 )
-
-        line5 = b2x.errorbar(LRAY,
-                CXI_EST[:,DN,AN][LORD]*LRAY,
-                yerr=CXI_EST_ERR[:,DN,AN][LORD]*LRAY,
-                lw=2,
-                marker='.',
-                ms=10,
-                label=r'$\delta J/J=$'+str("%.2f" % float(DHASH[DN]))
-                )
-
-        popt, pcov = curve_fit(linear,LRAY[0:3],
-                XI_EST[:,DN,AN][LORD][0:3])
-
-        XI_DELTA[DN,AN] = popt[0]
-
-        popt, pcov = curve_fit(linear,LRAY[0:3],
-                CXI_EST[:,DN,AN][LORD][0:3])
-
-        CXI_DELTA[DN,AN] = popt[0]
-
-        DELTA_ARR[DN,AN] = float(DHASH[DN])
-
     DHLIST = [float(DHASH[i]) for i in range(0,DNUM)]
     handles1, labels1 = ax.get_legend_handles_labels()
-    handles2, labels2 = bx.get_legend_handles_labels()
 
-    tup = sorted(zip(DHLIST,handles1,labels1,handles2,labels2))
-    DHLIST, handles1, labels1, handles2, labels2 = zip(*tup)
+    tup = sorted(zip(DHLIST,handles1,labels1))
+    DHLIST, handles1, labels1 = zip(*tup)
 
     legend1 = ax.legend(handles1,labels1,
             loc='best',
@@ -396,15 +349,6 @@ for AN in range(0,ANUM):
             facecolor='w',
             edgecolor='k',
             framealpha=1)
-
-    legend2 = bx.legend(handles1,labels1,
-            loc='best',
-            fontsize=12,
-            markerscale=1,
-            facecolor='w',
-            edgecolor='k',
-            framealpha=1)
-
     legend3 = a2x.legend(handles1,labels1,
             loc='best',
             fontsize=12,
@@ -421,54 +365,15 @@ for AN in range(0,ANUM):
             edgecolor='k',
             framealpha=1)
 
-    legend5 = b2x.legend(handles1,labels1,
-            loc='best',
-            fontsize=12,
-            markerscale=1,
-            facecolor='w',
-            edgecolor='k',
-            framealpha=1)
-
-
     time = str(datetime.datetime.now()) 
     itmin = str(np.amin(ITNUM[:,:,AN])) 
     
-    """
     ax.set_title('DATE = '
             +time
             +' MINIMUM REALIZATION = '
             +itmin
             )
-    """
-    bx.set_title('DATE = '
-            +time
-            +' MINIMUM REALIZATION = '
-            +itmin
-            )
-    a2x.set_title('DATE = '
-            +time
-            +' MINIMUM REALIZATION = '
-            +itmin
-            )
-    
-    a3x.set_title('DATE = '
-            +time
-            +' MINIMUM REALIZATION = '
-            +itmin
-            )
-    
-    bx.set_title('DATE = '
-            +time
-            +' MINIMUM REALIZATION = '
-            +itmin
-            )
-    
-    b2x.set_title('DATE = '
-            +time
-            +' MINIMUM REALIZATION = '
-            +itmin
-            )
-  
+
     #ax.set_xlim([0.0,0.06])
     #a2x.set_xlim([0.0,0.06])
     #a3x.set_xlim([0.0,0.06])
@@ -478,36 +383,38 @@ for AN in range(0,ANUM):
     ax.set_xlim(left=0.0)
     a2x.set_xlim(left=0.0)
     a3x.set_xlim(left=0.0)
-    bx.set_xlim(left=0.0)
-    b2x.set_xlim(left=0.0)
   
     #ax.set_ylim(bottom=0.45,top=0.5)
     a2x.set_ylim(bottom=0.0)
     a3x.set_ylim(bottom=0.0)
-    bx.set_ylim(bottom=0.0,top=100)
-    b2x.set_ylim(bottom=0.0,top=100)
-    #b2x.set_ylim(bottom=0.0,top=15)
 
     ax.set_ylabel(r'$S(Q)$',fontsize=30)
     a2x.set_ylabel(r'$|\mathbf{\chi}|$',fontsize=20)
     a3x.set_ylabel(r'$S_\chi(0)/L$',fontsize=20)
-    
-    bx.set_ylabel(r'$\xi/L$',fontsize=20)
-    b2x.set_ylabel(r'$\xi_\chi/L$',fontsize=20)
-    
     ax.set_xlabel(r'$1/L$',fontsize=30)
     a2x.set_xlabel(r'$1/L$',fontsize=20)
     a3x.set_xlabel(r'$1/L$',fontsize=20)
-    
-    bx.set_xlabel(r'$1/L$',fontsize=20)
-    b2x.set_xlabel(r'$1/L$',fontsize=20)
-
+        
     ax.tick_params(which='both',width=2,
             labelsize=30,direction='in',
             bottom=True,top=True,
             left=True,right=True)
     ax.tick_params(which='major',length=20)
     ax.tick_params(which='minor',length=10)
+    
+    a2x.tick_params(which='both',width=2,
+            labelsize=30,direction='in',
+            bottom=True,top=True,
+            left=True,right=True)
+    a2x.tick_params(which='major',length=20)
+    a2x.tick_params(which='minor',length=10)
+
+    a3x.tick_params(which='both',width=2,
+            labelsize=30,direction='in',
+            bottom=True,top=True,
+            left=True,right=True)
+    a3x.tick_params(which='major',length=20)
+    a3x.tick_params(which='minor',length=10)
 
 
     afig.savefig("../plot/S_Q"
@@ -523,189 +430,12 @@ for AN in range(0,ANUM):
             bbox_inches='tight'
             )
 
-
     a3fig.savefig("../plot/CS_Q"
             +"_ALPHA_"
             +str("%.4f" % float(AHASH[AN]))
             +".pdf",
             bbox_inches='tight'
             )
-
-    bfig.savefig("../plot/XI_Q"
-            +"_ALPHA_"
-            +str("%.4f" % float(AHASH[AN]))
-            +".pdf",
-            bbox_inches='tight'
-            )
-
-    b2fig.savefig("../plot/CXI_Q"
-            +"_ALPHA_"
-            +str("%.4f" % float(AHASH[AN]))
-            +".pdf",
-            bbox_inches='tight'
-            )
-
-
-    # plotting the cumulant figure
-
-    for LN in range(0,LNUM):
-
-        LV = int(LHASH[LN])
-        line13 = dx.errorbar(DRAY,
-                XI_EST[LN,:,AN][DORD]/LV,
-                yerr=XI_EST_ERR[LN,:,AN][DORD]/LV,
-                #color=CLR[DN],
-                lw=2,
-                marker='.',
-                ms=10,
-                label=r'$L=$'+LHASH[LN]
-                )
-        line14 = d2x.errorbar(DRAY,
-                CXI_EST[LN,:,AN][DORD]/LV,
-                yerr=CXI_EST_ERR[LN,:,AN][DORD]/LV,
-                #color=CLR[DN],
-                lw=2,
-                marker='.',
-                ms=10,
-                label=r'$L=$'+LHASH[LN]
-                )
-
-
-    LHLIST = [float(LHASH[i]) for i in range(0,LNUM)]
-    handles, labels = dx.get_legend_handles_labels()
-
-    tup = sorted(zip(LHLIST,handles,labels))
-    LHLIST, handles, labels = zip(*tup)
-
-    legend13 = dx.legend(handles,labels,
-            loc='best',
-            fontsize=12,
-            markerscale=1,
-            facecolor='w',
-            edgecolor='k',
-            framealpha=1)
-
-    legend14 = d2x.legend(handles,labels,
-            loc='best',
-            fontsize=12,
-            markerscale=1,
-            facecolor='w',
-            edgecolor='k',
-            framealpha=1)
-  
-    dx.set_xlim(left=0.0)
-    d2x.set_xlim(left=0.0)
-    dx.set_ylim(bottom=0.0)
-    #d2x.set_ylim(bottom=0.0,top=1)
-    d2x.set_ylim(bottom=0.0)
     
-    dx.set_ylabel(r'$\xi/L$',fontsize=20)
-    dx.set_xlabel(r'$\delta J/J$',fontsize=20)
-
-    d2x.set_ylabel(r'$\xi_\chi/L$',fontsize=20)
-    d2x.set_xlabel(r'$\delta J/J$',fontsize=20)
-
-
-    dfig.savefig("../plot/XI_BINDER"
-            +"_ALPHA_"
-            +str("%.4f" % float(AHASH[AN]))
-            +".pdf",
-            bbox_inches='tight'
-            )
-
-
-    d2fig.savefig("../plot/CXI_BINDER"
-            +"_ALPHA_"
-            +str("%.4f" % float(AHASH[AN]))
-            +".pdf",
-            bbox_inches='tight'
-            )
-
-    # fitting the corr. length vs Delta exponential
-
-    # structure factor correlation length
-
-    YDATA = np.log(XI_DELTA[:,AN])
-    XDATA = DELTA_ARR[:,AN]
-    cx.plot(XDATA,YDATA,'b.',label='Data')
-
-    popt, pcov = curve_fit(invpar,XDATA,YDATA)
-
-    PDATA = np.linspace(XDATA.min(),
-            XDATA.max(),
-            200)
-    cx.plot(PDATA,invpar(PDATA, *popt),'k-',
-            label=
-            r'$\log\xi = a + b/(\delta J/J)^2$,'
-            +'\n'
-            +r' $a=$'
-            +str("%.4f" % popt[0])
-            +r' $b=$'
-            +str("%.4f" % popt[1])
-            )
-
-    legend = cx.legend(loc='best',
-            fontsize=12,
-            markerscale=1,
-            facecolor='w',
-            edgecolor='k',
-            framealpha=1)
-  
-    cx.set_xlim(left=0.0)
-    cx.set_ylim(bottom=0.0)
- 
-    cx.set_title(r'$\alpha=$'+str("%.2f" % float(AHASH[AN])))
-    cx.set_ylabel(r'$\log\xi$',fontsize=20)
-    cx.set_xlabel(r'$\delta J/J$',fontsize=20)
-
-    cfig.savefig("../plot/XI_DELTA"
-            +"_ALPHA_"
-            +str("%.4f" % float(AHASH[AN]))
-            +".pdf",
-            bbox_inches='tight'
-            )
-    # vector chirality correlation length
-
-    YDATA = np.log(CXI_DELTA[:,AN])
-    XDATA = DELTA_ARR[:,AN]
-    c2x.plot(XDATA,YDATA,'b.',label='Data')
-
-    popt, pcov = curve_fit(invpar,XDATA,YDATA)
-
-    PDATA = np.linspace(XDATA.min(),
-            XDATA.max(),
-            200)
-    c2x.plot(PDATA,invpar(PDATA, *popt),'k-',
-            label=
-            r'$\log\xi = a + b/(\delta J/J)^2$,'
-            +'\n'
-            +r' $a=$'
-            +str("%.4f" % popt[0])
-            +r' $b=$'
-            +str("%.4f" % popt[1])
-            )
-
-    legend = c2x.legend(loc='best',
-            fontsize=12,
-            markerscale=1,
-            facecolor='w',
-            edgecolor='k',
-            framealpha=1)
-
-    c2x.set_xlim(left=0.0)
-    c2x.set_ylim(bottom=0.0)
-    
-    c2x.set_title(r'$\alpha=$'+str("%.2f" % float(AHASH[AN])))
-    c2x.set_ylabel(r'$\log\xi_\chi$',fontsize=20)
-    c2x.set_xlabel(r'$\delta J/J$',fontsize=20)
-
-    c2fig.savefig("../plot/CXI_DELTA"
-            +"_ALPHA_"
-            +str("%.4f" % float(AHASH[AN]))
-            +".pdf",
-            bbox_inches='tight'
-            )
-
-
     plt.close('all')
 
