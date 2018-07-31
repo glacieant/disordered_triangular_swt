@@ -18,6 +18,8 @@ ANGVAR = [1.0,1.0,1.0,1.0,1.0]
 BOOTNUM = [100,100,100,100,100]
 # a global tolerance value
 GTOL = 10.0**(-6) 
+# bimodal strength
+PROB = [0.5] 
 # the disorder amplitude
 DELTA = [0.2,0.6,0.99] 
 # the ratio between nearest and next 
@@ -60,19 +62,20 @@ os.putenv("MKL_DYNAMIC","FALSE")
 
 # Importing the main script
 
-import src.tri_imp as tmi
+import src.tri_dis as tmd
 
 # fixing the simulation parameter tuple #
 
 ivar = collections.namedtuple('ivar',
         'LSYS ZCO ITERDISD \
                 ANGVAR BOOTNUM \
-                GTOL DELTA ALPHA \
+                GTOL PROB DELTA ALPHA \
                 CLNUM DNMR')
 
 # generate paramter range
 
 isize = len(LSYS)
+psize = len(PROB)
 dsize = len(DELTA)
 asize = len(ALPHA)
 tdisd = sum(ITERDISD)
@@ -83,9 +86,10 @@ def const(DNMR):
 
     carray = range(len(DNMR))
     for DNM in DNMR:
-        DLT = (DNM%(asize*dsize))%dsize 
-        ALP = (DNM%(asize*dsize))/dsize
-        SIM = (DNM/(asize*dsize))
+        PRB = (DNM%(asize*dsize*psize))%(dsize*psize)%psize
+        DLT = (DNM%(asize*dsize*psize))%(dsize*psize)/psize
+        ALP = (DNM%(asize*dsize*psize))/(dsize*psize)
+        SIM = (DNM/(asize*dsize*psize))
 
         for LI in range(isize):
 
@@ -98,6 +102,7 @@ def const(DNMR):
                         ANGVAR = ANGVAR[LI],
                         BOOTNUM = BOOTNUM[LI],
                         GTOL = GTOL,
+                        PROB = PROB[PRB],
                         DELTA = DELTA[DLT],
                         ALPHA = ALPHA[ALP],
                         CLNUM = CLNUM,
@@ -107,8 +112,8 @@ def const(DNMR):
 
     return carray
 
-DNX = range(dsize*asize*tdisd)
+DNX = range(psize*dsize*asize*tdisd)
 
 # batch processing
 pool = mp.Pool()
-pool.map(tmi.main,const(DNX))
+pool.map(tmd.main,const(DNX))

@@ -12,7 +12,8 @@ def fermi(E,T):
     return 1.0/(np.exp(E/T)+1.0)
 
 def init_cpl(NSYS,nbr,
-        ZCO,DELTA,
+        ZCO,
+        PROB,DELTA,
         ALPHA,J):
 
     # zeroing out the couplings
@@ -21,7 +22,7 @@ def init_cpl(NSYS,nbr,
     
     if DELTA != 0.0:
         DXP = np.random.uniform(0.0,1.0,size=(NSYS*12))
-        JBANK = 1.0 - DELTA*np.heaviside(DXP-0.5,1.0)
+        JBANK = 1.0 - DELTA*np.heaviside(DXP-PROB,1.0)
     else:
         JBANK = np.full((NSYS*6),1.0)
     q = 0
@@ -61,10 +62,8 @@ def init_param_rand(NSYS,nbr,
     
     # zeroing out the parameter matrices
     
-    
     M[:] = 0.0
    
-    
     M[1] = np.random.uniform(-ANGVAR,ANGVAR,size=(NSYS,3))
     M[1] = np.einsum('i,ij->ij',np.einsum('ij,ij->i',M[1],M[1])**(-0.5),M[1])
     
