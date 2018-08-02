@@ -5,7 +5,7 @@ import datetime
 import multiprocessing as mp
 #folder = "sharp_wall"
 #folder = "single_impurity"
-folder = "bimodal_heisenberg"
+folder = "hbrg_gaussian"
 #folder = "test_chir_2"
 os.chdir("../"+folder+"/out/data")
 import sys
@@ -417,20 +417,20 @@ for AN in range(0,ANUM):
     a3x.tick_params(which='minor',length=10)
 
 
-    afig.savefig("../plot/S_Q"
+    afig.savefig("../plot/S_Q-HBRG"
             +"_ALPHA_"
             +str("%.4f" % float(AHASH[AN]))
             +".pdf",
             bbox_inches='tight'
             )
-    a2fig.savefig("../plot/CHIR"
+    a2fig.savefig("../plot/CHIR-HBRG"
             +"_ALPHA_"
             +str("%.4f" % float(AHASH[AN]))
             +".pdf",
             bbox_inches='tight'
             )
 
-    a3fig.savefig("../plot/CS_Q"
+    a3fig.savefig("../plot/CS_Q-HBRG"
             +"_ALPHA_"
             +str("%.4f" % float(AHASH[AN]))
             +".pdf",

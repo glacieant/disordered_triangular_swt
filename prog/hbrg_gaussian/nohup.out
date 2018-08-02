@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "./run.py", line 63, in <module>
+    import src.tri_imp as tmi
+  File "/home2/santanu/Documents/disordered_triangular_swt/prog/weak_disorder/src/tri_imp.py", line 7, in <module>
+    import numpy as np
+ImportError: No module named numpy
+Traceback (most recent call last):
+  File "./run.py", line 63, in <module>
+    import src.tri_imp as tmi
+  File "/home2/santanu/Documents/disordered_triangular_swt/prog/weak_disorder/src/tri_imp.py", line 7, in <module>
+    import numpy as np
+ImportError: No module named numpy
+Traceback (most recent call last):
+  File "./run.py", line 63, in <module>
+    import src.tri_imp as tmi
+  File "/home2/santanu/Documents/disordered_triangular_swt/prog/weak_disorder/src/tri_imp.py", line 7, in <module>
+    import numpy as np
+ImportError: No module named numpy
+Traceback (most recent call last):
+  File "./run.py", line 63, in <module>
+    import src.tri_imp as tmi
+  File "/home2/santanu/Documents/disordered_triangular_swt/prog/weak_disorder/src/tri_imp.py", line 7, in <module>
+    import numpy as np
+ImportError: No module named numpy
+Traceback (most recent call last):
+  File "./run.py", line 63, in <module>
+    import src.tri_imp as tmi
+  File "/home2/santanu/Documents/disordered_triangular_swt/prog/weak_disorder/src/tri_imp.py", line 7, in <module>
+    import numpy as np
+ImportError: No module named numpy
+System size/simulation array length wrong
+Traceback (most recent call last):
+  File "./run.py", line 63, in <module>
+    import src.tri_imp as tmi
+  File "/home2/santanu/Documents/disordered_triangular_swt/prog/weak_disorder/src/tri_imp.py", line 7, in <module>
+    import numpy as np
+ImportError: No module named numpy
