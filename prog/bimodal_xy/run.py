@@ -7,21 +7,21 @@ import multiprocessing as mp
 ##################################################
 
 # system size
-LSYS = [6,12] 
+LSYS = [6,12,18,24,30,36,42,48,54,60,66,72] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [2,2]
+ITERDISD = [200,200,200,200,200,200,200,200,200,200,200,200]
 # initial angle fluctuation
-ANGVAR = [1.0,1.0]
+ANGVAR = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0]
 # number of bootstrapping
-BOOTNUM = [2,2]
+BOOTNUM = [200,200,200,200,200,200,200,200,200,200,200,200]
 # a global tolerance value
 GTOL = 10.0**(-6) 
 # bimodal strength
-PROB = [0.5] 
+PROB = [0.25,0.5] 
 # the disorder amplitude
-DELTA = [0.2,0.6] 
+DELTA = [0.2,0.4,0.6,0.8,0.99] 
 # the ratio between nearest and next 
 # nearest couplings
 ALPHA = [0.0] 

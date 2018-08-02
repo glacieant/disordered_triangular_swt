@@ -309,7 +309,6 @@ for PN in range(0,PNUM):
                     marker='.',
                     ms=10,
                     label=r'$\Delta=$'+DHASH[DN],
-                    color=CLR[DN]
                     )
 
             line3 = a2x.errorbar(LRAY,
@@ -320,7 +319,6 @@ for PN in range(0,PNUM):
                     ms=10,
                     label=r'$\delta J/J=$'+str("%.2f" % float(DHASH[DN]))
                     )
-
 
             line4 = a3x.errorbar(LRAY,
                     CSFC[:,DN,AN,PN][LORD],
@@ -414,7 +412,7 @@ for PN in range(0,PNUM):
         a3x.tick_params(which='minor',length=10)
 
 
-        afig.savefig("../plot/S_Q"
+        afig.savefig("../plot/S_Q-HBRG"
                 +"_ALPHA_"
                 +str("%.4f" % float(AHASH[AN]))
                 +"_PROB_"
@@ -422,7 +420,7 @@ for PN in range(0,PNUM):
                 +".pdf",
                 bbox_inches='tight'
                 )
-        a2fig.savefig("../plot/CHIR"
+        a2fig.savefig("../plot/CHIR-HBRG"
                 +"_ALPHA_"
                 +str("%.4f" % float(AHASH[AN]))
                 +"_PROB_"
@@ -431,7 +429,7 @@ for PN in range(0,PNUM):
                 bbox_inches='tight'
                 )
 
-        a3fig.savefig("../plot/CS_Q"
+        a3fig.savefig("../plot/CS_Q-HBRG"
                 +"_ALPHA_"
                 +str("%.4f" % float(AHASH[AN]))
                 +"_PROB_"
