@@ -19,7 +19,7 @@ BOOTNUM = [100,100,50,20,10]
 # a global tolerance value
 GTOL = 10.0**(-10) 
 # the disorder amplitude
-DELTA = [0.2,0.6,0.8] 
+DELTA = [0.3,0.4,0.5] 
 # the ratio between nearest and next 
 # nearest couplings
 ALPHA = [0.0] 
