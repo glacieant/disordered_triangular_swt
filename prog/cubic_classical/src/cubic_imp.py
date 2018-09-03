@@ -30,7 +30,7 @@ def main(const):
 
     # field params
     M = np.zeros((2,NSYS,3),dtype=np.float64)
-    M0 = np.zeros((2,NSYS,3),dtype=np.float64)
+    #M0 = np.zeros((2,NSYS,3),dtype=np.float64)
 
     # the hamiltonian matrix and coupling
     J = np.zeros((NSYS,NSYS),dtype=np.float64)
@@ -46,23 +46,23 @@ def main(const):
 
             # initiating parameters
             tool.init_param(LSYS,DELTA,ALPHA,ANGVAR,M)
-            tool.init_param(LSYS,DELTA,ALPHA,ANGVAR,M0)
+            #tool.init_param(LSYS,DELTA,ALPHA,ANGVAR,M0)
             
             # classical algorithm to get the magnetic
             # ground state of the pure and the bond 
             # impurity system
 
-            algo.classic_zmc(CLNUM,LSYS,J,M0,GTOL)
+            #algo.classic_zmc(CLNUM,LSYS,J,M0,GTOL)
 
-            M[1,:] = M0[1,:]
+            #M[1,:] = M0[1,:]
             
-            impsite = (((LSYS+1)/2)*(LSYS**2) 
-                    + (LSYS*((LSYS+1)/2-1)+LSYS/2))
+            #impsite = (((LSYS+1)/2)*(LSYS**2) 
+            #        + (LSYS*((LSYS+1)/2-1)+LSYS/2))
 
-            J[impsite-1,impsite] = 0.0
-            J[impsite,impsite-1] = 0.0
+            #J[impsite-1,impsite] = 0.0
+            #J[impsite,impsite-1] = 0.0
 
-            algo.classic_zmc(CLNUM,LSYS,J,M,GTOL)
+            #algo.classic_zmc(CLNUM,LSYS,J,M,GTOL)
 
             ## output data ##
 
@@ -75,7 +75,7 @@ def main(const):
                     "_BOOT_"+str(g)+
                     ".npz",
                     J=J,
-                    spin0=M0[1],
+                    #spin0=M0[1],
                     spin=M[1],
                     )
 

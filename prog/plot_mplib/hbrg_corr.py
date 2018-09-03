@@ -223,14 +223,16 @@ for LN in range(0,LNUM):
                 edgecolor='k',
                 framealpha=1)
 
-        time = str(datetime.datetime.now()) 
-        itmin = str(np.amin(ITNUM[:,:,AN])) 
+        #time = str(datetime.datetime.now()) 
+        #itmin = str(np.amin(ITNUM[:,:,AN])) 
         
-        ax.set_title('DATE = '
-                +time
-                +' MINIMUM REALIZATION = '
-                +itmin
-                )
+        #ax.set_title('DATE = '
+        #        +time
+        #        +' MINIMUM REALIZATION = '
+        #        +itmin
+        #        )
+
+        ax.set_title('Triangular Lattice Heisenberg Model')
 
         #ax.set_xlim(left=0.0)
         #ax.set_ylim(bottom=0.45,top=0.5)
@@ -250,7 +252,7 @@ for LN in range(0,LNUM):
                 +str("%d" % int(LHASH[LN]))
                 +"_ALPHA_"
                 +str("%.4f" % float(AHASH[AN]))
-                +".png",
+                +".pdf",
                 bbox_inches='tight'
                 )
         
