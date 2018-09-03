@@ -50,7 +50,7 @@ def main(const):
         tool.init_cpl(NSYS,nbr,
                     ZCO,DELTA,ALPHA,J)
         
-        ENMIN = -100000000.0
+        ENMIN = 100000000.0
         # looping over bootstrapped initialisations
         for g in range(0,BOOTNUM):
 
@@ -73,7 +73,7 @@ def main(const):
 
             ENTEMP = tool.en_calc(NSYS,nbr,J,M0[1])
 
-            if ENTEMP > ENMIN:
+            if ENTEMP < ENMIN:
 
                 ENMIN = ENTEMP
 

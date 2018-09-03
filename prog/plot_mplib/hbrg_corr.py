@@ -250,7 +250,7 @@ for LN in range(0,LNUM):
                 +str("%d" % int(LHASH[LN]))
                 +"_ALPHA_"
                 +str("%.4f" % float(AHASH[AN]))
-                +".pdf",
+                +".png",
                 bbox_inches='tight'
                 )
         
