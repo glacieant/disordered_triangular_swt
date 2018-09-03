@@ -31,15 +31,19 @@ the fate of long range order in these systems.
 \section{NL$\sigma$-model for non-collinear antiferromagnets}
 
 
-In non-collinear magnets the original symmetry of the spins are fully broken, 
+In non-collinear magnets the original symmetry of the spins is fully broken, 
 e.g. in the triangular lattice heisenberg antiferromagnet the broken symmetry 
-is $O(3)/Z_2\simeq SO(3)$. As shown by Azaria et. al \cite{azaria-93}, for a
-complete description of the low energy excitation one has to also consider the 
-planar nature of the ground state and distinguish between the three Goldstone 
-modes of the problem. In the following we follow a microscopic analysis 
-\cite{dombre-88} to obtain the coarse-grained effective hamiltonian of the 
-triangular lattice antiferromagnet with continuous symmetry. Later, we shall 
-extend this scheme to consdier the effect of bond disorder.. 
+is 
+\begin{equation}
+    O(3)/Z_2\simeq SO(3)
+\end{equation}
+.As shown by Azaria et. al \cite{azaria-93}, for a complete description of the 
+low energy excitation one has to also consider the planar nature of the ground 
+state and distinguish between the three Goldstone modes of the problem. In the 
+following we follow a microscopic analysis \cite{dombre-88} to obtain the 
+coarse-grained effective hamiltonian of the triangular lattice antiferromagnet 
+with continuous symmetry. Later, we shall extend this scheme to consdier the 
+effect of bond disorder.. 
 
 We consider a non-collinear ordered state. The Goldstone modes shall be excited 
 by the generators of the broken symmetry group, $G/H$. With the trinagular
@@ -73,10 +77,8 @@ following expression.
         \right) 
     \end{aligned}
 \end{equation}
-The single gradient term has been dropped from the expansion as it can be 
-easily shown to have no contribution at all from the analysis that follows. 
-Now, a transformation to the orthonormal basis, 
-$\mbf{e}_1=\left(\mbf{n}_A+\mbf{n}_B\right)$ and 
+The single gradient term cancels from the expansion. Now, a transformation 
+to the orthonormal basis, $\mbf{e}_1=\left(\mbf{n}_A+\mbf{n}_B\right)$ and 
 $\mbf{e}_2=\frac{1}{\sqrt{3}}\left(\mbf{n}_A-\mbf{n}_B\right)$ re-arranges 
 the terms of the hamiltonian in a convenient form.
 \begin{equation}
@@ -87,38 +89,47 @@ the terms of the hamiltonian in a convenient form.
     \end{aligned}
 \end{equation}
 An extra $O(2)$ symmetry within the $(\mbf{e}_1,\mbf{e}_2)$ vector space is 
-immediately apparent. Defining $S_0=(\mbf{e}_1,\mbf{e}_2)$ and performing a 
-gauge transformation $U = US_0$ we can re-write,
+immediately apparent. The lowest non-trivial representation, $U$ for $SO(3)$
+is three-dimensional. Therefore, by introducing,
+
+\begin{itemize}
+    \item A third orthonormal vector $\mbf{e}_3=\mbf{e}_1\times\mbf{e}_{2}$.
+    \item A projector $P\sim\text{diag}\left(1,1,0\right)$ to the 
+        $(\mbf{e}_1,\mbf{e}_2)$ plane.
+    \item Defining $S_0=(\mbf{e}_1,\mbf{e}_2,\mbf{e}_3)$ and performing a 
+        gauge transformation $U = US_0$ we can re-write,
+\end{itemize}
+
 \begin{equation}
     \begin{aligned}
-        H &= -\frac{3JS^2a^2}{2} \Tr\left(S_0^{-1} U^{-1}\grad^2U S_0\right)\\
-        &= -\frac{3JS^2a^2}{2} \Tr\left(U^{-1}\grad^2U\right)
+        H &= -\frac{3JS^2a^2}{2} 
+        \Tr\left(S_0^{-1}P U^{-1}\grad^2U PS_0\right)\\
+        &= -\frac{3JS^2a^2}{2} \Tr\left(PU^{-1}\grad^2U\right)
     \end{aligned}
 \end{equation}
-However, it has been shown that for a complete renormalization of the problem 
-one has to consider a third unit vector 
-$\mbf{e}_3=\mbf{e}_1\times\mbf{e}_{2}$ \cite{azaria-93}. 
+However, for a proper RG treatment of the action it is necessary to consider 
+a separate copuling constant \cite{azaria-93}. 
 This introduces a second coupling to the problem with the complete hamiltonian 
 now given by,
 \begin{equation}
     \begin{aligned}
-        H &= p_1\left(\mbf{e}_1 U^{-1}\cdot\grad^2U\mbf{e}_1
+        H &= -p_1\left(\mbf{e}_1 U^{-1}\cdot\grad^2U\mbf{e}_1
         +\mbf{e}_2 U^{-1}\cdot\grad^2U\mbf{e}_2
         \right)
-        +p_2\left(\mbf{e}_3 U^{-1}\cdot\grad^2U\mbf{e}_3\right)\\
-        &=\Tr\left(P(U^{-1}\grad U)^2\right)
+        -p_2\left(\mbf{e}_3 U^{-1}\cdot\grad^2U\mbf{e}_3\right)\\
+        &=-\Tr\left(P(U^{-1}\grad U)^2\right)
     \end{aligned}
 \end{equation}
 with gauge transformation $U = U (\mbf{e}_1,\mbf{e}_2,\mbf{e}_3)$ generating 
 the full $SO(3)$ Goldstone modes and the diagonal coupling matrix 
 $P=\text{diag}(p_1,p_1,p_2)$ ensuring the $O(3)\times O(2)/O(2)$ nature of 
 the exciatations. Given $\pi_1(SO(3))=Z_2$, the order parameter $U$ can have 
-$Z_2$ point defects which are gapped out at zero temperature. With this 
-knowledge we can immediately write down the quantum action of the full 
-Goldstone mode problem\cite{dombre-88,azaria-92}.
+$Z_2$ point defects which are gapped out at zero temperature. Therefor the 
+quantum action only has terms with second time derivatives and the full 
+Goldstone mode action is therefore given by \cite{dombre-88,azaria-92}.
 \begin{equation}
     \begin{aligned}
-        S &=\int d\tau\int d^dx 
+        S &=-\int d\tau\int d^dx 
         \left[
         \Tr\left(P_\tau(U^{-1}\partial_\tau U)^2\right)
         +
@@ -127,24 +138,24 @@ Goldstone mode problem\cite{dombre-88,azaria-92}.
     \end{aligned}
 \end{equation}
 where the two distinct diagonal matrices, $P_\tau$ and $P_x$ presupposes the 
-existence of three different spin-wave velocities of the problem as obtained 
-from a spin-wave expansion around the ordered state.
+existence of three different spin-wave velocities of the problem as also 
+obtained from a spin-wave expansion around the ordered state.
 
 
 \section{Bond-disordered non-collinear antiferromagnet}
 
 First, we consider an isolated impurity within one of the elementary plaquettes
 and we find that the additional contribution from a bond impurity across 
-sublattices $A-B$, $J_{AB} = J + \delta J$ is given by,
+sublattices $AB$, $J_{AB} = J + \delta J$ is given by,
 \begin{equation}
     \begin{aligned}
         \delta H &= \delta J \ \mbf{S}_A(\mbf{x}_A)\cdot\mbf{S}_B(\mbf{x}_B)
     \end{aligned}
 \end{equation}
-. Unlike the bulk, the first energy cost from Goldstone mode excitations would 
-now come from the single gradient term. Like before, we use the convenient 
-orthonormal basis transformation and find the impurity contribution to be of 
-the following form.
+. Unlike the bulk, the energy cost from Goldstone mode excitations now has
+contribution from the uncompensated single gradient term. Like before, we 
+use the convenient orthonormal basis transformation and find the impurity 
+contribution to be of the following form.
 \begin{equation}
     \begin{aligned}
         \delta H &= \delta JS^2a \ \mbf{n}_AU^{-1}\cdot(\mbf{u}_{AB}\cdot\grad)U\mbf{n}_B\\
@@ -156,14 +167,12 @@ the following form.
 \end{equation}
 where we have exploited the orthonormality of the basis to drop the terms 
 $\mbf{e}_1U^{-1}\grad U\mbf{e}_1$ and $\mbf{e}_2 U^{-1}\grad U\mbf{e}_2$ which 
-are zero. Similar considerations for bond impurity across the other two bond 
-direction reveals that we have the same form of the impurity coupling once 
-expressed in terms of the orthonormal basis. Now we introduce a local dipolar field,
-$\mbf{h}=\frac{\delta J}{\sqrt{3}Ja}\mbf{u}_{AB}$ and the impurity term assumes the form,
+are zero. For a bond impurity across a bond orientation $\mbf{u}_\alpha$ 
+the pertubation assumes the form,
 \begin{equation}
     \begin{aligned}
-        \delta H &= \mbf{h}\cdot\Tr\left(
-        Pt^{3}
+        \delta H &= h^\alpha\mbf{u}_\alpha\cdot\Tr\left(
+        P_xt^{3}
         \begin{pmatrix}
             \mbf{e}_1^T\\
             \mbf{e}_2^T\\
@@ -173,150 +182,311 @@ $\mbf{h}=\frac{\delta J}{\sqrt{3}Ja}\mbf{u}_{AB}$ and the impurity term assumes 
         \grad
         U
         (\mbf{e}_1,\mbf{e}_2,\mbf{e}_3)\right) \\
-        &= \mbf{h}\cdot\Tr\left(Pt^3 U^{-1}\grad U\right)
+        &= h^\alpha\mbf{u}_\alpha
+        \cdot\Tr\left(P_xt^3 U^{-1}\grad U\right)
     \end{aligned}
 \end{equation}
-where the same gauge choice from the bulk action was adopted and it is to be 
-noticed that the $SO(3)$ generator corresponding to in plane rotation 
-$t^3=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&0\end{pmatrix}$ makes an appearance. 
-The latter has to do with the fact that in the triangular lattice the local 
-dipolar field arising due to bond disorder couples directly with the Goldstone 
-mode associated with the in plane rotation. Now, it is straightforward to 
-generalize to the case of spatially distributed bond impurities i.e. disordered
-bonds. For a generic scenario involving the emergent random dipolar field 
-coupled with multiple Goldstone modes the hamiltonian shall take up the 
-following form.
+. The same gauge choice and projector from the bulk action was used and the 
+$SO(3)$ generator corresponding to the in plane rotation
+\begin{equation}
+    t^3=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&0\end{pmatrix}
+\end{equation}
+makes an automatic appearance. This tells us that in the triangular lattice 
+the local dipolar field arising due to bond disorder couples directly with 
+the Goldstone mode associated with the in plane rotation. Now, it is 
+straightforward to generalize to the case of spatially distributed bond 
+impurities i.e. disordered bonds.
 \begin{equation}
     \begin{aligned}
         H = \int d^dx\left[
-            \Tr\left(P(U^{-1}\grad U)^2\right)
-            +\mbf{h}\cdot\Tr\left(P(c_a t^a)(U^{-1}\grad U)\right)
+            \Tr\left(P_x(U^{-1}\grad U)^2\right)
+            +h(\mbf{x})^\alpha
+            \mbf{u}_\alpha
+            \cdot\Tr\left(P_xt^3(U^{-1}\grad U)\right)
         \right]
     \end{aligned}
 \end{equation}
 
 \section{Replica renormalization group}
-We shall consider the appropriate replica action suitable for the 
-bond-disordered non-collinear order. 
+
+We consider a gaussian distribution for the disordered couplings,
 \begin{equation}
     \begin{aligned}
-        S =& -\frac{g}{4}\sum_r\int d\tau\int d^dx
-        \Tr\left[
-            \left(U_r^{-1}\partial_\mu U_r\right)_{G/H}^2
+        \mathcal{P}\left[h\right]
+        &=\int\mathcal{D}h\text{e}^
+        {-\frac{1}{2\Delta^2}\int d^dx
+        h^\alpha(\mbf{x})
+        h^\alpha(\mbf{x})
+        }
+    \end{aligned}
+\end{equation}
+which allows us to use the replica trick and write down a homogeneous
+action suitable for the bond-disordered non-collinear order, albeit, at
+the expense of added replica indices. 
+\begin{equation}
+    \begin{aligned}
+        S =& -\sum_r\int d\tau\int d^dx
+        \Tr\left[P_\mu
+            \left(U_r^{-1}\partial_\mu U_r\right)_{G}^2
             \right] \\
-        &-\frac{\Delta^2g^2}{4}
+        &-\Delta^2
         \sum_{r,s}\int d\tau\int d\tau'\int d^dx
-        \Tr\left[
-            \left(U_r^{-1}\grad U_r\right)_X
+        \Tr\left[P_xt^3
+            \left(U_r^{-1}\grad U_r\right)_G
+            \right]
             \cdot
-            \left(U_s^{-1}\grad U_s\right)_X
+            \Tr\left[P_xt^3
+            \left(U_s^{-1}\grad U_s\right)_G
             \right]
     \end{aligned}
 \end{equation}
 Where the concrete example for the triangular lattice Heisenberg 
-antiferromagnet shall have $Lie\left[G/H\right]=Lie\left[SO(3)\right]$ and 
-$Lie\left[X\right]=Lie\left[SO(3)\right]-Lie\left[SO(3)/SO(2)\right]$. We 
-note the dimensional nature of the two couplings,
+antiferromagnet shall have 
+$\mathcal{L}\left[G\right]=\mathcal{L}\left[SO(3)\right]$ and 
+$t^3 \in \mathcal{L}\left[SO(2)\right]$. We perform a trivial rescaling 
+to restore the space-time Lorentz symmetry and re-write conveniently,
 \begin{equation}
     \begin{aligned}
-        \left[g\right] &= d - 1\\
+        S =& -\sum_r\int d\tau\int d^dx
+        \left(\frac{g_1}{2}\Tr\left[
+            \left(U_r^{-1}\partial_\mu U_r\right)_{G/X}^2\right]
+        +\frac{g_2}{2}\Tr\left[
+            \left(U_r^{-1}\partial_\mu U_r\right)_{X}^2
+            \right]
+        \right)\\
+        &-\frac{\Delta^2g_2^2}{4}
+        \sum_{r,s}\int d\tau\int d\tau'\int d^dx
+        \Tr\left[t^3
+            \left(U_r^{-1}\grad U_r\right)_G
+            \right]
+            \cdot
+            \Tr\left[t^3
+            \left(U_s^{-1}\grad U_s\right)_G
+            \right]
+    \end{aligned}
+\end{equation}
+with $X=SO(2)$. The dimensional natures of the bulk and disordered couplings 
+are immediately apparent,
+\begin{equation}
+    \begin{aligned}
+        \left[g_{1,2}\right] &= d - 1\\
         \left[\Delta\right] &= (2-d)/2
     \end{aligned}
 \end{equation}
-The bulk coupling $g$ is relevant and consistent with the fact that the
-homogeneous system is ordered. $g$ has a trivial renormalization,
+The bulk coupling $g_{1,2}$ is relevant and consistent with the fact that the
+homogeneous system is ordered. In this case $g_{1,2}$ has a trivial 
+renormalization,
 \begin{equation}
     \begin{aligned}
-        Z_gg\Lambda^{d-1} &= g_B \\
-        \implies \beta(g)
-        &=(1-d)\Lambda^{d-1}g + \mathcal{O}(1)
+        Z_{g_{1,2}}g_{1,2}\Lambda^{d-1} &= g_B \\
+        \implies \beta(g_{1,2})
+        &=(1-d)\Lambda^{d-1}g_{1,2} + \mathcal{O}(1)
     \end{aligned}
 \end{equation}
 In $d=1$, the bulk coupling becomes marginal and disorder is relevant. 
 Disorder shifts the wilsonian fixed point of the bulk action. However, in
 the following we shall focus on $d>=2$ and try to track the renormalization
 of the disorder coupling with the help of a perturbative expansion of the
-Goldstone mode action. We define Goldstone modes $\xi_a$ such that 
-$U=exp\left(\bsym{\xi}\cdot\mbf{t}\right)$ with $t^a\in Lie\left[G/H\right]$.
-It is straightforward to expand,
+Goldstone mode action. 
+
+We use the exponential representation for the full symmetry group, 
+$U=e^{\bsym{\xi}\cdot\mbf{t}}$ with $t^a\in \mathcal{L}\left[G\right]$
+and $\xi_a$ are the associated Goldstone modes. We identified the
+in-plane Goldstone mode $\in X$ to be special and there is an easy 
+separation between the respective generators of $\mathcal{L}(G/X)$ and 
+$\mathcal{L}(X)$. Using the notation,
 \begin{equation}
     \begin{aligned}
-        U_r^{-1}\partial_\mu U_r
-        = t^\alpha\left[
-            \partial_\mu\xi^r_\alpha
-            +\frac{K_{\alpha bc}}{2!}\left(\partial_\mu\xi^r_b\right)\xi^r_c
-            +\frac{K_{\alpha bcd}}{3!}\left(\partial_\mu\xi^r_b\right)
-            \xi^r_c\xi^r_d
-            +O(\xi^4)
+        t^a &\in \mathcal{L}(G/X) \\
+        t^\alpha &\in \mathcal{L}(X)
+    \end{aligned}
+\end{equation}
+we have the commutation relations,
+\begin{equation}
+    \begin{aligned}
+        \left[t^\alpha,t^\beta\right] 
+        &= f_{\alpha\beta\gamma}t^\gamma \\
+        \left[t^\alpha,t^b\right] 
+        &= f_{\alpha bc}t^c \\
+        \left[t^a,t^b\right] 
+        &= f_{ab\gamma}t^\gamma  \text{ \ and \ }\\
+        \Tr\left[t^at^b\right] &= -\delta^{ab}
+    \end{aligned}
+\end{equation}
+With the Lie algebra defined it is now straightforward to expand the 
+terms of the action in terms of the Goldstone modes.
+\begin{equation}
+    \begin{aligned}
+        -\Tr\left[\left(U^{-1}\partial_\mu U\right)^2_{G/X}\right]
+        &=(\partial_\mu\xi_a)^2 
+        + \frac{1}{3}\left(f_{ab\gamma}\xi_a\partial_\mu\xi_b\right)^2
+        + \hdots\\
+        -\Tr\left[\left(U^{-1}\partial_\mu U\right)^2_{X}\right]
+        &=(\partial_\mu\xi_\alpha)^2\\
+        -\Tr\left[
+            t^\alpha\left(U^{-1}\partial_\mu U\right)_G
             \right]
+        &= \partial_\mu\xi_\alpha
+            +\frac{K_{bc\alpha}}{2!}\left(\partial_\mu\xi_b\right)\xi_c
+            +\frac{K_{bcd\alpha}}{3!}\left(\partial_\mu\xi_b\right)
+            \xi_c\xi_d
+            +\hdots
     \end{aligned}
 \end{equation}
-where $K_{\alpha bc} = \left[t^b,t^c\right]_\alpha=f_{bc\alpha}$, 
-$K_{\alpha bcd} = \left[\left[t^b,t^c\right],t^d\right]_\alpha
-=f_{bcx}f_{xd\alpha}$ and so on with $f_{abc}$ being the structure constants
-of $Lie\left[G/H\right]$. With $G/H=SO(3)$ in mind we use a particular
-normalization of the generators, $\Tr\left[t^at^b\right]=-2\delta_{ab}$ 
-which relates the structure constants in to levi-civita tensors.
-
-Since, we shall not be concerned with the critical point of the ordered phase we can ignore the 
-differences between various spin-wave velocities and obtain a simpler Goldstone mode action.
+where we have used the fact that $X=SO(2)$ is an abelian group and used
+a compact notation $K_{bc\alpha} = \left[t^b,t^c\right]_\alpha=f_{bc\alpha}$, 
+$K_{bcd\alpha} = \left[\left[t^b,t^c\right],t^d\right]_\alpha
+=f_{bcx}f_{xd\alpha}$ and so on. The explicit form of the action therefore is.
 \begin{equation}
     \begin{aligned}
-        S &= \frac{1}{2}\int d\tau\int d^dx\left[
-            \rho_a\omega^\mu_a(\tau,\mbf{x})\omega^\mu_a(\tau,\mbf{x})
-            +c_a\rho_ah_i(\mbf{x})\omega^i_a(\tau,\mbf{x})
-        \right]
+        S =& \sum_r\int d\tau\int d^dx
+        \left(\frac{g_1}{2}\left[
+           (\partial_\mu\xi^r_a)^2 
+        + \frac{1}{3}\left(f_{ab\gamma}\xi^r_a\partial_\mu\xi^r_b\right)^2
+        + \hdots\right]
+        +\frac{g_2}{2}\left[
+            (\partial_\mu\xi^r_\alpha)^2            
+            \right]
+        \right)\\
+        &-\frac{\Delta^2g_2^2}{4}
+        \int d^dx
+        \left[\sum_r\int d\tau
+            \left(
+            \partial_\mu\xi^r_\alpha
+            +\frac{K_{bc\alpha}}{2!}\left(\partial_\mu\xi^r_b\right)\xi^r_c
+            +\frac{K_{bcd\alpha}}{3!}\left(\partial_\mu\xi^r_b\right)
+            \xi^r_c\xi^r_d
+            +\hdots
+            \right)
+            \right]^2
     \end{aligned}
 \end{equation}
-where we used the normalization $\Tr(Pt^at^b)=(\rho_a/2)\delta^{ab}$ and $f_{abc}$ are the 
-structure constants of the broken symmetry $G/H$,
+It is interesting to note the nature of infrared divergence of the theory, 
+for the $\xi^r_\alpha \in SO(2)$ bosons, driven by the quenched disorder 
+term of the action. One way to regulate this divergence is to introduce an 
+external field term which should ultimately be taken to zero
+\cite{brezin-76}. Introducing field strength, coupling constant and 
+disorder strength renormalization constants, $Z$, $Z_{g_{1,2}}$ and 
+$Z_\Delta$ we write down the full renormalizable replica theory for 
+our problem.
 \begin{equation}
     \begin{aligned}
-        \left[t^a,t^b\right]=f_{abc}t^c
+        S_{ren} =& \sum_r\int d\tau\int d^dx
+        \left(Z_{g_1}\Lambda^{d-1}\frac{g_1}{2}
+        \left[
+            Z(\partial_\mu\xi^r_a)^2 
+        + \frac{1}{3}\left(Zf_{ab\gamma}\xi^r_a\partial_\mu\xi^r_b\right)^2
+        + \hdots\right]
+        +Z_{g_2}\Lambda^{d-1}\frac{g_2}{2}
+        \left[Z
+            (\partial_\mu\xi^r_\alpha)^2            
+            \right]
+        \right)\\
+        &-Z_{\Delta}^2Z^2_{g_2}\Lambda^d\frac{\Delta^2g_2^2}{4}
+        \int d^dx
+        \left[\sum_r\int d\tau
+            \left(
+            \sqrt{Z}\partial_\mu\xi^r_\alpha
+            +Z\frac{K_{bc\alpha}}{2!}\left(\partial_\mu\xi^r_b\right)\xi^r_c
+            +Z^{3/2}\frac{K_{bcd\alpha}}{3!}\left(\partial_\mu\xi^r_b\right)
+            \xi^r_c\xi^r_d
+            +\hdots
+            \right)
+            \right]^2\\
+            &-Z^{-1/2}\Lambda^{d-1}\frac{g_2}{2}
+            m^2\sum_r\int d\tau\int d^dx
+            \left[
+                1-\frac{Z}{2!}\left(\xi^r_\alpha\right)^2
+                +\frac{Z^2}{4!}\Tr\left[t^\alpha t^\alpha
+                t^\alpha t^\alpha\right]
+                \left(\xi^r_\alpha\right)^4
+                \hdots
+                \right]
     \end{aligned}
 \end{equation}
-. In the case of triangular lattice we have $ G/H = SO(3)$ so $f_{abc}=\epsilon_{abc}$, i.e. 
-the levi-civita tensor.
-
-With random bond disorder we may consider a gaussian distribution for the inhomogeneous dipolar 
-fields,
+We consider the Greens function for the $\xi^r_\alpha$ Goldstone modes
+which gives rise to the logarithmic divergence of the theory.
 \begin{equation}
     \begin{aligned}
-        P\left[\mbf{h}\right]=\int\mathcal{D}\mbf{h} \ 
-        e^{-\frac{1}{2\Delta^2}\int d^dx\mbf{h}(\mbf{x})^2}
+        G^{rs}_\alpha(\omega,\mbf{k})
+        &=
+        \frac{1}{Z_{g_2}Z\Lambda^{d-1}}
+        \frac{1}{g_2}
+        \frac{\delta^{rs}}{\omega^2+\mbf{k}^2+m^2_0}
+        +
+        \frac{Z_\Delta^2\Lambda^{2-d}}{Z}
+        \frac{\Delta^2}{2}
+        \frac{\mbf{k}^2}
+        {\left(\omega^2+\mbf{k}^2+m_0^2\right)^2}
+        2\pi\delta(\omega)
     \end{aligned}
 \end{equation}
-and this leads to the homogeneous replica action of our interest.
+with,
 \begin{equation}
     \begin{aligned}
-        S =& \frac{1}{2}\Big[
-            \rho_a
-            \sum_{r}\int d\tau\int d^dx\
-            \omega^{r,\mu}_a(\tau,\mbf{x})\omega^{r,\mu}_a(\tau,\mbf{x})\\
-            &-
-            c^2_a\rho^2_a\Delta^2
-            \sum_{r,s}
-            \int d\tau\int d\tau'\int d^dx\
-            \omega^{r,i}_a(\tau,\mbf{x})
-            \omega^{s,i}_a(\tau',\mbf{x})
-            \Big]
+        m^2_0 = Z^{1/2}\Lambda^{d-1}\frac{g_2}{2}m^2
     \end{aligned}
 \end{equation}
-
-There are two different types of couplings of the problem, $\rho_a$ and $\Delta$ and their mass 
-dimensions are the following.
-This immediately tells us that disorder is marginal in $d=2$ and relevant at $d<2$. This
-result is consistent with the dimensionality of the infrared catastrophe related to the
-Goldstone mode fluctuation. However, at the same time we face the problem that our
-homogeneous couplings and the disorder coupling do not have a well defined perturbative 
-expansion at the same spatial dimension for $T=0$. Around $d=1$ the homogeneous couplings
-$\rho_a$ are marginal but the disorder coupling $\Delta$ is strongly relevant and flows to
-infinity. Unfortunately this does not tell us anything about what happens close to spatial 
-dimension $d=2$ when the disorder is marginal. Therefore, in the following we consider the 
-alternate scenario with an expansion at $d=2-\epsilon$. The homogeneous coupling is relevant 
-now but we shall only be concerned with the independent flow of the disorder coupling.
-
-\subsubsection{Renormalization of the disorder coupling $\Delta$ at $d=2-\epsilon$}
+The two-point function for $\xi^r_\alpha$ bosons up to one loop is,
+\begin{equation}
+    \begin{aligned}
+        \Gamma^{(2)}_{rs}\left(\omega,\mbf{k}\right)
+        =&Z_{g_2}Z\Lambda^{d-1}g_2(\omega^2+\mbf{k}^2)\delta_{rs}
+        -
+        Z_{\Delta}^2Z Z^2_{g_2}\Lambda^d\frac{\Delta^2g_2^2}{2}
+        \mbf{k}^2\\
+        &+Z^{1/2}\Lambda^{d-1}g_2m^2\delta_{rs}
+        -Z^{3/2}\Lambda^{d-1}g_2m^2\delta_{rs}
+        \frac{Z_\Delta^2\Delta^2}{8}
+        \Lambda^{2-d}\int \frac{d^dk}{(2\pi)^d}\frac{\mbf{k}^2}
+        {\left(\mbf{k}^2+m_0^2\right)^2}
+    \end{aligned}
+\end{equation}
+To capture the leading logarithmic contribution we perform dimensiona
+regularization and use the following formulae,
+\begin{equation}
+    \begin{aligned}
+        \int\frac{d^dk}{(2\pi)^d}\frac{1}{\mbf{k}^2+m_0^2}
+        &=\frac{(m_0)^{d-2}}{(4\pi)^{d/2}}\Gamma\left(1-d/2\right) \\
+        \left(\frac{4\pi\Lambda^2}{m_0^2}\right)^{\epsilon/2}
+        &=1+\frac{\epsilon}{2}\log\left(\frac{4\pi\Lambda^2}
+        {m_0^2}\right)+\mathcal{O}(\epsilon^2) \\
+        \Gamma(-n+\epsilon)
+        &=\frac{(-1)^n}{n!}
+        \left[\frac{1}{\epsilon}+\psi(n+1)\right]
+        +\mathcal{O}(\epsilon)
+    \end{aligned}
+\end{equation}
+with $\epsilon=2-d$. Now using the standard renormalization conditions
+to make the two point function finite we obtain.
+\begin{equation}
+    \begin{aligned}
+        Z &= 1 + \left(\frac{\Delta^2}{2}\right)\frac{1}{\epsilon}\\
+        Z_{g_2} &= 1 - \left(\frac{\Delta^2}{2}\right)\frac{1}{\epsilon}\\
+        Z_\Delta &= 1 + \left(\frac{\Delta^2}{4}\right)\frac{1}{\epsilon}\\
+    \end{aligned}
+\end{equation}
+The renormalization of the disorder strength $\Delta$ follow 
+straightforwardly by considering,
+\begin{equation}
+    \begin{aligned}
+        Z^2_\Delta\Lambda^\epsilon\Delta^2 &= \Delta_B^2 \\
+        \frac{d(Z_\Delta^2\Delta^2)}{d\log\Lambda}
+        &=-\epsilon Z^2_\Delta\Delta^2\\
+        \frac{d\Delta^2}{d\log\Lambda}
+        &=-\frac{\epsilon}{\frac{d\log(Z_\Delta^2\Delta^2)}{d\Delta^2}}\\
+        \frac{d\Delta^2}{d\log\Lambda}
+        &=-\epsilon\Delta^2 + \frac{\Delta^4}{4}\\
+        \frac{d\Delta^2}{d\log\Lambda}
+        &=(d-2)\Delta^2 + \frac{\Delta^4}{4}   
+    \end{aligned}
+\end{equation}
+The trivial renormalization of the bulk coupling has already been
+mentioned above and the subleading logarithmic correction is unimportant
+in this case. An interesting aspect of the calculation is that the 
+renormalization was driven by the in plane Goldstone mode fluctuation 
+and therefore the results shall be identical for the case of planar 
+non-collinear antiferromagnets, i.e the XY case.
 
 \begin{thebibliography}{99}
 
@@ -337,6 +507,9 @@ now but we shall only be concerned with the independent flow of the disorder cou
 
     \bibitem{dombre-88}
         Dombre and Read, 88
+
+    \bibitem{brezin-76}
+        Brezin and Zinn-Justin, 76
 
 \end{thebibliography}
 

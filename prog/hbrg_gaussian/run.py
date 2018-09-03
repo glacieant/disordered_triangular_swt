@@ -7,19 +7,19 @@ import multiprocessing as mp
 ##################################################
 
 # system size
-LSYS = [6,24,48,72,120,138] 
+LSYS = [60] 
 # co-ordination number of the lattice
 ZCO = 12
 # disorder iteration number 
-ITERDISD = [200,200,100,50,50,25]
+ITERDISD = [100]
 # initial angle fluctuation
-ANGVAR = [0.0,0.0,0.0,0.0,0.0,0.0]
+ANGVAR = [1.0]
 # number of bootstrapping
-BOOTNUM = [1,1,1,1,1,1]
+BOOTNUM = [100]
 # a global tolerance value
-GTOL = 10.0**(-10) 
+GTOL = 10.0**(-6) 
 # the disorder amplitude
-DELTA = [0.0,0.025,0.05,0.075,0.1] 
+DELTA = [0.0,0.2,0.4] 
 # the ratio between nearest and next 
 # nearest couplings
 ALPHA = [0.0] 

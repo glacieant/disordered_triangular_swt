@@ -28,7 +28,7 @@ def main(const):
     DNMR = const.DNMR # denominator for batch execution
 
     # seeding the random number generators
-    np.random.seed([LSYS,DNMR])
+    # np.random.seed([LSYS,DNMR])
 
     ## creating the nearest and next nearest neighbour map for ##
     ## the triangular lattice                                  ##
@@ -50,21 +50,21 @@ def main(const):
         tool.init_cpl(NSYS,nbr,
                     ZCO,DELTA,ALPHA,J)
         
-        ENMIN = 1000.0
+        ENMIN = -100000000.0
         # looping over bootstrapped initialisations
         for g in range(0,BOOTNUM):
 
             # initiating parameters
-            #if g%2 == 0:
-            tool.init_param_ord(NSYS,nbr,
+            if g%2 == 0:
+                tool.init_param_ord(NSYS,nbr,
                     ZCO,
                     DELTA,ALPHA,
                     ANGVAR,M0)
-            #else:
-            #     tool.init_param_rand(NSYS,nbr,
-            #            ZCO,
-            #            DELTA,ALPHA,
-            #            ANGVAR,M0)
+            else:
+                tool.init_param_rand(NSYS,nbr,
+                    ZCO,
+                    DELTA,ALPHA,
+                    ANGVAR,M0)
            
             # classical algorithm to get the magnetic
             # ground state of impurity system
@@ -73,7 +73,7 @@ def main(const):
 
             ENTEMP = tool.en_calc(NSYS,nbr,J,M0[1])
 
-            if ENTEMP < ENMIN:
+            if ENTEMP > ENMIN:
 
                 ENMIN = ENTEMP
 

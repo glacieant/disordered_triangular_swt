@@ -22,7 +22,7 @@ def init_cpl(NSYS,nbr,
     if DELTA != 0.0:
         JBANK = np.random.normal(loc=1.0,scale=DELTA,size=(NSYS*12))
     else:
-        JBANK = np.full((NSYS*6),1.0)
+        JBANK = np.full((NSYS*12),1.0)
     q = 0
     for i in range(0,NSYS):
         for m in range(0,6):
