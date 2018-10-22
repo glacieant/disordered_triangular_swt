@@ -3,7 +3,7 @@
 import os
 import datetime
 import multiprocessing as mp
-folder = "xy_disorder"
+folder = "xy_gaussian"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -18,6 +18,18 @@ from matplotlib.colors import Normalize
 from matplotlib.colors import LogNorm
 from scipy.optimize import curve_fit
 from scipy.stats import skewnorm
+
+# TU colors
+
+tu_dunkelblau = '#07284A'
+tu_grau = '#5F6967'
+tu_blau = '#0067A5'
+tu_cyan = '#00A3DA'
+tu_dunkelgruen = '#008644'
+tu_gruen = '#5EB245'
+tu_rot = '#DE4A39'
+tu_dunkelrot = '#BD252C'
+
 
 ## The tex style commands
 plt.rc('text',usetex=True)
@@ -63,14 +75,15 @@ HASH = list(HASH)
 # the master arrays of data
 HSHNUM = len(HASH)
 hshchar = [0]*HSHNUM
-sfc = [0]*HSHNUM
-sfc_var = [0]*HSHNUM
-n_sfc = np.zeros(HSHNUM)
+SFC = [0]*HSHNUM
+SFC_ERR = [0]*HSHNUM
+RFC = [0]*HSHNUM
+N_SFC = np.zeros(HSHNUM)
 
 # some arrays for the scaling analysis
 
 TLRAY = 1.0/np.array(list(LHASH)).astype(float)
-INVLRAY = np.sort(TLRAY)
+LRAY = np.sort(TLRAY)
 LORD = np.argsort(TLRAY)
 
 TDRAY = np.array(list(DHASH)).astype(float)
@@ -81,28 +94,34 @@ LNUM = len(LHASH)
 DNUM = len(DHASH)
 ANUM = len(AHASH)
 
-SFC_MAX = np.zeros((LNUM,DNUM,ANUM),dtype=np.float)
-SFC_MAX_ERR = np.zeros((LNUM,DNUM,ANUM),dtype=np.float)
-
-SFC_DELTA = np.zeros((DNUM,ANUM),dtype=np.float)
-DELTA_ARR = np.zeros((DNUM,ANUM),dtype=np.float)
-
-EXPONENT = np.zeros(DNUM,dtype=np.float)
-EXPONENT_ERR = np.zeros(DNUM,dtype=np.float)
+ITNUM = np.zeros((LNUM,DNUM,ANUM),dtype=np.int)
 
 # Defining model function to be used to fit 1d data
+
+def gaussian(x,a,b,c):
+
+    return a*np.exp(-(x-b)**2/(2.0*c**2))
+
+def parabola(x,a,b,c):
+
+    return a*(x**2)+b*x+c
+
+def skew_gauss(x,alpha,a,b,c):
+
+    return a*skewnorm.pdf(x,alpha,b,np.sqrt(2.0)*c)
 
 def linear(x,a,b):
 
     return a + b*x
 
-def res_log(invL,c1,c2,c3):
+def invpar(x,a,b):
 
-    return c1 + c2*invL + c3*invL*np.log(invL)
+    return a + b/(x**2)
 
-def power_law(x,a,b):
 
-    return a*(x**b)
+# reciprocal lattice vectors
+b1 = np.array([2.0*np.pi,-2.0*np.pi/3.0**0.5])
+b2 = np.array([0.0,4.0*np.pi/3.0**0.5])
 
 for fname in glob.iglob('*.npz'):
 
@@ -117,31 +136,29 @@ for fname in glob.iglob('*.npz'):
 
     FNDATA = np.load(fname)
 
-
     spin = FNDATA['spin']
 
     N = L**2
+
+    sbltc = np.zeros(N)
+    lmap.sublattice_map(L,sbltc)
+
+    SFM = []
+    RFM = []
+
+    for i in range(0,L/2):
+        if sbltc[i] == 0:
+            SFM.append(np.dot(spin[0],spin[i]))
+            RFM.append(i)
+
+    N_SFC[INDX] += 1
+
+    NPSFM = np.array(SFM)
+    NPRFM = np.array(RFM)
     
-    spin_X = spin[:,0].reshape((L,L))
-    spin_Y = spin[:,1].reshape((L,L))
-
-    SPIN = spin
-
-    SFC = (SFC_X + SFC_Y)
-    
-    # Only considering Q = (4*pi/3,0)
-    KMAX_X = L/3 
-    KMAX_Y = 2*L/3
-
-    SFM = SFC[KMAX_X,KMAX_Y]/N 
-
-    #SFM = np.linalg.norm(np.sum(spin,axis=0))/N
-
-    n_sfc[INDX] += 1
-    
-    sfc[INDX] += SFM
-    sfc_var[INDX] += SFM*SFM
-
+    SFC[INDX] += NPSFM
+    SFC_ERR[INDX] += NPSFM*NPSFM
+    RFC[INDX] += NPRFM
 
 LHASH = list(LHASH)
 DHASH = list(DHASH)
@@ -155,114 +172,90 @@ for i in range(0,HSHNUM):
     L = int(STR_L)
     N = L**2
 
-    SFX = sfc[i]/n_sfc[i]
-    SFX_ERR = np.sqrt((sfc_var[i]/n_sfc[i]-SFX**2)/n_sfc[i])
+    SFX = SFC[i]/N_SFC[i]
+    SFX_ERR = np.sqrt((SFC_ERR[i]/N_SFC[i]-SFX**2)/N_SFC[i])
+    RFX = RFC[i]/N_SFC[i]
 
-    # scaling data
+    SFC[i] = SFX
+    SFC_ERR[i] = SFX_ERR
+    RFC[i] = RFX
 
     LN = LHASH.index(STR_L)
     DN = DHASH.index(STR_DELTA)
     AN = AHASH.index(STR_ALPHA)
 
-    SFC_MAX[LN,DN,AN] = SFX
-    SFC_MAX_ERR[LN,DN,AN] = SFX_ERR
+    ITNUM[LN,DN,AN] = i
 
+CLR = [tu_rot,tu_blau,tu_gruen]
 
-for AN in range(0,ANUM):
+for LN in range(0,LNUM):
 
-    w,h = figure.figaspect(1.0)
-    afig = plt.figure(figsize=(w,h))
-    ax = afig.add_axes([0.26,0.15,0.685,0.8])
-    bfig = plt.figure(figsize=(w,h))
-    bx = bfig.add_axes([0.26,0.15,0.685,0.8])
+    for AN in range(0,ANUM):
 
-    for DN in range(0,DNUM):
+        w,h = figure.figaspect(1.0)
+        afig = plt.figure(figsize=(w,h))
+        ax = afig.add_axes([0.26,0.15,0.685,0.8])
+        
+        for DN in range(0,DNUM):
 
-        INVNRAY = INVLRAY**2
+            ix = ITNUM[LN,DN,AN]
 
-        popt, pcov = curve_fit(power_law,
-                1.0/INVLRAY,
-                SFC_MAX[:,DN,AN][LORD]
-                )
+            line1 = ax.errorbar(1.0/RFC[ix][1:],
+                    SFC[ix][1:],
+                    yerr=SFC_ERR[ix][1:],
+                    lw=2,
+                    marker='.',
+                    ms=10,
+                    label=r'$\Delta=$'+DHASH[DN],
+                    )
 
-        YDATA = SFC_MAX[:,DN,AN][LORD]
-        YDATA_ERR = SFC_MAX_ERR[:,DN,AN][LORD]
-        XDATA = 1.0/INVLRAY
+        DHLIST = [float(DHASH[i]) for i in range(0,DNUM)]
+        handles1, labels1 = ax.get_legend_handles_labels()
 
-        ax.errorbar(XDATA,
-                YDATA,
-                yerr=YDATA_ERR,
-                ls='None',
-                marker='.',
-                ms=10,
-                )
+        tup = sorted(zip(DHLIST,handles1,labels1))
+        DHLIST, handles1, labels1 = zip(*tup)
 
-        PDATA = np.linspace(XDATA.min(),
-                XDATA.max(),
-                200)
-        color = ax.get_lines()[-1].get_color()
-        ax.plot(PDATA,power_law(PDATA, *popt),
-                ls='--',
-                lw=2,
-                color=color,
-                label=r'$\Delta=$'+DHASH[DN]+r' $\eta=$'+str("%.2e" % popt[1])
-                )
+        legend1 = ax.legend(handles1,labels1,
+                loc='best',
+                fontsize=12,
+                markerscale=1,
+                facecolor='w',
+                edgecolor='k',
+                framealpha=1)
 
-        EXPONENT[DN] = popt[1]
-        EXPONENT_ERR[DN] = pcov[1,1]
+        #time = str(datetime.datetime.now()) 
+        #itmin = str(np.amin(ITNUM[:,:,AN])) 
+        
+        #ax.set_title('DATE = '
+        #        +time
+        #        +' MINIMUM REALIZATION = '
+        #        +itmin
+        #        )
 
+        ax.set_title('Antiferromagnetic Heisenberg')
+        #ax.set_title('Ferromagnetic Heisenberg')
 
-    DHLIST = [float(DHASH[i]) for i in range(0,DNUM)]
-    handles, labels = ax.get_legend_handles_labels()
+        ax.set_xlim(left=0.0)
+        #ax.set_ylim(bottom=0.0)
 
-    tup = sorted(zip(DHLIST,handles,labels))
-    DHLIST, handles, labels = zip(*tup)
-    
-    legend = ax.legend(handles,labels,
-            loc='best',
-            fontsize=12,
-            markerscale=1,
-            facecolor='w',
-            edgecolor='k',
-            framealpha=1)
+        ax.set_ylabel(r'$C(r)$',fontsize=30)
+        ax.set_xlabel(r'$1/r$',fontsize=30)
             
-
-    #ax.set_xlim(left=0.0,right=0.25)
-    #ax.set_ylim(bottom=0.0,top=0.01)
- 
-    #ax.set_title(r'$\alpha=$'+str("%.2f" % float(AHASH[AN])))
-    ax.set_ylabel(r'$S(Q)/L^2$',fontsize=20)
-    ax.set_xlabel(r'$L$',fontsize=20)
-    #ax.set_xlabel(r'$1/L$',fontsize=20)
-    #ax.set_xlabel(r'$|(1/L)\log(1/L)|$',fontsize=20)
-
-    afig.savefig("../plot/XY_POW_SFC_L"
-            +"_ALPHA_"
-            +str("%.4f" % float(AHASH[AN]))
-            +".pdf",
-            bbox_inches='tight'
-            )
-
-
-    DLTX =  [float(DHASH[i]) for i in range(0,DNUM)]
-    
-    bx.errorbar(DLTX,
-            EXPONENT,
-            yerr=EXPONENT_ERR,
-            ls='None',
-            marker='.',
-            ms=10,
-            )
-
-    bx.set_ylabel(r'$\eta$',fontsize=20)
-    bx.set_xlabel(r'$\Delta$',fontsize=20)
-
-    bfig.savefig("../plot/XY_POW_ETA_DELTA"
-            +"_ALPHA_"
-            +str("%.4f" % float(AHASH[AN]))
-            +".pdf",
-            bbox_inches='tight'
-            )
-
-    plt.close('all')
+        ax.tick_params(which='both',width=2,
+                labelsize=30,direction='in',
+                bottom=True,top=True,
+                left=True,right=True)
+        ax.tick_params(which='major',length=20)
+        ax.tick_params(which='minor',length=10)
+        
+        afig.savefig("../plot/CORR-HBRG"
+                +"_L_"
+                +str("%d" % int(LHASH[LN]))
+                +"_ALPHA_"
+                +str("%.4f" % float(AHASH[AN]))
+                +".pdf",
+                bbox_inches='tight'
+                )
+        
+        plt.close('all')
 

@@ -4,6 +4,7 @@ import os
 import datetime
 import multiprocessing as mp
 folder = "hbrg_gaussian"
+#folder = "ferro_hbrg_gaussian"
 os.chdir("../"+folder+"/out/data")
 import sys
 import subprocess
@@ -200,9 +201,9 @@ for LN in range(0,LNUM):
 
             ix = ITNUM[LN,DN,AN]
 
-            line1 = ax.errorbar(RFC[ix],
-                    SFC[ix],
-                    yerr=SFC_ERR[ix],
+            line1 = ax.errorbar(1.0/RFC[ix][1:],
+                    SFC[ix][1:],
+                    yerr=SFC_ERR[ix][1:],
                     lw=2,
                     marker='.',
                     ms=10,
@@ -232,13 +233,14 @@ for LN in range(0,LNUM):
         #        +itmin
         #        )
 
-        ax.set_title('Triangular Lattice Heisenberg Model')
+        ax.set_title('Antiferromagnetic Heisenberg')
+        #ax.set_title('Ferromagnetic Heisenberg')
 
-        #ax.set_xlim(left=0.0)
-        #ax.set_ylim(bottom=0.45,top=0.5)
+        ax.set_xlim(left=0.0)
+        ax.set_ylim(bottom=0.0)
 
         ax.set_ylabel(r'$C(r)$',fontsize=30)
-        ax.set_xlabel(r'$r$',fontsize=30)
+        ax.set_xlabel(r'$1/r$',fontsize=30)
             
         ax.tick_params(which='both',width=2,
                 labelsize=30,direction='in',
