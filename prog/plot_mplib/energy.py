@@ -3,8 +3,11 @@
 import os
 import datetime
 import multiprocessing as mp
+#folder = "xy_disorder"
 folder = "xy_gaussian"
+#folder = "hbrg_gaussian"
 os.chdir("../"+folder+"/out/data")
+#os.chdir("../"+folder+"/out/data_18.07.18")
 import sys
 import subprocess
 import re
@@ -75,10 +78,10 @@ HASH = list(HASH)
 # the master arrays of data
 HSHNUM = len(HASH)
 hshchar = [0]*HSHNUM
-SFC = [0]*HSHNUM
-SFC_ERR = [0]*HSHNUM
-RFC = [0]*HSHNUM
-N_SFC = np.zeros(HSHNUM)
+SPC = [0]*HSHNUM
+EFC = [0]*HSHNUM
+EFC_ERR = [0]*HSHNUM
+N_EFC = np.zeros(HSHNUM)
 
 # some arrays for the scaling analysis
 
@@ -94,29 +97,15 @@ LNUM = len(LHASH)
 DNUM = len(DHASH)
 ANUM = len(AHASH)
 
-ITNUM = np.zeros((LNUM,DNUM,ANUM),dtype=np.int)
+ENRGY = np.zeros((LNUM,DNUM,ANUM),dtype=np.float)
+SCOM = np.zeros((LNUM,DNUM,ANUM),dtype=np.float)
+ENRGY_ERR = np.zeros((LNUM,DNUM,ANUM),dtype=np.float)
 
 # Defining model function to be used to fit 1d data
 
-def gaussian(x,a,b,c):
-
-    return a*np.exp(-(x-b)**2/(2.0*c**2))
-
-def parabola(x,a,b,c):
-
-    return a*(x**2)+b*x+c
-
-def skew_gauss(x,alpha,a,b,c):
-
-    return a*skewnorm.pdf(x,alpha,b,np.sqrt(2.0)*c)
-
 def linear(x,a,b):
 
-    return a + b*x
-
-def invpar(x,a,b):
-
-    return a + b/(x**2)
+    return a-b*x
 
 
 # reciprocal lattice vectors
@@ -137,28 +126,31 @@ for fname in glob.iglob('*.npz'):
     FNDATA = np.load(fname)
 
     spin = FNDATA['spin']
+    J = FNDATA['J']
 
     N = L**2
 
-    sbltc = np.zeros(N)
-    lmap.sublattice_map(L,sbltc)
+    NBR = np.zeros((N,6),dtype=np.int)
 
-    SFM = []
-    RFM = []
+    lmap.lattice_map(L,NBR)
 
-    for i in range(0,L/2):
-        if sbltc[i] == 0:
-            SFM.append(np.dot(spin[0],spin[i]))
-            RFM.append(i)
+    ENCL = 0.0
 
-    N_SFC[INDX] += 1
+    for i in range(0,N):
 
-    NPSFM = np.array(SFM)
-    NPRFM = np.array(RFM)
-    
-    SFC[INDX] += NPSFM
-    SFC_ERR[INDX] += NPSFM*NPSFM
-    RFC[INDX] += NPRFM
+        for j in NBR[i]:
+
+            ENCL += 0.5*J[i,j]*np.dot(spin[i],spin[j])
+
+    #ENCL = 0.5*np.einsum("ij,ik,jk",J,spin,spin)/N
+
+    print ENCL
+
+    N_EFC[INDX] += 1
+
+    SPC[INDX] = spin[0].size
+    EFC[INDX] += ENCL
+    EFC_ERR[INDX] += ENCL*ENCL
 
 LHASH = list(LHASH)
 DHASH = list(DHASH)
@@ -169,45 +161,39 @@ for i in range(0,HSHNUM):
     STR_L = hshchar[i][0]
     STR_DELTA = hshchar[i][1]
     STR_ALPHA = hshchar[i][2]
-    L = int(STR_L)
-    N = L**2
 
-    SFX = SFC[i]/N_SFC[i]
-    SFX_ERR = np.sqrt((SFC_ERR[i]/N_SFC[i]-SFX**2)/N_SFC[i])
-    RFX = RFC[i]/N_SFC[i]
-
-    SFC[i] = SFX
-    SFC_ERR[i] = SFX_ERR
-    RFC[i] = RFX
+    EFX = EFC[i]/N_EFC[i]
+    EFX_ERR = np.sqrt((EFC_ERR[i]/N_EFC[i]-SFX**2)/N_EFC[i])
 
     LN = LHASH.index(STR_L)
     DN = DHASH.index(STR_DELTA)
     AN = AHASH.index(STR_ALPHA)
 
-    ITNUM[LN,DN,AN] = i
+    SCOM[LN,DN,AN] = SPC[i]
+    ENRGY[LN,DN,AN] = EFX
+    ENRGY_ERR[LN,DN,AN] = EFX_ERR
 
-CLR = [tu_rot,tu_blau,tu_gruen]
 
-for LN in range(0,LNUM):
+for AN in range(0,ANUM):
 
-    for AN in range(0,ANUM):
+    w,h = figure.figaspect(1.0)
+    afig = plt.figure(figsize=(w,h))
+    ax = afig.add_axes([0.26,0.15,0.685,0.8])
 
-        w,h = figure.figaspect(1.0)
-        afig = plt.figure(figsize=(w,h))
-        ax = afig.add_axes([0.26,0.15,0.685,0.8])
-        
-        for DN in range(0,DNUM):
+    for LN in range(0,LNUM):
 
-            ix = ITNUM[LN,DN,AN]
+        Y = ENRGY[LN,:,AN]
+        Y_ERR = ENERGY_ERR[LN,:,AN]
+        X = np.array(DHASH).astype(float)
 
-            line1 = ax.errorbar(RFC[ix],
-                    SFC[ix],
-                    yerr=SFC_ERR[ix],
-                    lw=2,
-                    marker='.',
-                    ms=10,
-                    label=r'$\Delta=$'+DHASH[DN],
-                    )
+        line = ax.errorbar(X,
+                Y,
+                yerr=Y_ERR,
+                lw=2,
+                marker='.',
+                ms=10,
+                label=r'$L = $'+LHASH[LN]
+                )
 
         DHLIST = [float(DHASH[i]) for i in range(0,DNUM)]
         handles1, labels1 = ax.get_legend_handles_labels()
@@ -223,39 +209,27 @@ for LN in range(0,LNUM):
                 edgecolor='k',
                 framealpha=1)
 
-        #time = str(datetime.datetime.now()) 
-        #itmin = str(np.amin(ITNUM[:,:,AN])) 
-        
-        #ax.set_title('DATE = '
-        #        +time
-        #        +' MINIMUM REALIZATION = '
-        #        +itmin
-        #        )
-
+    if SCOM[0,0,AN] == 3:
         ax.set_title('Antiferromagnetic XY')
-        #ax.set_title('Ferromagnetic Heisenberg')
+    else:
+        ax.set_title('Antiferromagnetic Heisenberg')
 
-        ax.set_xlim(left=0.0)
-        ax.set_ylim(bottom=0.0,top=1.1)
-
-        ax.set_ylabel(r'$C(r)$',fontsize=30)
-        ax.set_xlabel(r'$r$',fontsize=30)
-            
-        ax.tick_params(which='both',width=2,
-                labelsize=30,direction='in',
-                bottom=True,top=True,
-                left=True,right=True)
-        ax.tick_params(which='major',length=20)
-        ax.tick_params(which='minor',length=10)
+    ax.set_ylabel(r'$E$',fontsize=30)
+    ax.set_xlabel(r'$\delta J/J$',fontsize=30)
         
-        afig.savefig("../plot/CORR-HBRG"
-                +"_L_"
-                +str("%d" % int(LHASH[LN]))
-                +"_ALPHA_"
-                +str("%.4f" % float(AHASH[AN]))
-                +".pdf",
-                bbox_inches='tight'
-                )
-        
-        plt.close('all')
+    ax.tick_params(which='both',width=2,
+            labelsize=30,direction='in',
+            bottom=True,top=True,
+            left=True,right=True)
+    ax.tick_params(which='major',length=20)
+    ax.tick_params(which='minor',length=10)
+    
+    afig.savefig("../plot/E-VS-DELTA"
+            +"_ALPHA_"
+            +str("%.4f" % float(AHASH[AN]))
+            +".pdf",
+            bbox_inches='tight'
+            )
+    
+    plt.close('all')
 

@@ -121,7 +121,6 @@ for fname in glob.iglob('*.npz'):
     spin = FNDATA['spin']
 
     N = L**2
-
     
     spin_X = spin[:,0].reshape((L,L))
     spin_Y = spin[:,1].reshape((L,L))

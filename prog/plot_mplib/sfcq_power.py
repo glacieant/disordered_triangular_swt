@@ -3,8 +3,9 @@
 import os
 import datetime
 import multiprocessing as mp
-folder = "xy_gaussian"
-os.chdir("../"+folder+"/out/data")
+folder = "xy_disorder"
+#folder = "hbrg_gaussian"
+os.chdir("../"+folder+"/out/data_18.07.18")
 import sys
 import subprocess
 import re
@@ -77,7 +78,6 @@ HSHNUM = len(HASH)
 hshchar = [0]*HSHNUM
 SFC = [0]*HSHNUM
 SFC_ERR = [0]*HSHNUM
-RFC = [0]*HSHNUM
 N_SFC = np.zeros(HSHNUM)
 
 # some arrays for the scaling analysis
@@ -98,25 +98,9 @@ ITNUM = np.zeros((LNUM,DNUM,ANUM),dtype=np.int)
 
 # Defining model function to be used to fit 1d data
 
-def gaussian(x,a,b,c):
-
-    return a*np.exp(-(x-b)**2/(2.0*c**2))
-
-def parabola(x,a,b,c):
-
-    return a*(x**2)+b*x+c
-
-def skew_gauss(x,alpha,a,b,c):
-
-    return a*skewnorm.pdf(x,alpha,b,np.sqrt(2.0)*c)
-
 def linear(x,a,b):
 
-    return a + b*x
-
-def invpar(x,a,b):
-
-    return a + b/(x**2)
+    return a-b*x
 
 
 # reciprocal lattice vectors
@@ -140,25 +124,36 @@ for fname in glob.iglob('*.npz'):
 
     N = L**2
 
-    sbltc = np.zeros(N)
-    lmap.sublattice_map(L,sbltc)
+    if spin[0].size == 2:
+        
+        spin_X = spin[:,0].reshape((L,L))
+        spin_Y = spin[:,1].reshape((L,L))
+        SFC_X = np.abs(np.fft.fft2(spin_X,norm='ortho'))**2
+        SFC_Y = np.abs(np.fft.fft2(spin_Y,norm='ortho'))**2
 
-    SFM = []
-    RFM = []
+        TOTSFC = (SFC_X + SFC_Y)
 
-    for i in range(0,L/2):
-        if sbltc[i] == 0:
-            SFM.append(np.dot(spin[0],spin[i]))
-            RFM.append(i)
+    else:
+        
+        spin_X = spin[:,0].reshape((L,L))
+        spin_Y = spin[:,1].reshape((L,L))
+        spin_Z = spin[:,2].reshape((L,L))
+        SFC_X = np.abs(np.fft.fft2(spin_X,norm='ortho'))**2
+        SFC_Y = np.abs(np.fft.fft2(spin_Y,norm='ortho'))**2
+        SFC_Z = np.abs(np.fft.fft2(spin_Z,norm='ortho'))**2
+
+        TOTSFC = (SFC_X + SFC_Y + SFC_Z)
+
+    # Only considering Q = (4*pi/3,0)
+    KMAX_X = L/3 
+    KMAX_Y = 2*L/3
+
+    NPSFM = TOTSFC[KMAX_X:,KMAX_Y] 
 
     N_SFC[INDX] += 1
 
-    NPSFM = np.array(SFM)
-    NPRFM = np.array(RFM)
-    
     SFC[INDX] += NPSFM
     SFC_ERR[INDX] += NPSFM*NPSFM
-    RFC[INDX] += NPRFM
 
 LHASH = list(LHASH)
 DHASH = list(DHASH)
@@ -174,11 +169,9 @@ for i in range(0,HSHNUM):
 
     SFX = SFC[i]/N_SFC[i]
     SFX_ERR = np.sqrt((SFC_ERR[i]/N_SFC[i]-SFX**2)/N_SFC[i])
-    RFX = RFC[i]/N_SFC[i]
 
     SFC[i] = SFX
     SFC_ERR[i] = SFX_ERR
-    RFC[i] = RFX
 
     LN = LHASH.index(STR_L)
     DN = DHASH.index(STR_DELTA)
@@ -198,16 +191,44 @@ for LN in range(0,LNUM):
         
         for DN in range(0,DNUM):
 
-            ix = ITNUM[LN,DN,AN]
 
-            line1 = ax.errorbar(RFC[ix],
-                    SFC[ix],
-                    yerr=SFC_ERR[ix],
+            ix = ITNUM[LN,DN,AN]
+            Y = np.log(SFC[ix][1:])
+            Y_ERR = SFC_ERR[ix][1:]
+            YLEN = Y.size
+            X = np.log(np.arange(1,YLEN+1))
+
+            line = ax.errorbar(X,
+                    Y,
+                    yerr=Y_ERR,
                     lw=2,
                     marker='.',
                     ms=10,
-                    label=r'$\Delta=$'+DHASH[DN],
+                    #color=color,
+                    label=r'$\Delta=$'+DHASH[DN]#+r', $ \eta =$'+str("%2f" % (2-popt[1]))
                     )
+
+            """
+
+            popt, pcov = curve_fit(linear,
+                    X[YLEN/10:4*YLEN/5],
+                    Y[YLEN/10:4*YLEN/5])
+
+            print X
+            print "ddd"
+            print X[YLEN/10:4*YLEN/5]
+            raw_input()
+
+            PDATA = np.linspace(X.min(),X.max(),200)
+            color = ax.get_lines()[-1].get_color()
+            ax.plot(PDATA,linear(PDATA,*popt),
+                    ls='--',
+                    lw=2,
+                    color=color,
+                    label=r'$\Delta=$'+DHASH[DN]+r', $ \eta =$'+str("%2f" % (2-popt[1])),
+                    )
+
+            """
 
         DHLIST = [float(DHASH[i]) for i in range(0,DNUM)]
         handles1, labels1 = ax.get_legend_handles_labels()
@@ -223,23 +244,14 @@ for LN in range(0,LNUM):
                 edgecolor='k',
                 framealpha=1)
 
-        #time = str(datetime.datetime.now()) 
-        #itmin = str(np.amin(ITNUM[:,:,AN])) 
-        
-        #ax.set_title('DATE = '
-        #        +time
-        #        +' MINIMUM REALIZATION = '
-        #        +itmin
-        #        )
+        #ax.set_title('Antiferromagnetic XY')
+        ax.set_title('Antiferromagnetic Heisenberg')
 
-        ax.set_title('Antiferromagnetic XY')
-        #ax.set_title('Ferromagnetic Heisenberg')
+        #ax.set_xlim(left=0.0)
+        #ax.set_ylim(bottom=0.0)#,top=0.51)
 
-        ax.set_xlim(left=0.0)
-        ax.set_ylim(bottom=0.0,top=1.1)
-
-        ax.set_ylabel(r'$C(r)$',fontsize=30)
-        ax.set_xlabel(r'$r$',fontsize=30)
+        ax.set_ylabel(r'$\log S(Q+q)$',fontsize=30)
+        ax.set_xlabel(r'$\log q$',fontsize=30)
             
         ax.tick_params(which='both',width=2,
                 labelsize=30,direction='in',
@@ -248,7 +260,7 @@ for LN in range(0,LNUM):
         ax.tick_params(which='major',length=20)
         ax.tick_params(which='minor',length=10)
         
-        afig.savefig("../plot/CORR-HBRG"
+        afig.savefig("../plot/S-VS-Q"
                 +"_L_"
                 +str("%d" % int(LHASH[LN]))
                 +"_ALPHA_"

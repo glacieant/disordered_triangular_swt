@@ -80,7 +80,24 @@ def main(const):
                 np.copyto(M,M0)
 
 
+
         ## output data ##
+         
+        SPIN_X = M[1,:,0].reshape((L,L))
+        SPIN_Y = M[1,:,1].reshape((L,L))
+        SPIN_Z = M[1,:,2].reshape((L,L))
+        SFC_X = np.abs(np.fft.fft2(SPIN_X,norm='ortho'))**2
+        SFC_Y = np.abs(np.fft.fft2(SPIN_Y,norm='ortho'))**2
+        SFC_Z = np.abs(np.fft.fft2(SPIN_Z,norm='ortho'))**2
+
+        TOTSFC = (SFC_X + SFC_Y + SFC_Z)
+        
+        # Only considering Q = (4*pi/3,0)
+
+        KMAX_X = L/3 
+        KMAX_Y = 2*L/3
+
+        NPSFM = TOTSFC[KMAX_X:,KMAX_Y] 
 
         # saving the final output data
         np.savez_compressed("out/data/FNL"+
@@ -91,7 +108,7 @@ def main(const):
                 "_BOOT_"+str(0)+
                 "_DNM_"+str(DNMR)+
                 ".npz",
-                J=J,
-                spin=M[1],
+                SFC=NPSFM,
+                EN=EN
                 )
 
