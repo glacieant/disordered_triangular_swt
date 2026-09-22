@@ -5,6 +5,13 @@ mkdir -p OBJ BIN DATA/RAW DATA/PLOT
 rm -f DATA/RAW/*
 source constants.txt
 
+# virtual environment
+python3 -m venv ENV
+source ENV/bin/activate
+
+pip install --upgrade pip
+pip install -r requirements.txt
+
 make -s
 
 if (( STRX == 2 )); then
@@ -37,7 +44,7 @@ if (( LSTX != 0 )); then
 	cat RAW/EIGEN_L-* > EIGENDATA.txt
 	cat RAW/IPR_L-* > IPRDATA.txt
 	cat RAW/ANGLE_L-* > ANGLEDATA.txt
-	gnuplot -e "DELTA_FIT=$DELTA_FIT" ../uniform_moment.gp
+	python ../uniform_moment.py $DELTA_FIT
 fi
 if (( STRX != 0 )); then
 	cat RAW/GRID_L-* > GRIDDATA.txt
