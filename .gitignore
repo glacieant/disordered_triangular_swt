@@ -3,3 +3,6 @@
 *.aux
 *.log
 *temp*
+OBJ/
+BIN/
+DATA/RAW/
