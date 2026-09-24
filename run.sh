@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-cd "$(dirname "$0")"
 mkdir -p OBJ BIN DATA/RAW DATA/PLOT
 rm -f DATA/RAW/*
 source constants.txt
